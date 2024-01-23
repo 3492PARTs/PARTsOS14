@@ -15,33 +15,39 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class DriveTrain extends SubsystemBase {
   /** Creates a new DriveTrain. */
 
+  private static DriveTrain driveTrainSubsystem = new DriveTrain();
+
   static CANSparkMax leftLeader = new CANSparkMax(10, MotorType.kBrushless);
   static CANSparkMax left2 = new CANSparkMax(11, MotorType.kBrushless);
 
   static CANSparkMax rightLeader = new CANSparkMax(10, MotorType.kBrushless);
   static CANSparkMax right2 = new CANSparkMax(10, MotorType.kBrushless);
 
-  XboxController driveController = new XboxController(0);
+  DifferentialDrive differentialDrive = new DifferentialDrive(leftLeader, rightLeader);
   
-  private DriveTrain() {
+  public DriveTrain() {
 
     left2.follow(leftLeader);
     right2.follow(rightLeader);
 
     rightLeader.setInverted(true);
 
-    DifferentialDrive m_drive = new DifferentialDrive(leftLeader, rightLeader);
-
     //leftLeader.setOpenLoopRampRate(.85);
-    //rightLeader.setOpenLoopRampRate(.85);
+    //rightLeader.setOpenLoopRampRate
+  }
 
-    m_drive.arcadeDrive(driveController.getLeftY(), driveController.getLeftX());
+
+  public static DriveTrain getDriveTrainSubsystem() {
+    return driveTrainSubsystem;
+  }
+
+  public void setDriveMotors(double forwardBackSpeed, double rotationSpeed) {
+    differentialDrive.arcadeDrive(forwardBackSpeed, rotationSpeed);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
 
-    
   }
 }
