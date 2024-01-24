@@ -30,19 +30,19 @@ public class DriveTrain extends SubsystemBase {
     left2.follow(leftLeader);
     right2.follow(rightLeader);
 
+    //leftLeader.setSmartCurrentLimit();
+    //rightLeader.setSmartCurrentLimit();
+
     rightLeader.setInverted(true);
+    leftLeader.setInverted(false);
 
     //leftLeader.setOpenLoopRampRate(.85);
     //rightLeader.setOpenLoopRampRate
   }
 
 
-  public static DriveTrain getDriveTrainSubsystem() {
-    return driveTrainSubsystem;
-  }
-
-  public void setDriveMotors(double forwardBackSpeed, double rotationSpeed) {
-    differentialDrive.arcadeDrive(forwardBackSpeed, rotationSpeed);
+  public void driveArcade (double forwardBackSpeed, double rotationSpeed) {
+    differentialDrive.driveArcade(forwardBackSpeed, rotationSpeed);
   }
 
   @Override
