@@ -10,15 +10,14 @@ import java.util.function.DoubleSupplier;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
+
+  private static Intake intakeInstance;
 
   static TalonSRX intakeMotor;
 
@@ -32,6 +31,13 @@ public class Intake extends SubsystemBase {
 
     SmartDashboard.putBoolean("HAS NOTE", hasNoteSupplier().getAsBoolean());
 
+  }
+
+  public static Intake getInstance() {
+    // If instance is null, then make a new instance.
+    if (intakeInstance == null) { intakeInstance = new Intake(); }
+    
+    return intakeInstance;
   }
 
   public void runIntake(double speed) {

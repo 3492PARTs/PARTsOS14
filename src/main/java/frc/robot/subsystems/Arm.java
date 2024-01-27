@@ -10,21 +10,30 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class ElevatorSubsystem extends SubsystemBase {
+public class Arm extends SubsystemBase {
+
+  private static Arm armInstance;
   /** Creates a new ArmSubsystem. */
 
   static CANSparkMax pivotLeftMotor;
   static CANSparkMax pivotRightMotor;
   
+
+  public Arm() {
+    pivotLeftMotor= new CANSparkMax(Constants.Arm.LEFT_PIVOT_MOTOR, MotorType.kBrushless);
+    pivotRightMotor = new CANSparkMax(Constants.Arm.RIGHT_PIVOT_MOTOR, MotorType.kBrushless);
+  }
+
+  public static Arm getInstance() {
+    // If instance is null, then make a new instance.
+    if (armInstance == null) { armInstance = new Arm(); }
+    return armInstance;
+  }
+
   enum pivotPos {
     GROUND,
     SPEAKER,
     AMP
-  }
-
-  public ElevatorSubsystem() {
-    pivotLeftMotor= new CANSparkMax(Constants.Elevator.LEFT_PIVOT_MOTOR, MotorType.kBrushless);
-    pivotRightMotor = new CANSparkMax(Constants.Elevator.RIGHT_PIVOT_MOTOR, MotorType.kBrushless);
   }
 
   public double getAngle() {

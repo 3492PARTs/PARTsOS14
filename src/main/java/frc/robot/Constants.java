@@ -26,7 +26,7 @@ public final class Constants {
   }
   
 
-  public static final class Elevator {
+  public static final class Arm {
     public static final int LEFT_PIVOT_MOTOR = 5;
     public static final int RIGHT_PIVOT_MOTOR = 6;
     public static final double PIVOT_GEAR_RATIO = 7;
