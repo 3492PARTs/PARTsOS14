@@ -4,29 +4,38 @@
 
 package frc.robot.subsystems;
 
-import org.ejml.equation.Variable;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import org.ejml.equation.Variable;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class ElevatorSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
 
+  static CANSparkMax pivotMotorLeader;
+  static CANSparkMax pivotMotorFollower;
+  
   enum pivotPos {
     GROUND,
     SPEAKER,
     AMP
   }
 
-
   public ElevatorSubsystem() {
-
-
+    pivotMotorLeader = new CANSparkMax(Constants.LEFT_PIVOT_MOTOR, MotorType.kBrushless);
+    pivotMotorFollower = new CANSparkMax(Constants.RIGHT_PIVOT_MOTOR, MotorType.kBrushless);
   }
 
   public double getAngle() {
     // TODO: Replace with real later.
     double result = 0.0;
     return result;
+  }
+
+  public void setPivotSpeed(double speed) {
+
   }
 
   public double getTargetPivotPos(pivotPos pivPos) {

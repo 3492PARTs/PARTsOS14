@@ -4,14 +4,53 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
+
+  static TalonSRX intakeMotor;
+
+  private boolean hasGamePiece = true;
+  DigitalInput photoEye = new DigitalInput(0);
+
+
   /** Creates a new Intake. */
-  public Intake() {}
+  public Intake() {
+    intakeMotor = new TalonSRX(Constants.INTAKE_MOTOR);
+
+    SmartDashboard.putBoolean("HAS NOTE", hasNoteSupplier().getAsBoolean());
+
+  }
+
+  // methods for note detection using photoEyes
+  public boolean hasGamePiece() {
+    return hasGamePiece;
+  }
+
+  public void setGamePiece(boolean hasGamePiece) {
+    this.hasGamePiece = hasGamePiece;
+  }
+
+  public Boolean hasNote() {
+    return photoEye.get();
+  }
+
+  public BooleanSupplier hasNoteSupplier() {
+    BooleanSupplier s = () ->
+      hasNote();
+    return s;
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putBoolean("HAS NOTE", hasNoteSupplier().getAsBoolean());
+    SmartDashboard.putBoolean("Sensor 0", photoEye.get());
   }
 }

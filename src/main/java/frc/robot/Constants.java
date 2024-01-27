@@ -17,30 +17,30 @@ public final class Constants {
 
   public static final class DriveConstants {
 
-    private static final int FRONT_RIGHT_DRIVE_MOTOR = null;
-    private static final int BACK_RIGHT_DRIVE_MOTOR = null;
+    public static final int FRONT_RIGHT_DRIVE_MOTOR = 0;
+    public static final int BACK_RIGHT_DRIVE_MOTOR = 1;
 
-    private static final int FRONT_LEFT_DRIVE_MOTOR = null;
-    private static final int BACK_LEFT_DRIVE_MOTOR = null;
+    public static final int FRONT_LEFT_DRIVE_MOTOR = 3;
+    public static final int BACK_LEFT_DRIVE_MOTOR = 4;
 
   }
   
 
   public static final class ElevatorConstants {
-    private static final int LEFT_PIVOT_MOTOR = null;
-    private static final int RIGHT_PIVOT_MOTOR = null;
-    private static final double PIVOT_GEAR_RATIO = null;
+    public static final int LEFT_PIVOT_MOTOR = 5;
+    public static final int RIGHT_PIVOT_MOTOR = 6;
+    public static final double PIVOT_GEAR_RATIO = 7;
   }
 
 
   public static final class IntakeConstants {
-      private static final int INTAKE_MOTOR = null;
+      public static final int INTAKE_MOTOR = 8;
   }
 
 
   public static final class ShooterConstants {
-    private static final int LEFT_SHOOTER_MOTOR = null;
-    private static final int RIGHT_SHOOTER_MOTOR = null;
+    public static final int LEFT_SHOOTER_MOTOR = 9;
+    public static final int RIGHT_SHOOTER_MOTOR = 10;
   }
 
 
@@ -49,4 +49,5 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
 
   }
+
 }
