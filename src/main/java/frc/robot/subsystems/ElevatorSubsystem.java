@@ -4,10 +4,19 @@
 
 package frc.robot.subsystems;
 
+import org.ejml.equation.Variable;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ElevatorSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
+
+  enum pivotPos {
+    GROUND,
+    HOME,
+    SPEAKER,
+    AMP
+  }
 
 
   public ElevatorSubsystem() {
@@ -21,7 +30,27 @@ public class ElevatorSubsystem extends SubsystemBase {
     return result;
   }
 
-
+  public double getTargetPivotPos(pivotPos pivPos) {
+    switch (pivPos) {
+      case GROUND:
+      //TODO: Value.
+        break;
+      case HOME:
+      //TODO: Value.
+        break;
+      case SPEAKER:
+      //TODO: Value.
+        break;
+      case AMP:
+      //TODO: Value.
+        break;
+    
+      default:
+        break;
+    }
+    // TODO: Make safe value.
+    return 0;
+  }
 
   @Override
   public void periodic() {
