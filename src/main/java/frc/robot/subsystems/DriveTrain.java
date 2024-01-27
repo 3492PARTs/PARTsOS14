@@ -42,7 +42,7 @@ public class DriveTrain extends SubsystemBase {
 
 
   public void driveArcade (double forwardBackSpeed, double rotationSpeed) {
-    differentialDrive.driveArcade(forwardBackSpeed, rotationSpeed);
+    differentialDrive.arcadeDrive(forwardBackSpeed, rotationSpeed);
   }
 
   @Override
