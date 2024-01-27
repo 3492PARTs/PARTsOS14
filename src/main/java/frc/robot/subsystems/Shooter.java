@@ -11,7 +11,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
+  private static Shooter shooterInstance;
+  //private final
+
   /** Creates a new Shooter. */
+  public static Shooter getInstance() {
+    // If instance is null, then make a new instance.
+    if (shooterInstance == null) { shooterInstance = new Shooter(); }
+    return shooterInstance;
+  }
 
   static TalonSRX shooterLeftMotor; 
   static TalonSRX shooterRightMotor; 
