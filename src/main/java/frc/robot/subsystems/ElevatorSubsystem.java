@@ -16,7 +16,9 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public double getAngle() {
-    
+    // TODO: Replace with real later.
+    double result = 0.0;
+    return result;
   }
 
 

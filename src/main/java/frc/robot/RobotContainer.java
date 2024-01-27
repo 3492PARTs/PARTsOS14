@@ -29,6 +29,9 @@ public class RobotContainer {
 
   private final XboxController driveController = new XboxController(0);
 
+  // Example: Replace with real later.
+  private ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
@@ -63,6 +66,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    // return Autos.exampleAuto(m_exampleSubsystem);
+    return Autos.exampleAuto(m_exampleSubsystem);
   }
 }
