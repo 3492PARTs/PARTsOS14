@@ -24,8 +24,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public ElevatorSubsystem() {
-    pivotMotorLeader = new CANSparkMax(Constants.LEFT_PIVOT_MOTOR, MotorType.kBrushless);
-    pivotMotorFollower = new CANSparkMax(Constants.RIGHT_PIVOT_MOTOR, MotorType.kBrushless);
+    pivotMotorLeader = new CANSparkMax(Constants.Elevator.LEFT_PIVOT_MOTOR, MotorType.kBrushless);
+    pivotMotorFollower = new CANSparkMax(Constants.Elevator.RIGHT_PIVOT_MOTOR, MotorType.kBrushless);
   }
 
   public double getAngle() {
