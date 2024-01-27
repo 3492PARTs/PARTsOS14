@@ -15,12 +15,6 @@ public class Shooter extends SubsystemBase {
   //private final
 
   /** Creates a new Shooter. */
-  public static Shooter getInstance() {
-    // If instance is null, then make a new instance.
-    if (shooterInstance == null) { shooterInstance = new Shooter(); }
-    return shooterInstance;
-  }
-
   static TalonSRX shooterLeftMotor; 
   static TalonSRX shooterRightMotor; 
 
@@ -31,6 +25,13 @@ public class Shooter extends SubsystemBase {
 
     shooterRightMotor.setInverted(true);
     shooterLeftMotor.setInverted(false);
+  }
+
+  public static Shooter getInstance() {
+    // If instance is null, then make a new instance.
+    if (shooterInstance == null) { shooterInstance = new Shooter(); }
+    
+    return shooterInstance;
   }
 
   public void setShooterSpeed(double speed) {
