@@ -47,6 +47,7 @@ public final class Constants {
   public static class Operator {
     
     public static final int kDriverControllerPort = 0;
+    public static final int testInt = 0;
 
   }
 
