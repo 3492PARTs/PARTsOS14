@@ -13,7 +13,6 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   enum pivotPos {
     GROUND,
-    HOME,
     SPEAKER,
     AMP
   }
@@ -35,9 +34,6 @@ public class ElevatorSubsystem extends SubsystemBase {
       case GROUND:
       //TODO: Value.
         break;
-      case HOME:
-      //TODO: Value.
-        break;
       case SPEAKER:
       //TODO: Value.
         break;
@@ -46,9 +42,10 @@ public class ElevatorSubsystem extends SubsystemBase {
         break;
     
       default:
+      //TODO: HOME
         break;
     }
-    // TODO: Make safe value.
+    //TODO: Make safe value.
     return 0;
   }
 
