@@ -34,7 +34,7 @@ public final class Constants {
 
 
   public static final class Intake {
-      public static final int INTAKE_MOTOR = 8;
+      public static final int INTAKE_MOTOR = 29;
   }
 
 
@@ -50,5 +50,6 @@ public final class Constants {
     public static final int testInt = 0;
 
   }
+
 
 }

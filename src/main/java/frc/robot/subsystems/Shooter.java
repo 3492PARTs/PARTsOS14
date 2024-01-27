@@ -4,7 +4,11 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
   private static Shooter shooterInstance;
@@ -17,6 +21,22 @@ public class Shooter extends SubsystemBase {
     return shooterInstance;
   }
 
+  static TalonSRX shooterLeftMotor; 
+  static TalonSRX shooterRightMotor; 
+
+
+  public Shooter() {
+    shooterLeftMotor = new TalonSRX(Constants.Shooter.LEFT_SHOOTER_MOTOR);
+    shooterRightMotor = new TalonSRX(Constants.Shooter.RIGHT_SHOOTER_MOTOR);
+
+    shooterRightMotor.setInverted(true);
+    shooterLeftMotor.setInverted(false);
+  }
+
+  public void setShooterSpeed(double speed) {
+    shooterRightMotor.set(ControlMode.PercentOutput, speed);
+    shooterLeftMotor.set(ControlMode.PercentOutput, speed);
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

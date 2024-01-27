@@ -10,36 +10,41 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 
 public class DriveTrain extends SubsystemBase {
   /** Creates a new DriveTrain. */
 
-  private static DriveTrain driveTrainSubsystem = new DriveTrain();
+  public static DriveTrain driveTrain;
 
-  static CANSparkMax leftLeader = new CANSparkMax(10, MotorType.kBrushless);
-  static CANSparkMax left2 = new CANSparkMax(11, MotorType.kBrushless);
+  static CANSparkMax leftMotorLeader = new CANSparkMax(Constants.Drive.FRONT_LEFT_DRIVE_MOTOR, MotorType.kBrushless);
+  static CANSparkMax leftMotorFollower = new CANSparkMax(Constants.Drive.BACK_LEFT_DRIVE_MOTOR, MotorType.kBrushless);
 
-  static CANSparkMax rightLeader = new CANSparkMax(10, MotorType.kBrushless);
-  static CANSparkMax right2 = new CANSparkMax(10, MotorType.kBrushless);
+  static CANSparkMax rightMotorLeader = new CANSparkMax(Constants.Drive.FRONT_RIGHT_DRIVE_MOTOR, MotorType.kBrushless);
+  static CANSparkMax rightMotorFollower = new CANSparkMax(Constants.Drive.BACK_RIGHT_DRIVE_MOTOR, MotorType.kBrushless);
 
-  DifferentialDrive differentialDrive = new DifferentialDrive(leftLeader, rightLeader);
+  DifferentialDrive differentialDrive = new DifferentialDrive(leftMotorLeader, rightMotorLeader);
   
   public DriveTrain() {
 
-    left2.follow(leftLeader);
-    right2.follow(rightLeader);
+    leftMotorFollower.follow(leftMotorFollower);
+    rightMotorFollower.follow(rightMotorLeader);
 
     //leftLeader.setSmartCurrentLimit();
     //rightLeader.setSmartCurrentLimit();
 
-    rightLeader.setInverted(true);
-    leftLeader.setInverted(false);
+    rightMotorLeader.setInverted(true);
+    leftMotorLeader.setInverted(false);
 
     //leftLeader.setOpenLoopRampRate(.85);
     //rightLeader.setOpenLoopRampRate
   }
 
+  public static DriveTrain getInstance() {
+    if (driveTrain == null) {driveTrain = new DriveTrain();}
+    return driveTrain;
+  }
 
   public void driveArcade (double forwardBackSpeed, double rotationSpeed) {
     differentialDrive.arcadeDrive(forwardBackSpeed, rotationSpeed);

@@ -5,6 +5,10 @@
 package frc.robot.subsystems;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -29,6 +33,22 @@ public class Intake extends SubsystemBase {
     SmartDashboard.putBoolean("HAS NOTE", hasNoteSupplier().getAsBoolean());
 
   }
+
+  public void runIntake(double speed) {
+    intakeMotor.set(ControlMode.PercentOutput, speed);
+  }
+
+  //returns current
+  public DoubleSupplier intakeCurrentSupplier() {
+    DoubleSupplier s = () ->
+      intakeMotor.getSupplyCurrent();
+      return s;
+  }
+
+  public void runCurrent(double current) {
+    intakeMotor.set(ControlMode.Current, current);
+  }
+
 
   // methods for note detection using photoEyes
   public boolean hasGamePiece() {
