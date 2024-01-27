@@ -13,6 +13,36 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+  public static final class DriveConstants {
+
+    private static final int FRONT_RIGHT_DRIVE_MOTOR = null;
+    private static final int BACK_RIGHT_DRIVE_MOTOR = null;
+
+    private static final int FRONT_LEFT_DRIVE_MOTOR = null;
+    private static final int BACK_LEFT_DRIVE_MOTOR = null;
+
+  }
+  
+
+  public static final class ElevatorConstants {
+    private static final int LEFT_PIVOT_MOTOR = null;
+    private static final int RIGHT_PIVOT_MOTOR = null;
+    private static final double PIVOT_GEAR_RATIO = null;
+  }
+
+
+  public static final class IntakeConstants {
+      private static final int INTAKE_MOTOR = null;
+  }
+
+
+  public static final class ShooterConstants {
+    private static final int LEFT_SHOOTER_MOTOR = null;
+    private static final int RIGHT_SHOOTER_MOTOR = null;
+  }
+
+
   public static class OperatorConstants {
     
     public static final int kDriverControllerPort = 0;
