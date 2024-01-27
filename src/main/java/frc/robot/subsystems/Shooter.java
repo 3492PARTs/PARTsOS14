@@ -7,8 +7,15 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
+  private static Shooter shooterInstance;
+  //private final
+
   /** Creates a new Shooter. */
-  public Shooter() {}
+  public static Shooter getInstance() {
+    // If instance is null, then make a new instance.
+    if (shooterInstance == null) { shooterInstance = new Shooter(); }
+    return shooterInstance;
+  }
 
   @Override
   public void periodic() {

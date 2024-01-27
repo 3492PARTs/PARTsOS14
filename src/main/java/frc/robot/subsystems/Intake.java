@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import java.util.function.BooleanSupplier;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,7 +24,7 @@ public class Intake extends SubsystemBase {
 
   /** Creates a new Intake. */
   public Intake() {
-    intakeMotor = new TalonSRX(Constants.INTAKE_MOTOR);
+    intakeMotor = new TalonSRX(Constants.Intake.INTAKE_MOTOR);
 
     SmartDashboard.putBoolean("HAS NOTE", hasNoteSupplier().getAsBoolean());
 
