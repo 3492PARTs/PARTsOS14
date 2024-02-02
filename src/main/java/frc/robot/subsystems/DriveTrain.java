@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -38,6 +39,11 @@ public class DriveTrain extends SubsystemBase {
 
     //leftLeader.setOpenLoopRampRate(.85);
     //rightLeader.setOpenLoopRampRate
+
+    leftMotorLeader.setIdleMode(IdleMode.kBrake);
+    rightMotorLeader.setIdleMode(IdleMode.kBrake);
+    leftMotorFollower.setIdleMode(IdleMode.kBrake);
+    rightMotorFollower.setIdleMode(IdleMode.kBrake);
   }
 
   public static DriveTrain getInstance() {
