@@ -6,22 +6,38 @@ package frc.robot.subsystems;
 
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+//TODO: implement feedforward controls
 public class Arm extends SubsystemBase {
 
   private static Arm armInstance;
   /** Creates a new ArmSubsystem. */
 
-  static CANSparkMax pivotLeftMotor;
-  static CANSparkMax pivotRightMotor;
+  static CANSparkMax pivotLeftLeader;
+  static CANSparkMax pivotRightFollower;
   
+  SparkPIDController pivotController;
 
   public Arm() {
-    pivotLeftMotor= new CANSparkMax(Constants.Arm.LEFT_PIVOT_MOTOR, MotorType.kBrushless);
-    pivotRightMotor = new CANSparkMax(Constants.Arm.RIGHT_PIVOT_MOTOR, MotorType.kBrushless);
+    pivotLeftLeader= new CANSparkMax(Constants.Arm.LEFT_PIVOT_MOTOR, MotorType.kBrushless);
+    pivotRightFollower = new CANSparkMax(Constants.Arm.RIGHT_PIVOT_MOTOR, MotorType.kBrushless);
+
+    pivotRightFollower.follow(pivotLeftLeader);
+
+    pivotLeftLeader.setInverted(false);
+    pivotRightFollower.setInverted(true);
+
+    pivotController = pivotLeftLeader.getPIDController();
+
+    pivotLeftLeader.setIdleMode(IdleMode.kBrake);
+    pivotRightFollower.setIdleMode(IdleMode.kBrake);
+
   }
 
   public static Arm getInstance() {
@@ -45,6 +61,7 @@ public class Arm extends SubsystemBase {
 
   // Sets speed value. (-1, 1)
   public void setPivotSpeed(double speed) {
+    pivotLeftLeader.set(speed);
   }
 
   // Returns the value of enum, 
