@@ -26,8 +26,8 @@ public class RobotContainer {
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
 
-  private final XboxController driveController = new XboxController(0);
-  private final XboxController operatorController = new XboxController(1);
+  private final XboxController driveController = new XboxController(0); // For the drivetrain.
+  private final XboxController operatorController = new XboxController(1); // For shooter and intake.
 
   // Example: Replace with real later.
   private ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();

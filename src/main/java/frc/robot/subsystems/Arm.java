@@ -30,7 +30,7 @@ public class Arm extends SubsystemBase {
     return armInstance;
   }
 
-  // Enum for which pos we want when we call getTargetPivotPos().
+  // Enum for arm positions.
   public enum PivotPos {
     GROUND(0),
     SPEAKER(0),
