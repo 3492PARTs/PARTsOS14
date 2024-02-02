@@ -24,6 +24,9 @@ public class Arm extends SubsystemBase {
   
   SparkPIDController pivotController;
 
+  //TODO: update gear ratio 
+  double pivotGearRatio = Constants.Arm.PIVOT_GEAR_RATIO;
+
   public Arm() {
     pivotLeftLeader= new CANSparkMax(Constants.Arm.LEFT_PIVOT_MOTOR, MotorType.kBrushless);
     pivotRightFollower = new CANSparkMax(Constants.Arm.RIGHT_PIVOT_MOTOR, MotorType.kBrushless);
@@ -62,12 +65,10 @@ public class Arm extends SubsystemBase {
   }
 
   public double getAngle() {
-    // TODO: Replace with real later.
-    double result = 0.0;
-    return result;
+    return 360 * pivotLeftLeader.getEncoder().getPosition() / pivotGearRatio;
+    
   }
 
-  // Sets speed value. (-1, 1)
   public void setPivotSpeed(double speed) {
     pivotLeftLeader.set(speed);
   }
