@@ -5,9 +5,11 @@
 package frc.robot;
 
 import frc.robot.commands.Autos;
-
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -23,11 +25,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain driveTrain = DriveTrain.getInstance();
+  private final Arm arm = Arm.getInstance();
+  private final Intake intake = Intake.getInstance();
+  private final Shooter shooter = Shooter.getInstance();
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-
-  private final XboxController driveController = new XboxController(0); // For the drivetrain.
-  private final XboxController operatorController = new XboxController(1); // For shooter and intake.
+  private final CommandXboxController driveController = new CommandXboxController(0);
+  private final CommandXboxController operatorController = new CommandXboxController(1);
 
   // Example: Replace with real later.
   private ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
@@ -57,6 +60,26 @@ public class RobotContainer {
         driveTrain)
 
     );
+
+    arm.setDefaultCommand(
+      new RunCommand(() -> arm.setPivotSpeed(
+        operatorController.getRightX()),
+        arm)
+    );
+
+    intake.setDefaultCommand(
+      new RunCommand(() -> intake.runCurrent(
+        operatorController.getLeftTriggerAxis()),
+        intake)
+    );
+    
+    shooter.setDefaultCommand(
+      new RunCommand(() -> shooter.setShooterSpeed(
+        operatorController.getRightTriggerAxis()),
+        shooter)
+    );
+
+
   }
 
   /**
