@@ -12,6 +12,8 @@ public class ArmToPosition extends Command {
   /** Creates a new armToPosition. */
   PivotPos pivotPos;
   Arm arm;
+  boolean direction = true;
+
   public ArmToPosition(PivotPos pivotPos) {
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -23,12 +25,13 @@ public class ArmToPosition extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    direction = arm.getAngle() > pivotPos.getValue();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (arm.getAngle() > arm.getTargetPivotPos(pivotPos)) {
+    if (direction) {
       arm.setPivotSpeed(-1);
     }
     else {
@@ -44,11 +47,11 @@ public class ArmToPosition extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (arm.getAngle() > arm.getTargetPivotPos(pivotPos)) {
-      arm.setPivotSpeed(-1);
+    if (direction) {
+      return arm.getAngle() > pivotPos.getValue();
     }
     else {
-      arm.setPivotSpeed(1);
+      return arm.getAngle() < pivotPos.getValue();
     }
   }
 }
