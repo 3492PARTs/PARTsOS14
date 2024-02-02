@@ -9,27 +9,27 @@ package frc.robot;
  * constants. This class should not be used for any other purpose. All constants should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
   // TODO: REPLACE PLACEHOLDERS
 
   public static final class Drive {
+    //? These should be the values but are most likley in the wrong order.
+    public static final int FRONT_RIGHT_DRIVE_MOTOR = 7;
+    public static final int BACK_RIGHT_DRIVE_MOTOR = 22;
 
-    public static final int FRONT_RIGHT_DRIVE_MOTOR = 0;
-    public static final int BACK_RIGHT_DRIVE_MOTOR = 1;
-
-    public static final int FRONT_LEFT_DRIVE_MOTOR = 3;
-    public static final int BACK_LEFT_DRIVE_MOTOR = 4;
+    public static final int FRONT_LEFT_DRIVE_MOTOR = 2;
+    public static final int BACK_LEFT_DRIVE_MOTOR = 12;
 
   }
   
 
   public static final class Arm {
-    public static final int LEFT_PIVOT_MOTOR = 5;
-    public static final int RIGHT_PIVOT_MOTOR = 6;
-    public static final double PIVOT_GEAR_RATIO = 7;
+    public static final int LEFT_PIVOT_MOTOR = 3;
+    public static final int RIGHT_PIVOT_MOTOR = 4;
+    public static final double PIVOT_GEAR_RATIO = 7; //? Is this right?
   }
 
 
@@ -39,15 +39,15 @@ public final class Constants {
 
 
   public static final class Shooter {
-    public static final int LEFT_SHOOTER_MOTOR = 9;
-    public static final int RIGHT_SHOOTER_MOTOR = 10;
+    //? These should be the values but are most likley in the wrong order.
+    public static final int LEFT_SHOOTER_MOTOR = 3;
+    public static final int RIGHT_SHOOTER_MOTOR = 25;
   }
 
 
   public static class Operator {
-    
+    //? Unkown for now.
     public static final int kDriverControllerPort = 0;
-    public static final int testInt = 0;
 
   }
 

@@ -46,6 +46,7 @@ public class Arm extends SubsystemBase {
     return armInstance;
   }
 
+  // Enum for which pos we want when we call getTargetPivotPos().
   enum pivotPos {
     GROUND,
     SPEAKER,
@@ -58,26 +59,26 @@ public class Arm extends SubsystemBase {
     return result;
   }
 
-
+  // Sets speed value. (-1, 1)
   public void setPivotSpeed(double speed) {
     pivotLeftLeader.set(speed);
-
   }
 
+  // Returns the value of enum, 
   public double getTargetPivotPos(pivotPos pivPos) {
     switch (pivPos) {
       case GROUND:
-      //TODO: Value.
+        //TODO: Value.
         break;
       case SPEAKER:
-      //TODO: Value.
+        //TODO: Value.
         break;
       case AMP:
-      //TODO: Value.
+        //TODO: Value.
         break;
     
       default:
-      //TODO: HOME
+        //TODO: HOME
         break;
     }
     //TODO: Make safe value.
