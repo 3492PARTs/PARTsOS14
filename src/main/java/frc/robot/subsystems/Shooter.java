@@ -12,14 +12,13 @@ import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
   private static Shooter shooterInstance;
-  //private final
 
   /** Creates a new Shooter. */
   static TalonSRX shooterLeftMotor; 
   static TalonSRX shooterRightMotor; 
 
-
   public Shooter() {
+    // Intialize the motors.
     shooterLeftMotor = new TalonSRX(Constants.Shooter.LEFT_SHOOTER_MOTOR);
     shooterRightMotor = new TalonSRX(Constants.Shooter.RIGHT_SHOOTER_MOTOR);
 
@@ -30,7 +29,6 @@ public class Shooter extends SubsystemBase {
   public static Shooter getInstance() {
     // If instance is null, then make a new instance.
     if (shooterInstance == null) { shooterInstance = new Shooter(); }
-    
     return shooterInstance;
   }
 

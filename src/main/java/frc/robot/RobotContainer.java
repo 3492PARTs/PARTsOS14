@@ -29,8 +29,6 @@ public class RobotContainer {
   private final Intake intake = Intake.getInstance();
   private final Shooter shooter = Shooter.getInstance();
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-
   private final CommandXboxController driveController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
 
