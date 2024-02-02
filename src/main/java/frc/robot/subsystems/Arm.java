@@ -24,6 +24,9 @@ public class Arm extends SubsystemBase {
   
   SparkPIDController pivotController;
 
+  //TODO: update gear ratio 
+  double pivotGearRatio = Constants.Arm.PIVOT_GEAR_RATIO;
+
   public Arm() {
     pivotLeftLeader= new CANSparkMax(Constants.Arm.LEFT_PIVOT_MOTOR, MotorType.kBrushless);
     pivotRightFollower = new CANSparkMax(Constants.Arm.RIGHT_PIVOT_MOTOR, MotorType.kBrushless);
@@ -46,39 +49,35 @@ public class Arm extends SubsystemBase {
     return armInstance;
   }
 
-  // Enum for which pos we want when we call getTargetPivotPos().
-  enum pivotPos {
+  public enum PivotPos {
     GROUND,
     SPEAKER,
     AMP
   }
 
   public double getAngle() {
-    // TODO: Replace with real later.
-    double result = 0.0;
-    return result;
+    return 360 * pivotLeftLeader.getEncoder().getPosition() / pivotGearRatio;
+    
   }
 
-  // Sets speed value. (-1, 1)
   public void setPivotSpeed(double speed) {
     pivotLeftLeader.set(speed);
   }
 
-  // Returns the value of enum, 
-  public double getTargetPivotPos(pivotPos pivPos) {
+  public double getTargetPivotPos(PivotPos pivPos) {
     switch (pivPos) {
       case GROUND:
-        //TODO: Value.
+      //TODO: Value.
         break;
       case SPEAKER:
-        //TODO: Value.
+      //TODO: Value.
         break;
       case AMP:
-        //TODO: Value.
+      //TODO: Value.
         break;
     
       default:
-        //TODO: HOME
+      //TODO: HOME
         break;
     }
     //TODO: Make safe value.
