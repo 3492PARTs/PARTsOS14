@@ -31,10 +31,18 @@ public class Arm extends SubsystemBase {
   }
 
   // Enum for which pos we want when we call getTargetPivotPos().
-  enum pivotPos {
-    GROUND,
-    SPEAKER,
-    AMP
+  public enum PivotPos {
+    GROUND(0),
+    SPEAKER(0),
+    AMP(0);
+
+    int value;
+    PivotPos(int value) {
+      this.value = value;
+    }
+    public int getValue() {
+        return value;
+    }
   }
 
   public double getAngle() {
@@ -45,27 +53,6 @@ public class Arm extends SubsystemBase {
 
   // Sets speed value. (-1, 1)
   public void setPivotSpeed(double speed) {
-  }
-
-  // Returns the value of enum, 
-  public double getTargetPivotPos(pivotPos pivPos) {
-    switch (pivPos) {
-      case GROUND:
-        //TODO: Value.
-        break;
-      case SPEAKER:
-        //TODO: Value.
-        break;
-      case AMP:
-        //TODO: Value.
-        break;
-    
-      default:
-        //TODO: HOME
-        break;
-    }
-    //TODO: Make safe value.
-    return 0;
   }
 
   @Override
