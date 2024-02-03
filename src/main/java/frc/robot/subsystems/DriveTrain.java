@@ -37,8 +37,8 @@ public class DriveTrain extends SubsystemBase {
     //rightLeader.setSmartCurrentLimit();
 
     // Mirrored motors, mirrored setup.
-    rightMotorLeader.setInverted(true);
-    leftMotorLeader.setInverted(false);
+    rightMotorLeader.setInverted(false);
+    leftMotorLeader.setInverted(true);
 
     //leftLeader.setOpenLoopRampRate(.85);
     //rightLeader.setOpenLoopRampRate

@@ -55,26 +55,26 @@ public class RobotContainer {
     //binds arcade drive to a command and runs it as default
     driveTrain.setDefaultCommand(
       new RunCommand(() -> driveTrain.driveArcade(
-        driveController.getLeftX(), 
-        driveController.getRightY()),
+        driveController.getLeftY(), 
+        driveController.getRightX()),
         driveTrain)
 
     );
 
     arm.setDefaultCommand(
       new RunCommand(() -> arm.setPivotSpeed(
-        operatorController.getRightX()),
+        operatorController.getRightY()),
         arm)
     );
 
     intake.setDefaultCommand(
-      new RunCommand(() -> intake.runCurrent(
+      new RunCommand(() -> intake.runIntakeCurrent(
         operatorController.getLeftTriggerAxis()),
         intake)
     );
     
     shooter.setDefaultCommand(
-      new RunCommand(() -> shooter.setShooterSpeed(
+      new RunCommand(() -> shooter.runShooter(
         operatorController.getRightTriggerAxis()),
         shooter)
     );

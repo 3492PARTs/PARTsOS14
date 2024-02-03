@@ -33,8 +33,8 @@ public class Arm extends SubsystemBase {
 
     pivotRightFollower.follow(pivotLeftLeader);
 
-    pivotLeftLeader.setInverted(false);
-    pivotRightFollower.setInverted(true);
+    pivotLeftLeader.setInverted(true);
+    pivotRightFollower.setInverted(false);
 
     pivotController = pivotLeftLeader.getPIDController();
 
