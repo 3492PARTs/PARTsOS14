@@ -9,8 +9,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -30,8 +28,8 @@ public class DriveTrain extends SubsystemBase {
 
   // PID CONTROLLER FOR DRIVER //
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
-  private SparkPIDController ml_pidController = new SparkPIDController(null);
-  private SparkPIDController mr_pidController;
+  private SparkPIDController ml_pidController = leftMotorLeader.getPIDController();
+  private SparkPIDController mr_pidController = rightMotorLeader.getPIDController();
   private RelativeEncoder m_l_encoder;
   private RelativeEncoder m_r_encoder;
 
