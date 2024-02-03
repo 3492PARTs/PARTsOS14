@@ -8,13 +8,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Arm.PivotPos;
 
-public class ArmToPosition extends Command {
+public class ArmToPositionCmd extends Command {
   /** Creates a new armToPosition. */
   PivotPos pivotPos;
   Arm arm;
   boolean direction = true;
 
-  public ArmToPosition(PivotPos pivotPos) {
+  public ArmToPositionCmd(PivotPos pivotPos) {
 
     // Use addRequirements() here to declare subsystem dependencies.
     this.arm = Arm.getInstance();
@@ -37,7 +37,6 @@ public class ArmToPosition extends Command {
     else {
       arm.setPivotSpeed(1);
     }
-
   }
 
   // Called once the command ends or is interrupted.
