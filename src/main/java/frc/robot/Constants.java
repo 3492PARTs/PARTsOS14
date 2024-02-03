@@ -35,6 +35,7 @@ public final class Constants {
 
   public static final class Intake {
       public static final int INTAKE_MOTOR = 29;
+      public static final double INTAKE_SPEED = .5;
   }
 
 
