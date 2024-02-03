@@ -41,15 +41,15 @@ public class DriveTrain extends SubsystemBase {
   public DriveTrain() {
 
     // Setup the followers of the motors.
-    leftMotorFollower.follow(leftMotorFollower);
+    leftMotorFollower.follow(leftMotorLeader);
     rightMotorFollower.follow(rightMotorLeader);
 
     //leftLeader.setSmartCurrentLimit();
     //rightLeader.setSmartCurrentLimit();
 
     // Mirrored motors, mirrored setup.
-    rightMotorLeader.setInverted(true);
-    leftMotorLeader.setInverted(false);
+    rightMotorLeader.setInverted(false);
+    leftMotorLeader.setInverted(true);
 
     //leftLeader.setOpenLoopRampRate(.85);
     //rightLeader.setOpenLoopRampRate

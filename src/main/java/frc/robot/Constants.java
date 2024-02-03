@@ -17,19 +17,22 @@ public final class Constants {
 
   public static final class Drive {
     //? These should be the values but are most likley in the wrong order.
-    public static final int FRONT_RIGHT_DRIVE_MOTOR = 7;
-    public static final int BACK_RIGHT_DRIVE_MOTOR = 22;
+    public static final int FRONT_RIGHT_DRIVE_MOTOR = 15;
+    public static final int BACK_RIGHT_DRIVE_MOTOR = 24;
 
-    public static final int FRONT_LEFT_DRIVE_MOTOR = 2;
+    public static final int FRONT_LEFT_DRIVE_MOTOR = 21;
     public static final int BACK_LEFT_DRIVE_MOTOR = 12;
+
+    //last year was 44/30
+    //public static final double DRIVE_GEAR_RATIO = ;
 
   }
   
 
   public static final class Arm {
-    public static final int LEFT_PIVOT_MOTOR = 3;
+    public static final int LEFT_PIVOT_MOTOR = 7;
     public static final int RIGHT_PIVOT_MOTOR = 4;
-    public static final double PIVOT_GEAR_RATIO = 7; //? Is this right?
+    public static final double PIVOT_GEAR_RATIO = 44/12; //? Is this right?
   }
 
 
@@ -40,9 +43,10 @@ public final class Constants {
 
 
   public static final class Shooter {
-    //? These should be the values but are most likley in the wrong order.
+    // These should be the values but are most likley in the wrong order.
     public static final int LEFT_SHOOTER_MOTOR = 3;
     public static final int RIGHT_SHOOTER_MOTOR = 25;
+
   }
 
 
