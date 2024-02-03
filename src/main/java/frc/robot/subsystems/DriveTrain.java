@@ -30,7 +30,7 @@ public class DriveTrain extends SubsystemBase {
   public DriveTrain() {
 
     // Setup the followers of the motor cult. /J
-    leftMotorFollower.follow(leftMotorFollower);
+    leftMotorFollower.follow(leftMotorLeader);
     rightMotorFollower.follow(rightMotorLeader);
 
     //leftLeader.setSmartCurrentLimit();

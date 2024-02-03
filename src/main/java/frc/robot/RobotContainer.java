@@ -68,7 +68,7 @@ public class RobotContainer {
     );
 
     intake.setDefaultCommand(
-      new RunCommand(() -> intake.runIntakeCurrent(
+      new RunCommand(() -> intake.runIntake(
         operatorController.getLeftTriggerAxis()),
         intake)
     );

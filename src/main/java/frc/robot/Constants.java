@@ -21,7 +21,7 @@ public final class Constants {
     public static final int BACK_RIGHT_DRIVE_MOTOR = 24;
 
     public static final int FRONT_LEFT_DRIVE_MOTOR = 21;
-    public static final int BACK_LEFT_DRIVE_MOTOR = 23;
+    public static final int BACK_LEFT_DRIVE_MOTOR = 12;
 
     //last year was 44/30
     //public static final double DRIVE_GEAR_RATIO = ;
