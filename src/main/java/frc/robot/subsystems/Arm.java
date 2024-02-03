@@ -8,12 +8,11 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.IdleMode;
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-//TODO: implement feedforward controls
+//TODO: implement feedforward controls.
 public class Arm extends SubsystemBase {
 
   private static Arm armInstance;
