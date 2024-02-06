@@ -8,19 +8,18 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.IdleMode;
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-//TODO: implement feedforward controls
+//TODO: implement feedforward controls.
 public class Arm extends SubsystemBase {
 
   private static Arm armInstance;
   /** Creates a new ArmSubsystem. */
 
-  static CANSparkMax pivotLeftLeader;
-  static CANSparkMax pivotRightFollower;
+  static CANSparkMax pivotLeftMotor;
+  static CANSparkMax pivotRightMotor;
   
   SparkPIDController pivotController;
 
@@ -28,18 +27,16 @@ public class Arm extends SubsystemBase {
   double pivotGearRatio = Constants.Arm.PIVOT_GEAR_RATIO;
 
   public Arm() {
-    pivotLeftLeader= new CANSparkMax(Constants.Arm.LEFT_PIVOT_MOTOR, MotorType.kBrushless);
-    pivotRightFollower = new CANSparkMax(Constants.Arm.RIGHT_PIVOT_MOTOR, MotorType.kBrushless);
+    pivotLeftMotor= new CANSparkMax(Constants.Arm.LEFT_PIVOT_MOTOR, MotorType.kBrushless);
+    pivotRightMotor = new CANSparkMax(Constants.Arm.RIGHT_PIVOT_MOTOR, MotorType.kBrushless);
 
-    pivotRightFollower.follow(pivotLeftLeader);
+    pivotLeftMotor.setInverted(true);
+    pivotRightMotor.setInverted(false);
 
-    pivotLeftLeader.setInverted(false);
-    pivotRightFollower.setInverted(true);
+    pivotController = pivotLeftMotor.getPIDController();
 
-    pivotController = pivotLeftLeader.getPIDController();
-
-    pivotLeftLeader.setIdleMode(IdleMode.kBrake);
-    pivotRightFollower.setIdleMode(IdleMode.kBrake);
+    pivotLeftMotor.setIdleMode(IdleMode.kBrake);
+    pivotRightMotor.setIdleMode(IdleMode.kBrake);
 
   }
 
@@ -65,12 +62,13 @@ public class Arm extends SubsystemBase {
   }
 
   public double getAngle() {
-    return 360 * pivotLeftLeader.getEncoder().getPosition() / pivotGearRatio;
+    return 360 * pivotLeftMotor.getEncoder().getPosition() / pivotGearRatio;
     
   }
 
   public void setPivotSpeed(double speed) {
-    pivotLeftLeader.set(speed);
+    pivotLeftMotor.set(speed);
+    pivotRightMotor.set(speed);
   }
 
   @Override
