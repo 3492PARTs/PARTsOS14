@@ -6,22 +6,7 @@
           "open": true
         }
       },
-      "SPARK MAX [15]": {
-        "header": {
-          "open": true
-        }
-      },
-      "SPARK MAX [21]": {
-        "header": {
-          "open": true
-        }
-      },
       "SPARK MAX [24]": {
-        "header": {
-          "open": true
-        }
-      },
-      "SPARK MAX [4]": {
         "header": {
           "open": true
         }
@@ -30,6 +15,11 @@
         "header": {
           "open": true
         }
+      }
+    },
+    "RoboRIO": {
+      "window": {
+        "visible": true
       }
     }
   },
@@ -44,6 +34,9 @@
         "Drivetrain": {
           "open": true
         },
+        "open": true
+      },
+      "SmartDashboard": {
         "open": true
       }
     }

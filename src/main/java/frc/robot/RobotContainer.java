@@ -13,6 +13,7 @@ import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -40,6 +41,7 @@ public class RobotContainer {
    *  Better to tune the PID controllers now than later.
    * It's late and I'm tired. -R
    */
+   CommandJoystick simInput = new CommandJoystick(2);
 
   // Example: Replace with real later.
   private ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
@@ -63,16 +65,23 @@ public class RobotContainer {
 
     //Sim setup
     if (!RobotBase.isReal()) {
-      
+      driveTrain.setDefaultCommand(new RunCommand(() -> driveTrain.driveArcade(simInput.getY(), simInput.getX()), driveTrain));
     }
 
     //binds arcade drive to a command and runs it as default
+    if (RobotBase.isReal()) {
+      driveTrain.setDefaultCommand(
+        new RunCommand(() -> driveTrain.driveArcade(
+          driveController.getLeftY(), 
+          driveController.getRightX()),
+          driveTrain)
+      );
+    }
     driveTrain.setDefaultCommand(
       new RunCommand(() -> driveTrain.driveArcade(
         driveController.getLeftY(), 
         driveController.getRightX()),
         driveTrain)
-
     );
 
     arm.setDefaultCommand(
