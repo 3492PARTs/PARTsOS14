@@ -5,21 +5,12 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.wpilibj.AnalogGyro;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -42,22 +33,24 @@ public class DriveTrain extends SubsystemBase {
   */
 
   // PID CONTROLLER FOR DRIVER //
-   //TODO: TUNE THESE
+   //TODO: TUNE THESE VALUES BEFORE FIRST RUN.
+   //! BE CAREFUL WITH THESE VALUES, THEY CAN CAUSE MOTOR WINDUP AND OTHER ISSUES.
    private static final double kP = 0.1;
    private static final double kI = 0.0;
    private static final double kD = 0.0;
    private static final double kF = 0.0;
 
-   private static final double kS = 0.0;  // Static feedforward gain
-   private static final double kV = 0.0;  // Velocity feedforward gain
-   private static final double kA = 0.0;  // Acceleration feedforward gain
+   private static final double kS = 0.0;  // STATIC Feedforward Gain.
+   private static final double kV = 0.0;  // Velocity Feedforward Gain.
+   private static final double kA = 0.0;  // Acceleration Feedforward Gain.
+
+	 private double leftSetpoint = 0.0;
+   private double rightSetpoint = 0.0;
+	 private double leftOutput = 0.0;
+	 private double rightOutput = 0.0;
 
    private SparkPIDController ml_pidController = leftMotorLeader.getPIDController();
    private SparkPIDController mr_pidController = rightMotorLeader.getPIDController();
-
-   // Making the tabs here so I can check their values later.
-   private ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
-   private GenericEntry p_gain, i_gain, d_gain, f_gain, skS, skV, skA;
 
   // Our actual drive controller.
   DifferentialDrive differentialDrive = new DifferentialDrive(leftMotorLeader, rightMotorLeader);
@@ -84,15 +77,34 @@ public class DriveTrain extends SubsystemBase {
     leftMotorFollower.setIdleMode(IdleMode.kBrake);
     rightMotorFollower.setIdleMode(IdleMode.kBrake);
 
+    //Setup PID Values
+    ml_pidController.setP(kP);
+    ml_pidController.setI(kI);
+    ml_pidController.setD(kD);
+    ml_pidController.setFF(kF);
+
+    mr_pidController.setP(kP);
+    mr_pidController.setI(kI);
+    mr_pidController.setD(kD);
+    mr_pidController.setFF(kF);
+
+		ml_pidController.setReference(leftSetpoint, ControlType.kVelocity);
+	  mr_pidController.setReference(rightSetpoint, ControlType.kVelocity);
+
     if (Constants.Debug.debugMode) {
-      // Add PID and feedforward constants to Shuffleboard.
-      p_gain = tab.add("P Gain", ml_pidController.getP()).withWidget(BuiltInWidgets.kTextView).getEntry();
-      i_gain = tab.add("I Gain", ml_pidController.getI()).withWidget(BuiltInWidgets.kTextView).getEntry();
-      d_gain = tab.add("D Gain", ml_pidController.getD()).withWidget(BuiltInWidgets.kTextView).getEntry();
-      f_gain = tab.add("FF Gain", ml_pidController.getFF()).withWidget(BuiltInWidgets.kTextView).getEntry();
-      skS = tab.add("kS", kS).withWidget(BuiltInWidgets.kTextView).getEntry();
-      skV = tab.add("kV", kV).withWidget(BuiltInWidgets.kTextView).getEntry();
-      skA = tab.add("kA", kA).withWidget(BuiltInWidgets.kTextView).getEntry();
+      /* Add PID and feedforward constants to Shuffleboard.
+			 * Hacky way to add the PID values to Shuffleboard because I can't find a better way to do it LOL.
+			 * Gonna have to use this method for the time being.
+			 * Let me know if you find a better way to do this. -R
+			 */
+			SmartDashboard.putNumber("Left Motor P", ml_pidController.getP());
+      SmartDashboard.putNumber("Left Motor I", ml_pidController.getI());
+      SmartDashboard.putNumber("Left Motor D", ml_pidController.getD());
+    	SmartDashboard.putNumber("Left Motor FF", ml_pidController.getFF());
+    	SmartDashboard.putNumber("Right Motor P", mr_pidController.getP());
+    	SmartDashboard.putNumber("Right Motor I", mr_pidController.getI());
+    	SmartDashboard.putNumber("Right Motor D", mr_pidController.getD());
+    	SmartDashboard.putNumber("Right Motor FF", mr_pidController.getFF());
     }
   }
 
@@ -111,19 +123,15 @@ public class DriveTrain extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    //Only updates in debug mode to prevent errors in production.
-    if (Constants.Debug.debugMode) {
-      // Update PID constants.
-      //? VALUES NOT GRABBING????
-      ml_pidController.setP(p_gain.getDouble(0.1));
-      ml_pidController.setI(i_gain.getDouble(0));
-      ml_pidController.setD(d_gain.getDouble(0)); 
-      // Update feedforward constants.
-      ml_pidController.setFF(f_gain.getDouble(0));
-      //System.out.println(p_gain.getDouble(0.1) + i_gain.getDouble(0.1) + d_gain.getDouble(0.1) + f_gain.getDouble(0.1));
-      //skS
-      //skV
-      //skA
-    }
+		// Get output from PID controllers
+    leftOutput = leftMotorLeader.get();
+    rightOutput = rightMotorLeader.get();
+
+		// Apply output to motors
+    leftMotorLeader.set(leftOutput);
+    rightMotorLeader.set(rightOutput);
+
+    // Making it update regardless of debug mode.
+    SmartDashboard.updateValues();
   }
 }

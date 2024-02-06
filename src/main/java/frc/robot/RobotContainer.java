@@ -10,7 +10,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -32,6 +32,15 @@ public class RobotContainer {
   private final CommandXboxController driveController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
 
+  //Make SIM Input Device here. -R
+  /*
+   * Explanation:
+   * I need to make a simulated input device \so that I can test the motor PID controllers.
+   * I'm going to make an input device using a keyboard for motor testing.
+   *  Better to tune the PID controllers now than later.
+   * It's late and I'm tired. -R
+   */
+
   // Example: Replace with real later.
   private ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
@@ -51,6 +60,11 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+
+    //Sim setup
+    if (!RobotBase.isReal()) {
+      
+    }
 
     //binds arcade drive to a command and runs it as default
     driveTrain.setDefaultCommand(
