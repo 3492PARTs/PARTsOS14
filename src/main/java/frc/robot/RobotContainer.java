@@ -4,12 +4,14 @@
 
 package frc.robot;
 
+import frc.robot.commands.ArmToPositionCmd;
 import frc.robot.commands.Autos;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Arm.PivotPos;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -63,7 +65,7 @@ public class RobotContainer {
 
     arm.setDefaultCommand(
       new RunCommand(() -> arm.setPivotSpeed(
-        operatorController.getRightY()),
+        -operatorController.getRightY()),
         arm)
     );
 
@@ -79,6 +81,8 @@ public class RobotContainer {
         shooter)
     );
 
+    operatorController.b().whileTrue(new ArmToPositionCmd(PivotPos.GROUND));
+  
 
   }
 

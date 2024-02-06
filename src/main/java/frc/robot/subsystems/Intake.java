@@ -21,6 +21,7 @@ public class Intake extends SubsystemBase {
 
   static TalonSRX intakeMotor;
 
+  //photoeye initialization
   private boolean hasGamePiece = true;
   DigitalInput photoEye = new DigitalInput(0);
 
@@ -29,6 +30,7 @@ public class Intake extends SubsystemBase {
   public Intake() {
     intakeMotor = new TalonSRX(Constants.Intake.INTAKE_MOTOR);
 
+    //displays HAS NOTE
     SmartDashboard.putBoolean("HAS NOTE", hasNoteSupplier().getAsBoolean());
 
   }
@@ -40,21 +42,17 @@ public class Intake extends SubsystemBase {
     return intakeInstance;
   }
 
+  //sends current to intake
   public void runIntake(double speed) {
     intakeMotor.set(ControlMode.PercentOutput, speed);
   }
 
-  //returns current
   public DoubleSupplier intakeCurrentSupplier() {
     DoubleSupplier s = () ->
       intakeMotor.getSupplyCurrent();
       return s;
   }
-
-  public void runCurrent(double current) {
-    intakeMotor.set(ControlMode.Current, current);
-  }
-
+  
 
   // methods for note detection using photoEyes
   public boolean hasGamePiece() {
@@ -75,6 +73,7 @@ public class Intake extends SubsystemBase {
     return s;
   }
 
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

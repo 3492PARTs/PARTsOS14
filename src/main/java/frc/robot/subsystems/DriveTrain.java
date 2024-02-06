@@ -30,7 +30,7 @@ public class DriveTrain extends SubsystemBase {
 
   // PID CONTROLLER FOR DRIVER //
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
-  private SparkPIDController ml_pidController = new SparkPIDController(null);
+
   private SparkPIDController mr_pidController;
   private RelativeEncoder m_l_encoder;
   private RelativeEncoder m_r_encoder;
@@ -64,7 +64,7 @@ public class DriveTrain extends SubsystemBase {
     m_r_encoder = leftMotorLeader.getEncoder();
 
     // PID coefficients
-    kP = 0.1; 
+    /*kP = 0.1; 
     kI = 1e-4;
     kD = 1; 
     kIz = 0; 
@@ -73,7 +73,7 @@ public class DriveTrain extends SubsystemBase {
     kMinOutput = -1;
 
     // set PID coefficients
-    ml_pidController.setP(kP);
+    /*ml_pidController.setP(kP);
     ml_pidController.setI(kI);
     ml_pidController.setD(kD);
     ml_pidController.setIZone(kIz);
@@ -96,6 +96,7 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("Max Output", kMaxOutput);
     SmartDashboard.putNumber("Min Output", kMinOutput);
     SmartDashboard.putNumber("Set Rotations", 0);
+    */
   }
 
   // Easy way to get instances.
@@ -106,14 +107,15 @@ public class DriveTrain extends SubsystemBase {
 
   //The drive mode, don't ask why it's swapped.
   public void driveArcade (double forwardBackSpeed, double rotationSpeed) {
-    differentialDrive.arcadeDrive(forwardBackSpeed, rotationSpeed);
+    differentialDrive.arcadeDrive(forwardBackSpeed/2, rotationSpeed/2);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     // read PID coefficients from SmartDashboard
-    double p = SmartDashboard.getNumber("P Gain", 0);
+    
+    /*double p = SmartDashboard.getNumber("P Gain", 0);
     double i = SmartDashboard.getNumber("I Gain", 0);
     double d = SmartDashboard.getNumber("D Gain", 0);
     double iz = SmartDashboard.getNumber("I Zone", 0);
@@ -153,12 +155,13 @@ public class DriveTrain extends SubsystemBase {
      *  com.revrobotics.CANSparkMax.ControlType.kPosition
      *  com.revrobotics.CANSparkMax.ControlType.kVelocity
      *  com.revrobotics.CANSparkMax.ControlType.kVoltage
-     */
+     
     ml_pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
     mr_pidController.setReference(rotations, CANSparkMax.ControlType.kPosition);
     
     SmartDashboard.putNumber("SetPoint", rotations);
     SmartDashboard.putNumber("ProcessVariable Left", m_l_encoder.getPosition());
     SmartDashboard.putNumber("ProcessVariable Right", m_r_encoder.getPosition());
+     */
   }
 }
