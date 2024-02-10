@@ -18,7 +18,7 @@ public class Shooter extends SubsystemBase {
   private static Shooter shooterInstance;
 
   /** Creates a new Shooter. */
-  static TalonSRX shooterLeftLeader; 
+  public static TalonSRX shooterLeftLeader; 
   static TalonSRX shooterRightFollower; 
 
   public Shooter() {
