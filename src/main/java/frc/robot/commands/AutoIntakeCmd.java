@@ -10,9 +10,10 @@ import frc.robot.subsystems.Intake;
 
 public class AutoIntakeCmd extends Command {
   /** Creates a new Intake. */
+  // Make sure to initalize these to avoid weird Java shananigans.
   Intake intake;
-  long startTime;
-  double duration;
+  long startTime = 0;
+  double duration = 0.0;
 
   public AutoIntakeCmd(double seconds) {
     // Use addRequirements() here to declare subsystem dependencies.

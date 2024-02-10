@@ -5,13 +5,11 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.DriveTrain;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
 public class Drive extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final DriveTrain driveTrainSys;
   private final DriveTrain driveTrain;
 
   /**
@@ -20,7 +18,6 @@ public class Drive extends Command {
    * @param subsystem The subsystem used by this command.
    */
   public Drive(DriveTrain subsystem) {
-    driveTrainSys = subsystem;
     driveTrain = DriveTrain.getInstance();
     addRequirements(subsystem);
   }

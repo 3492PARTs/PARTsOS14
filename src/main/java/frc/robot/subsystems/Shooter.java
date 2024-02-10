@@ -5,9 +5,11 @@
   
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -43,6 +45,19 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+    // Grab motor output % and put it on the dashboard.
+
+    if (shooterLeftLeader.getLastError() != ErrorCode.OK) {
+      if (shooterLeftLeader.getLastError() == ErrorCode.CAN_MSG_STALE) {
+        SmartDashboard.putString("Shooter Error", "-3: Last output is stale, holding.");
+      } else {
+        SmartDashboard.putString("Shooter Error", "Unknown error: " + shooterLeftLeader.getLastError().toString());
+      }
+    } else {
+      SmartDashboard.putNumber("Shooter Output %", shooterLeftLeader.getMotorOutputPercent());
+    }
+    
   }
 
 }
