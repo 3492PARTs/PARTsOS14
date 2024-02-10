@@ -50,10 +50,10 @@ public class DriveTrain extends SubsystemBase {
     rightMotorFollower.setIdleMode(IdleMode.kBrake);
 
     // Set open-loop rate for motors.
-    leftMotorFollower.setOpenLoopRampRate(0.85);
-    rightMotorFollower.setOpenLoopRampRate(0.85);
-    leftMotorLeader.setOpenLoopRampRate(0.85);
-    rightMotorLeader.setOpenLoopRampRate(0.85);
+    leftMotorFollower.setOpenLoopRampRate(Constants.Drive.OPEN_LOOP_RATE);
+    rightMotorFollower.setOpenLoopRampRate(Constants.Drive.OPEN_LOOP_RATE);
+    leftMotorLeader.setOpenLoopRampRate(Constants.Drive.OPEN_LOOP_RATE);
+    rightMotorLeader.setOpenLoopRampRate(Constants.Drive.OPEN_LOOP_RATE);
   }
 
   // Easy way to get instances.

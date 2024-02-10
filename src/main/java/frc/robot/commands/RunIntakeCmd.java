@@ -9,9 +9,9 @@ import frc.robot.subsystems.Intake;
 
 public class RunIntakeCmd extends Command {
   /** Creates a new RunIntakeCmd. */
-  double direction;
+  int direction;
   Intake intake;
-  public RunIntakeCmd(double direction) {
+  public RunIntakeCmd(int direction) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = Intake.getInstance();
     this.direction = direction;
@@ -26,12 +26,7 @@ public class RunIntakeCmd extends Command {
   @Override
   public void execute() {
     //TODO: add intake.hasNote() in parameters when adding in photoEye
-    if (direction > 0) {
-      intake.runIntake(1);
-    }
-    else {
-      intake.runIntake(-1);
-    }
+    intake.runIntake(direction);
   }
 
   // Called once the command ends or is interrupted.
@@ -43,6 +38,6 @@ public class RunIntakeCmd extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }
