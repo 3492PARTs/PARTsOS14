@@ -6,12 +6,12 @@ package frc.robot;
 
 import frc.robot.commands.ArmToPositionCmd;
 import frc.robot.commands.Autos;
+import frc.robot.commands.RunIntakeCmd;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Arm.PivotPos;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -60,8 +60,9 @@ public class RobotContainer {
         driveController.getLeftY(), 
         driveController.getRightX()),
         driveTrain)
-
     );
+
+    //Operator Triggers and Axis
 
     arm.setDefaultCommand(
       new RunCommand(() -> arm.setPivotSpeed(
@@ -69,21 +70,28 @@ public class RobotContainer {
         arm)
     );
 
+    //TODO: may need to invert the values
+    operatorController.leftTrigger().whileTrue(new RunIntakeCmd(1));
+    operatorController.leftBumper().whileTrue(new RunIntakeCmd(-1));
+
+    /*     
     intake.setDefaultCommand(
       new RunCommand(() -> intake.runIntake(
         operatorController.getLeftTriggerAxis()),
         intake)
     );
-    
+    */
+
     shooter.setDefaultCommand(
       new RunCommand(() -> shooter.runShooter(
         operatorController.getRightTriggerAxis()),
         shooter)
     );
 
-    operatorController.b().whileTrue(new ArmToPositionCmd(PivotPos.GROUND));
-  
+    //Operator Buttons
 
+    //TODO: check for degrees or rotations for PID
+    //operatorController.b().whileTrue(new ArmToPositionCmd(10));
   }
 
   /**

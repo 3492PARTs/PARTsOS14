@@ -105,7 +105,6 @@ public class DriveTrain extends SubsystemBase {
     return driveTrain;
   }
 
-  //The drive mode, don't ask why it's swapped.
   public void driveArcade (double forwardBackSpeed, double rotationSpeed) {
     differentialDrive.arcadeDrive(forwardBackSpeed/2, rotationSpeed/2);
   }

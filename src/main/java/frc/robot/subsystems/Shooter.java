@@ -37,6 +37,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void runShooter(double speed) {
+    shooterLeftLeader.set(ControlMode.PercentOutput, speed);
   }
   
   @Override

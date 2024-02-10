@@ -8,13 +8,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
 
-public class IntakeCmd extends Command {
+public class AutoIntakeCmd extends Command {
   /** Creates a new Intake. */
   Intake intake;
   long startTime;
   double duration;
 
-  public IntakeCmd(double seconds) {
+  public AutoIntakeCmd(double seconds) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.duration = seconds;
     this.intake = Intake.getInstance();
