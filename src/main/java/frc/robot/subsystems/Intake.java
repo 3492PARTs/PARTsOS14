@@ -31,7 +31,7 @@ public class Intake extends SubsystemBase {
     intakeMotor = new TalonSRX(Constants.Intake.INTAKE_MOTOR);
 
     //displays HAS NOTE
-    SmartDashboard.putBoolean("HAS NOTE", hasNoteSupplier().getAsBoolean());
+    //SmartDashboard.putBoolean("HAS NOTE", hasNoteSupplier().getAsBoolean());
 
   }
 
@@ -64,7 +64,8 @@ public class Intake extends SubsystemBase {
   }
 
   public Boolean hasNote() {
-    return photoEye.get();
+    //return photoEye.get();
+    return true;
   }
 
   public BooleanSupplier hasNoteSupplier() {
@@ -77,7 +78,7 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putBoolean("HAS NOTE", hasNoteSupplier().getAsBoolean());
-    SmartDashboard.putBoolean("Sensor 0", photoEye.get());
+    //SmartDashboard.putBoolean("HAS NOTE", hasNoteSupplier().getAsBoolean());
+    //SmartDashboard.putBoolean("Sensor 0", photoEye.get());
   }
 }

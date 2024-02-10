@@ -71,16 +71,16 @@ public class RobotContainer {
     );
 
     //TODO: may need to invert the values
-    operatorController.leftTrigger().whileTrue(new RunIntakeCmd(1));
+    //operatorController.leftTrigger().whileTrue(new RunIntakeCmd(1));
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(-1));
 
-    /*     
+        
     intake.setDefaultCommand(
       new RunCommand(() -> intake.runIntake(
-        operatorController.getLeftTriggerAxis()),
+        -operatorController.getLeftTriggerAxis()),
         intake)
     );
-    */
+    
 
     shooter.setDefaultCommand(
       new RunCommand(() -> shooter.runShooter(

@@ -41,13 +41,9 @@ public class Shooter extends SubsystemBase {
   public void runShooter(double speed) {
     shooterLeftLeader.set(ControlMode.PercentOutput, speed);
   }
-  
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
 
+  public void checkShooter() {
     // Grab motor output % and put it on the dashboard.
-
     if (shooterLeftLeader.getLastError() != ErrorCode.OK) {
       if (shooterLeftLeader.getLastError() == ErrorCode.CAN_MSG_STALE) {
         SmartDashboard.putString("Shooter Error", "-3: Last output is stale, holding.");
@@ -57,7 +53,11 @@ public class Shooter extends SubsystemBase {
     } else {
       SmartDashboard.putNumber("Shooter Output %", shooterLeftLeader.getMotorOutputPercent());
     }
-    
   }
-
+  
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+    checkShooter();
+  }
 }
