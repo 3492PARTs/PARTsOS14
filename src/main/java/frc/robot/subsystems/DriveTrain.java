@@ -92,11 +92,7 @@ public class DriveTrain extends SubsystemBase {
 	  mr_pidController.setReference(rightSetpoint, ControlType.kVelocity);
 
     if (Constants.Debug.debugMode) {
-      /* Add PID and feedforward constants to Shuffleboard.
-			 * Hacky way to add the PID values to Shuffleboard because I can't find a better way to do it LOL.
-			 * Gonna have to use this method for the time being.
-			 * Let me know if you find a better way to do this. -R
-			 */
+      /* Add PID and feedforward constants to Shuffleboard. */
 			SmartDashboard.putNumber("Left Motor P", ml_pidController.getP());
       SmartDashboard.putNumber("Left Motor I", ml_pidController.getI());
       SmartDashboard.putNumber("Left Motor D", ml_pidController.getD());
@@ -130,8 +126,5 @@ public class DriveTrain extends SubsystemBase {
 		// Apply output to motors
     leftMotorLeader.set(leftOutput);
     rightMotorLeader.set(rightOutput);
-
-    // Making it update regardless of debug mode.
-    SmartDashboard.updateValues();
   }
 }

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -105,7 +106,7 @@ public class Robot extends TimedRobot {
   @Override
   public void simulationInit() {
     //Add SmartDahboard stuff here.
-    ShuffleboardTab drivetrainTab = Shuffleboard.getTab("Drivetrain Tests");
+    ShuffleboardTab drivetrainTab = Shuffleboard.getTab("Drivetrain Test");
 
     Command moveForward = new InstantCommand(() -> {
         // Drivetrain test code here for forward movement.
@@ -120,5 +121,8 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically whilst in simulation. */
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+    // Making it update regardless of debug mode.
+    SmartDashboard.updateValues();
+  }
 }
