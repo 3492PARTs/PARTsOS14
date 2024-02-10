@@ -54,3 +54,4 @@ public class ArmToPositionCmd extends Command {
     return (Math.abs(angle - arm.getAngle()) < 3);
   }
 }
+
