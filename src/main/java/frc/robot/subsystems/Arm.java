@@ -50,6 +50,9 @@ public class Arm extends SubsystemBase {
     pivotLeftMotor.setIdleMode(IdleMode.kBrake);
     pivotRightMotor.setIdleMode(IdleMode.kBrake);
 
+    pivotLeftMotor.setOpenLoopRampRate(Constants.Arm.OPEN_LOOP_RATE);
+    pivotRightMotor.setOpenLoopRampRate(Constants.Arm.OPEN_LOOP_RATE);
+
     Shuffleboard.getTab("debug").addNumber("arm angle", getAngleSupplier());
     Shuffleboard.getTab("debug").addNumber("arm angular velocity", getAnglularVelocitySupplier());
 
@@ -85,8 +88,8 @@ public class Arm extends SubsystemBase {
 
 
   public void setPivotSpeed(double speed) {
-    pivotLeftMotor.set(speed);
-    pivotRightMotor.set(speed);
+    pivotLeftMotor.set(speed/2);
+    pivotRightMotor.set(speed/2);
   }
 
   //TODO: check to see if position is in rotations or degrees
