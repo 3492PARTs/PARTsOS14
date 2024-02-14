@@ -7,8 +7,6 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -18,7 +16,7 @@ public class DriveTrain extends SubsystemBase {
 
   public static DriveTrain driveTrain;
 
-  // Setup our drive motors.
+  /* Setup the motors. */
   static CANSparkMax leftMotorLeader = new CANSparkMax(Constants.Drive.FRONT_LEFT_DRIVE_MOTOR, MotorType.kBrushless);
   static CANSparkMax leftMotorFollower = new CANSparkMax(Constants.Drive.BACK_LEFT_DRIVE_MOTOR, MotorType.kBrushless);
 
@@ -30,33 +28,34 @@ public class DriveTrain extends SubsystemBase {
   
   public DriveTrain() {
 
-    // Setup the followers of the motors.
+    /* Setup the followers of the motors. */
     leftMotorFollower.follow(leftMotorLeader);
     rightMotorFollower.follow(rightMotorLeader);
 
     //leftLeader.setSmartCurrentLimit();
     //rightLeader.setSmartCurrentLimit();
 
-    // Mirrored motors, mirrored setup.
+    /* Sets the proper directions for the motor groups. */
     rightMotorLeader.setInverted(false);
     leftMotorLeader.setInverted(true);
 
+    /* Open loopback code that is commented? */
     //leftLeader.setOpenLoopRampRate(.85);
-    //rightLeader.setOpenLoopRampRate
+    //rightLeader.setOpenLoopRampRate(.85);
 
     leftMotorLeader.setIdleMode(IdleMode.kBrake);
     rightMotorLeader.setIdleMode(IdleMode.kBrake);
     leftMotorFollower.setIdleMode(IdleMode.kBrake);
     rightMotorFollower.setIdleMode(IdleMode.kBrake);
 
-    // Set open-loop rate for motors.
+    /* Set open-loop rate for motors. */
     leftMotorFollower.setOpenLoopRampRate(Constants.Drive.OPEN_LOOP_RATE);
     rightMotorFollower.setOpenLoopRampRate(Constants.Drive.OPEN_LOOP_RATE);
     leftMotorLeader.setOpenLoopRampRate(Constants.Drive.OPEN_LOOP_RATE);
     rightMotorLeader.setOpenLoopRampRate(Constants.Drive.OPEN_LOOP_RATE);
   }
 
-  // Easy way to get instances.
+  /*  Easy way to get instances. */
   public static DriveTrain getInstance() {
     if (driveTrain == null) {driveTrain = new DriveTrain();}
     return driveTrain;
