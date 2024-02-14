@@ -18,7 +18,7 @@ public class ProfiledPivotArm extends ProfiledPIDCommand {
     super(
         // The ProfiledPIDController used by the command
         new ProfiledPIDController(
-            // The PID gains
+            // The PID gains (tune later)
             0,
             0,
             0,
