@@ -5,6 +5,8 @@
 package frc.robot;
 
 import frc.robot.commands.Autos;
+import frc.robot.commands.IntakeShoot.IntakeShootCmd;
+import frc.robot.commands.IntakeShoot.RunIntakeCmd;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -84,25 +86,36 @@ public class RobotContainer {
         driveTrain)
     );
 
+    //Operator Triggers and Axis
+
     arm.setDefaultCommand(
       new RunCommand(() -> arm.setPivotSpeed(
         operatorController.getRightY()),
         arm)
     );
 
-    intake.setDefaultCommand(
+    //TODO: may need to invert the values
+      operatorController.leftTrigger(.4).whileTrue(new RunIntakeCmd(-1));
+      operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
+      operatorController.b().whileTrue(new IntakeShootCmd());
+        
+    /*intake.setDefaultCommand(
       new RunCommand(() -> intake.runIntake(
-        operatorController.getLeftTriggerAxis()),
+        -operatorController.getLeftTriggerAxis()),
         intake)
-    );
+    );*/
     
+
     shooter.setDefaultCommand(
       new RunCommand(() -> shooter.runShooter(
         operatorController.getRightTriggerAxis()),
         shooter)
     );
 
+    //Operator Buttons
 
+    //TODO: check for degrees or rotations for PID
+    //operatorController.b().whileTrue(new ArmToPositionCmd(10));
   }
 
   /**

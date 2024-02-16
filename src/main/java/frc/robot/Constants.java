@@ -22,6 +22,8 @@ public final class Constants {
     public static final int FRONT_LEFT_DRIVE_MOTOR = 21;
     public static final int BACK_LEFT_DRIVE_MOTOR = 12;
 
+    public static final double OPEN_LOOP_RATE = 0.8;
+
     //last year was 44/30
     //public static final double DRIVE_GEAR_RATIO = null;
   }
@@ -30,20 +32,22 @@ public final class Constants {
   public static final class Arm {
     public static final int LEFT_PIVOT_MOTOR = 7;
     public static final int RIGHT_PIVOT_MOTOR = 4;
-    public static final double PIVOT_GEAR_RATIO = 44/12; // Let the robot figure it out.
+
+    public static final double PIVOT_GEAR_RATIO = 44/12;
+    public static final double OPEN_LOOP_RATE = 0.8;
   }
 
 
   public static final class Intake {
-      public static final int INTAKE_MOTOR = 29;
+      public static final int INTAKE_MOTOR = 27;
       public static final double INTAKE_SPEED = .5;
   }
 
 
   public static final class Shooter {
     // These should be the values but are most likley in the wrong order.
-    public static final int LEFT_SHOOTER_MOTOR = 3;
-    public static final int RIGHT_SHOOTER_MOTOR = 25;
+    public static final int LEFT_SHOOTER_MOTOR = 5;
+    public static final int RIGHT_SHOOTER_MOTOR = 1;
 
   }
 

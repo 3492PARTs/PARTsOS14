@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,17 +21,12 @@ public class DriveTrain extends SubsystemBase {
 
   public static DriveTrain driveTrain;
 
-  // Setup our drive motors.
+  /* Setup the motors. */
   static CANSparkMax leftMotorLeader = new CANSparkMax(Constants.Drive.FRONT_LEFT_DRIVE_MOTOR, MotorType.kBrushless);
   static CANSparkMax leftMotorFollower = new CANSparkMax(Constants.Drive.BACK_LEFT_DRIVE_MOTOR, MotorType.kBrushless);
 
   static CANSparkMax rightMotorLeader = new CANSparkMax(Constants.Drive.FRONT_RIGHT_DRIVE_MOTOR, MotorType.kBrushless);
   static CANSparkMax rightMotorFollower = new CANSparkMax(Constants.Drive.BACK_RIGHT_DRIVE_MOTOR, MotorType.kBrushless);
-
-  /* From what I've read I have to give each wheel its own PIDController and control the four by themselves for minimal error. 
-   * I just feel that this is odd but due to the abbe error and such others I have to take this approach.
-   * I'm going to try it but keep a backup on-hand. -R
-  */
 
   // PID CONTROLLER FOR DRIVER //
    //TODO: TUNE THESE VALUES BEFORE FIRST RUN.
@@ -58,17 +54,18 @@ public class DriveTrain extends SubsystemBase {
   
   public DriveTrain() {
 
-    // Setup the followers of the motors.
+    /* Setup the followers of the motors. */
     leftMotorFollower.follow(leftMotorLeader);
     rightMotorFollower.follow(rightMotorLeader);
 
     //leftLeader.setSmartCurrentLimit();
     //rightLeader.setSmartCurrentLimit();
 
-    // Mirrored motors, mirrored setup.
+    /* Sets the proper directions for the motor groups. */
     rightMotorLeader.setInverted(false);
     leftMotorLeader.setInverted(true);
 
+    /* Open loopback code that is commented? */
     //leftLeader.setOpenLoopRampRate(.85);
     //rightLeader.setOpenLoopRampRate(.85);
 
@@ -76,6 +73,12 @@ public class DriveTrain extends SubsystemBase {
     rightMotorLeader.setIdleMode(IdleMode.kBrake);
     leftMotorFollower.setIdleMode(IdleMode.kBrake);
     rightMotorFollower.setIdleMode(IdleMode.kBrake);
+
+    /* Set open-loop rate for motors. */
+    leftMotorFollower.setOpenLoopRampRate(Constants.Drive.OPEN_LOOP_RATE);
+    rightMotorFollower.setOpenLoopRampRate(Constants.Drive.OPEN_LOOP_RATE);
+    leftMotorLeader.setOpenLoopRampRate(Constants.Drive.OPEN_LOOP_RATE);
+    rightMotorLeader.setOpenLoopRampRate(Constants.Drive.OPEN_LOOP_RATE);
 
     //Setup PID Values
     ml_pidController.setP(kP);
@@ -118,7 +121,7 @@ public class DriveTrain extends SubsystemBase {
     }
   }
 
-  // Easy way to get instances. Returns the drivetrain obj if it's not null.
+  /*  Easy way to get instances. Returns the drivetrain obj if it's not null. */
   public static DriveTrain getInstance() {
     if (driveTrain == null) {driveTrain = new DriveTrain();}
     return driveTrain;
@@ -126,7 +129,21 @@ public class DriveTrain extends SubsystemBase {
 
   //The arcade drive mode, don't ask why it's swapped.
   public void driveArcade (double forwardBackSpeed, double rotationSpeed) {
-    differentialDrive.arcadeDrive(forwardBackSpeed, rotationSpeed);
+    differentialDrive.arcadeDrive(forwardBackSpeed, rotationSpeed/1.25);
+  }
+
+  //TODO: find what these values represent
+  public double rightDistance() {
+    return Units.inchesToMeters((rightMotorLeader.getEncoder().getPosition() * 6 * Math.PI) / 8.01);
+  }
+
+  public double leftDistance() {
+    return Units.inchesToMeters((leftMotorLeader.getEncoder().getPosition() * 6 * Math.PI) / 8.01);
+  }
+
+  public void moveVolts(double leftVoltage, double rightVoltage) {
+    leftMotorLeader.setVoltage(leftVoltage);
+    rightMotorLeader.setVoltage(rightVoltage);
   }
 
   /* New PID Code! WIP */

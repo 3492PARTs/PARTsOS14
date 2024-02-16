@@ -11,7 +11,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -21,6 +20,7 @@ public class Intake extends SubsystemBase {
 
   static TalonSRX intakeMotor;
 
+  //photoeye initialization
   private boolean hasGamePiece = true;
   DigitalInput photoEye = new DigitalInput(0);
 
@@ -29,7 +29,8 @@ public class Intake extends SubsystemBase {
   public Intake() {
     intakeMotor = new TalonSRX(Constants.Intake.INTAKE_MOTOR);
 
-    SmartDashboard.putBoolean("HAS NOTE", hasNoteSupplier().getAsBoolean());
+    //displays HAS NOTE
+    //SmartDashboard.putBoolean("HAS NOTE", hasNoteSupplier().getAsBoolean());
 
   }
 
@@ -40,21 +41,17 @@ public class Intake extends SubsystemBase {
     return intakeInstance;
   }
 
+  //sends current to intake
   public void runIntake(double speed) {
     intakeMotor.set(ControlMode.PercentOutput, speed);
   }
 
-  //returns current
   public DoubleSupplier intakeCurrentSupplier() {
     DoubleSupplier s = () ->
       intakeMotor.getSupplyCurrent();
       return s;
   }
-
-  public void runCurrent(double current) {
-    intakeMotor.set(ControlMode.Current, current);
-  }
-
+  
 
   // methods for note detection using photoEyes
   public boolean hasGamePiece() {
@@ -66,7 +63,8 @@ public class Intake extends SubsystemBase {
   }
 
   public Boolean hasNote() {
-    return photoEye.get();
+    //return photoEye.get();
+    return true;
   }
 
   public BooleanSupplier hasNoteSupplier() {
@@ -75,10 +73,11 @@ public class Intake extends SubsystemBase {
     return s;
   }
 
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putBoolean("HAS NOTE", hasNoteSupplier().getAsBoolean());
-    SmartDashboard.putBoolean("Sensor 0", photoEye.get());
+    //SmartDashboard.putBoolean("HAS NOTE", hasNoteSupplier().getAsBoolean());
+    //SmartDashboard.putBoolean("Sensor 0", photoEye.get());
   }
 }

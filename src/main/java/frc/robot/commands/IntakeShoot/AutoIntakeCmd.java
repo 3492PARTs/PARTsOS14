@@ -2,19 +2,20 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.IntakeShoot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
 
-public class IntakeCmd extends Command {
+public class AutoIntakeCmd extends Command {
   /** Creates a new Intake. */
+  // Make sure to initalize these to avoid weird Java shananigans.
   Intake intake;
-  long startTime;
-  double duration;
+  long startTime = 0;
+  double duration = 0.0;
 
-  public IntakeCmd(double seconds) {
+  public AutoIntakeCmd(double seconds) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.duration = seconds;
     this.intake = Intake.getInstance();
