@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.commands.Autos;
+import frc.robot.commands.IntakeShoot.IntakeShootCmd;
 import frc.robot.commands.IntakeShoot.RunIntakeCmd;
 import frc.robot.commands.Arm.ArmToPositionCmd;
 import frc.robot.subsystems.Arm;
@@ -72,7 +73,7 @@ public class RobotContainer {
     //TODO: may need to invert the values
       operatorController.leftTrigger(.4).whileTrue(new RunIntakeCmd(-1));
       operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
-    
+      operatorController.b().whileTrue(new IntakeShootCmd());
         
     /*intake.setDefaultCommand(
       new RunCommand(() -> intake.runIntake(

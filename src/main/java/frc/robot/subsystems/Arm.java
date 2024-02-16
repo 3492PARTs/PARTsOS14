@@ -79,8 +79,8 @@ public class Arm extends SubsystemBase {
     pivotLeftController.setOutputRange(0,0);
 
     pivotRightController.setP(kP);
-    pivotRightController.setP(kI);
-    pivotRightController.setP(kD);
+    pivotRightController.setI(kI);
+    pivotRightController.setD(kD);
     pivotRightController.setOutputRange(kI, kD);
 
     pivotLeftMotor.setIdleMode(IdleMode.kBrake);
