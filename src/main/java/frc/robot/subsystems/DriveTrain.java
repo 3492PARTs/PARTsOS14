@@ -91,7 +91,11 @@ public class DriveTrain extends SubsystemBase {
 		ml_pidController.setReference(leftSetpoint, ControlType.kVelocity);
 	  mr_pidController.setReference(rightSetpoint, ControlType.kVelocity);
 
-    if (Constants.Debug.debugMode) {
+    setupDashboard(false);
+  }
+
+  void setupDashboard(Boolean update) {
+    if (Constants.Debug.debugMode && !update) {
       /* Add PID and feedforward constants to Shuffleboard. */
 			SmartDashboard.putNumber("Left Motor P", ml_pidController.getP());
       SmartDashboard.putNumber("Left Motor I", ml_pidController.getI());
@@ -101,6 +105,16 @@ public class DriveTrain extends SubsystemBase {
     	SmartDashboard.putNumber("Right Motor I", mr_pidController.getI());
     	SmartDashboard.putNumber("Right Motor D", mr_pidController.getD());
     	SmartDashboard.putNumber("Right Motor FF", mr_pidController.getFF());
+    } else {
+      /* Update PID and stuff with edited values from the dash. */
+      ml_pidController.setP(SmartDashboard.getNumber("Left Motor P", ml_pidController.getP()));
+      ml_pidController.setI(SmartDashboard.getNumber("Left Motor I", ml_pidController.getI()));
+      ml_pidController.setD(SmartDashboard.getNumber("Left Motor D", ml_pidController.getD()));
+      ml_pidController.setFF(SmartDashboard.getNumber("Left Motor FF", ml_pidController.getFF()));
+      mr_pidController.setP(SmartDashboard.getNumber("Right Motor P", mr_pidController.getP()));
+      mr_pidController.setI(SmartDashboard.getNumber("Right Motor I", mr_pidController.getI()));
+      mr_pidController.setD(SmartDashboard.getNumber("Right Motor D", mr_pidController.getD()));
+      mr_pidController.setFF(SmartDashboard.getNumber("Right Motor FF", mr_pidController.getFF()));
     }
   }
 
@@ -110,9 +124,16 @@ public class DriveTrain extends SubsystemBase {
     return driveTrain;
   }
 
-  //The drive mode, don't ask why it's swapped.
+  //The arcade drive mode, don't ask why it's swapped.
   public void driveArcade (double forwardBackSpeed, double rotationSpeed) {
     differentialDrive.arcadeDrive(forwardBackSpeed, rotationSpeed);
+  }
+
+  /* New PID Code! WIP */
+  public void drivePID() {
+    // Apply output to motors
+    leftMotorLeader.set(leftOutput);
+    rightMotorLeader.set(rightOutput);
   }
 
   @Override
@@ -123,8 +144,7 @@ public class DriveTrain extends SubsystemBase {
     leftOutput = leftMotorLeader.get();
     rightOutput = rightMotorLeader.get();
 
-		// Apply output to motors
-    leftMotorLeader.set(leftOutput);
-    rightMotorLeader.set(rightOutput);
+    /* Update dashboard. */
+    setupDashboard(true);
   }
 }
