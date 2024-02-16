@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -63,6 +65,20 @@ public class DriveTrain extends SubsystemBase {
 
   public void driveArcade (double forwardBackSpeed, double rotationSpeed) {
     differentialDrive.arcadeDrive(forwardBackSpeed, rotationSpeed);
+  }
+
+  //TODO: find what these values represent
+  public double rightDistance() {
+    return -Units.inchesToMeters((rightMotorLeader.getEncoder().getPosition() * 6 * Math.PI) / 8.01);
+  }
+
+  public double leftDistance() {
+    return Units.inchesToMeters((leftMotorLeader.getEncoder().getPosition() * 6 * Math.PI) / 8.01);
+  }
+
+  public void moveVolts(double leftVoltage, double rightVoltage) {
+    leftMotorLeader.setVoltage(leftVoltage);
+    rightMotorLeader.setVoltage(rightVoltage);
   }
 
   @Override
