@@ -5,8 +5,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Arm;
 
 /**
@@ -103,9 +108,25 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when the robot is first started up. */
   @Override
-  public void simulationInit() {}
+  public void simulationInit() {
+    //Add SmartDahboard stuff here.
+    ShuffleboardTab drivetrainTab = Shuffleboard.getTab("Drivetrain Test");
+
+    Command moveForward = new InstantCommand(() -> {
+        // Drivetrain test code here for forward movement.
+    });
+    drivetrainTab.add("Forward", moveForward).withWidget(BuiltInWidgets.kCommand);
+
+    Command moveBack = new InstantCommand(() -> {
+        // Drivetrain test code here for back movement.
+    });
+    drivetrainTab.add("Backward", moveBack).withWidget(BuiltInWidgets.kCommand);
+  }
 
   /** This function is called periodically whilst in simulation. */
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+    // Making it update regardless of debug mode.
+    SmartDashboard.updateValues();
+  }
 }

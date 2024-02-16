@@ -16,7 +16,6 @@ public final class Constants {
   // TODO: REPLACE PLACEHOLDERS
 
   public static final class Drive {
-    //? These should be the values but are most likley in the wrong order.
     public static final int FRONT_RIGHT_DRIVE_MOTOR = 15;
     public static final int BACK_RIGHT_DRIVE_MOTOR = 24;
 
@@ -26,14 +25,14 @@ public final class Constants {
     public static final double OPEN_LOOP_RATE = 0.8;
 
     //last year was 44/30
-    //public static final double DRIVE_GEAR_RATIO = ;
-
+    //public static final double DRIVE_GEAR_RATIO = null;
   }
   
 
   public static final class Arm {
     public static final int LEFT_PIVOT_MOTOR = 7;
     public static final int RIGHT_PIVOT_MOTOR = 4;
+
     public static final double PIVOT_GEAR_RATIO = 44/12;
     public static final double OPEN_LOOP_RATE = 0.8;
   }
@@ -56,7 +55,11 @@ public final class Constants {
   public static class Operator {
     //? Unkown for now.
     public static final int kDriverControllerPort = 0;
+  }
 
+  // THIS IS FOR SHUFFLEBOARD DEBUG PLUS OTHER MISC THINGS //
+  public static class Debug {
+    public static final boolean debugMode = true;
   }
 
 

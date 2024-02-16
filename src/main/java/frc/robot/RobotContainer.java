@@ -7,14 +7,15 @@ package frc.robot;
 import frc.robot.commands.Autos;
 import frc.robot.commands.IntakeShoot.IntakeShootCmd;
 import frc.robot.commands.IntakeShoot.RunIntakeCmd;
-import frc.robot.commands.Arm.ArmToPositionCmd;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -33,6 +34,16 @@ public class RobotContainer {
 
   private final CommandXboxController driveController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
+
+  //Make SIM Input Device here. -R
+  /*
+   * Explanation:
+   * I need to make a simulated input device \so that I can test the motor PID controllers.
+   * I'm going to make an input device using a keyboard for motor testing.
+   *  Better to tune the PID controllers now than later.
+   * It's late and I'm tired. -R
+   */
+   CommandJoystick simInput = new CommandJoystick(2);
 
   // Example: Replace with real later.
   private ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
@@ -54,7 +65,20 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
+    //Sim setup
+    if (!RobotBase.isReal()) {
+      driveTrain.setDefaultCommand(new RunCommand(() -> driveTrain.driveArcade(simInput.getY(), simInput.getX()), driveTrain));
+    }
+
     //binds arcade drive to a command and runs it as default
+    if (RobotBase.isReal()) {
+      driveTrain.setDefaultCommand(
+        new RunCommand(() -> driveTrain.driveArcade(
+          driveController.getLeftY(), 
+          driveController.getRightX()),
+          driveTrain)
+      );
+    }
     driveTrain.setDefaultCommand(
       new RunCommand(() -> driveTrain.driveArcade(
         driveController.getLeftY(), 
@@ -66,7 +90,7 @@ public class RobotContainer {
 
     arm.setDefaultCommand(
       new RunCommand(() -> arm.setPivotSpeed(
-        -operatorController.getRightY()),
+        operatorController.getRightY()),
         arm)
     );
 
