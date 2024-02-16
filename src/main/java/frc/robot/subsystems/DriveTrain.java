@@ -5,11 +5,17 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,6 +34,7 @@ public class DriveTrain extends SubsystemBase {
   static CANSparkMax rightMotorLeader = new CANSparkMax(Constants.Drive.FRONT_RIGHT_DRIVE_MOTOR, MotorType.kBrushless);
   static CANSparkMax rightMotorFollower = new CANSparkMax(Constants.Drive.BACK_RIGHT_DRIVE_MOTOR, MotorType.kBrushless);
 
+
   // PID CONTROLLER FOR DRIVER //
    //TODO: TUNE THESE VALUES BEFORE FIRST RUN.
    //! BE CAREFUL WITH THESE VALUES, THEY CAN CAUSE MOTOR WINDUP AND OTHER ISSUES.
@@ -40,13 +47,18 @@ public class DriveTrain extends SubsystemBase {
    private static final double kV = 0.0;  // Velocity Feedforward Gain.
    private static final double kA = 0.0;  // Acceleration Feedforward Gain.
 
-	 private double leftSetpoint = 0.0;
-   private double rightSetpoint = 0.0;
+	 //private double leftSetpoint = 0.0;
+   //private double rightSetpoint = 0.0;
 	 private double leftOutput = 0.0;
 	 private double rightOutput = 0.0;
 
-   private SparkPIDController ml_pidController = leftMotorLeader.getPIDController();
-   private SparkPIDController mr_pidController = rightMotorLeader.getPIDController();
+   public PIDController leftPIDController = new PIDController(kP, kI, kD);
+   public PIDController rightPIDController = new PIDController(kP, kI, kD);
+
+   RelativeEncoder rightRelativeEncoder;
+   RelativeEncoder leftRelativeEncoder;
+
+   DifferentialDriveKinematics dKinematics = new DifferentialDriveKinematics(1.421); 
 
   // Our actual drive controller.
   DifferentialDrive differentialDrive = new DifferentialDrive(leftMotorLeader, rightMotorLeader);
@@ -81,18 +93,20 @@ public class DriveTrain extends SubsystemBase {
     rightMotorLeader.setOpenLoopRampRate(Constants.Drive.OPEN_LOOP_RATE);
 
     //Setup PID Values
-    ml_pidController.setP(kP);
-    ml_pidController.setI(kI);
-    ml_pidController.setD(kD);
-    ml_pidController.setFF(kF);
+    /* 
+    leftPIDController.setP(kP);
+    leftPIDController.setI(kI);
+    leftPIDController.setD(kD);
+    leftPIDController.setFF(kF);
 
-    mr_pidController.setP(kP);
-    mr_pidController.setI(kI);
-    mr_pidController.setD(kD);
-    mr_pidController.setFF(kF);
+    rightPIDController.setP(kP);
+    rightPIDController.setI(kI);
+    rightPIDController.setD(kD);
+    rightPIDController.setFF(kF);
+    */
 
-		ml_pidController.setReference(leftSetpoint, ControlType.kVelocity);
-	  mr_pidController.setReference(rightSetpoint, ControlType.kVelocity);
+		//ml_pidController.setReference(leftSetpoint, ControlType.kVelocity);
+	 // mr_pidController.setReference(rightSetpoint, ControlType.kVelocity);
 
     setupDashboard(false);
   }
@@ -100,24 +114,26 @@ public class DriveTrain extends SubsystemBase {
   void setupDashboard(Boolean update) {
     if (Constants.Debug.debugMode && !update) {
       /* Add PID and feedforward constants to Shuffleboard. */
-			SmartDashboard.putNumber("Left Motor P", ml_pidController.getP());
-      SmartDashboard.putNumber("Left Motor I", ml_pidController.getI());
-      SmartDashboard.putNumber("Left Motor D", ml_pidController.getD());
-    	SmartDashboard.putNumber("Left Motor FF", ml_pidController.getFF());
-    	SmartDashboard.putNumber("Right Motor P", mr_pidController.getP());
-    	SmartDashboard.putNumber("Right Motor I", mr_pidController.getI());
-    	SmartDashboard.putNumber("Right Motor D", mr_pidController.getD());
-    	SmartDashboard.putNumber("Right Motor FF", mr_pidController.getFF());
+			SmartDashboard.putNumber("Left Motor P", leftPIDController.getP());
+      SmartDashboard.putNumber("Left Motor I", leftPIDController.getI());
+      SmartDashboard.putNumber("Left Motor D", leftPIDController.getD());
+    	//SmartDashboard.putNumber("Left Motor FF", leftPIDController.getFF());
+    	SmartDashboard.putNumber("Right Motor P", rightPIDController.getP());
+    	SmartDashboard.putNumber("Right Motor I", rightPIDController.getI());
+    	SmartDashboard.putNumber("Right Motor D", rightPIDController.getD());
+    //	SmartDashboard.putNumber("Right Motor FF", rightPIDController.getFF());
+    SmartDashboard.updateValues();
     } else {
       /* Update PID and stuff with edited values from the dash. */
-      ml_pidController.setP(SmartDashboard.getNumber("Left Motor P", ml_pidController.getP()));
-      ml_pidController.setI(SmartDashboard.getNumber("Left Motor I", ml_pidController.getI()));
-      ml_pidController.setD(SmartDashboard.getNumber("Left Motor D", ml_pidController.getD()));
-      ml_pidController.setFF(SmartDashboard.getNumber("Left Motor FF", ml_pidController.getFF()));
-      mr_pidController.setP(SmartDashboard.getNumber("Right Motor P", mr_pidController.getP()));
-      mr_pidController.setI(SmartDashboard.getNumber("Right Motor I", mr_pidController.getI()));
-      mr_pidController.setD(SmartDashboard.getNumber("Right Motor D", mr_pidController.getD()));
-      mr_pidController.setFF(SmartDashboard.getNumber("Right Motor FF", mr_pidController.getFF()));
+      leftPIDController.setP(SmartDashboard.getNumber("Left Motor P", leftPIDController.getP()));
+      leftPIDController.setI(SmartDashboard.getNumber("Left Motor I", leftPIDController.getI()));
+      leftPIDController.setD(SmartDashboard.getNumber("Left Motor D", leftPIDController.getD()));
+      //leftPIDController.setFF(SmartDashboard.getNumber("Left Motor FF", leftPIDController.getFF()));
+      rightPIDController.setP(SmartDashboard.getNumber("Right Motor P", rightPIDController.getP()));
+      rightPIDController.setI(SmartDashboard.getNumber("Right Motor I", rightPIDController.getI()));
+      rightPIDController.setD(SmartDashboard.getNumber("Right Motor D", rightPIDController.getD()));
+     // rightPIDController.setFF(SmartDashboard.getNumber("Right Motor FF", rightPIDController.getFF()));
+     SmartDashboard.updateValues();
     }
   }
 
@@ -141,6 +157,19 @@ public class DriveTrain extends SubsystemBase {
     return Units.inchesToMeters((leftMotorLeader.getEncoder().getPosition() * 6 * Math.PI) / 8.01);
   }
 
+  public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
+    final double leftFeedforward = feedforward.calculate(speeds.leftMetersPerSecond);
+    final double rightFeedforward = feedforward.calculate(speeds.rightMetersPerSecond);
+
+    final double leftOutput =
+        leftPIDController.calculate(leftMotorLeader.getEncoder().getPosition(), speeds.leftMetersPerSecond);
+    final double rightOutput =
+        rightPIDController.calculate(rightMotorLeader.getEncoder().getPosition(), speeds.rightMetersPerSecond);
+
+    leftMotorLeader.setVoltage(leftOutput + leftFeedforward);
+    rightMotorLeader.setVoltage(rightOutput + rightFeedforward);
+  }
+
   public void moveVolts(double leftVoltage, double rightVoltage) {
     leftMotorLeader.setVoltage(leftVoltage);
     rightMotorLeader.setVoltage(rightVoltage);
@@ -153,13 +182,23 @@ public class DriveTrain extends SubsystemBase {
     rightMotorLeader.set(rightOutput);
   }
 
+  public void drive(double xSpeed, double rot) {
+    var wheelSpeeds = dKinematics.toWheelSpeeds(new ChassisSpeeds(xSpeed, 0.0, rot));
+    setSpeeds(wheelSpeeds);
+  }
+
+  public void zeroDriveEncoders() {
+    leftMotorLeader.getEncoder().setPosition(0);
+    rightMotorLeader.getEncoder().setPosition(0);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
 
 		// Get output from PID controllers
-    leftOutput = leftMotorLeader.get();
-    rightOutput = rightMotorLeader.get();
+    //leftOutput = leftMotorLeader.get();
+    //rightOutput = rightMotorLeader.get();
 
     /* Update dashboard. */
     setupDashboard(true);

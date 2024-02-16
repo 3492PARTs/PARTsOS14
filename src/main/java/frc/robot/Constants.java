@@ -24,6 +24,9 @@ public final class Constants {
 
     public static final double OPEN_LOOP_RATE = 0.8;
 
+    public static final double MAX_SPEED = 5.0;
+    public static final double  MAX_ANGULAR_SPEED = 3 * Math.PI;
+
     //last year was 44/30
     //public static final double DRIVE_GEAR_RATIO = null;
   }

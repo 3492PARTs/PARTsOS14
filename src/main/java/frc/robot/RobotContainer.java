@@ -12,6 +12,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -31,6 +32,9 @@ public class RobotContainer {
   private final Arm arm = Arm.getInstance();
   private final Intake intake = Intake.getInstance();
   private final Shooter shooter = Shooter.getInstance();
+
+  // private final SlewRateLimiter speedLimiter = new SlewRateLimiter(3);
+  //private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
 
   private final CommandXboxController driveController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
@@ -64,13 +68,14 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-
+    /* 
     //Sim setup
     if (!RobotBase.isReal()) {
       driveTrain.setDefaultCommand(new RunCommand(() -> driveTrain.driveArcade(simInput.getY(), simInput.getX()), driveTrain));
     }
 
     //binds arcade drive to a command and runs it as default
+     
     if (RobotBase.isReal()) {
       driveTrain.setDefaultCommand(
         new RunCommand(() -> driveTrain.driveArcade(
@@ -79,12 +84,25 @@ public class RobotContainer {
           driveTrain)
       );
     }
+
+    */
+
     driveTrain.setDefaultCommand(
-      new RunCommand(() -> driveTrain.driveArcade(
+      new RunCommand(() -> driveTrain.drive(
         driveController.getLeftY(), 
         driveController.getRightX()),
         driveTrain)
     );
+    
+
+    /* 
+    driveTrain.setDefaultCommand(
+      new RunCommand(() -> driveTrain.drive(
+        -speedLimiter.calculate(driveController.getLeftY()) * Constants.Drive.MAX_SPEED,
+         -rotLimiter.calculate(driveController.getRightX()) * Constants.Drive.MAX_ANGULAR_SPEED),
+        driveTrain)
+    );
+    */
 
     //Operator Triggers and Axis
 
