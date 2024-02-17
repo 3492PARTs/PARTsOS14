@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
@@ -51,9 +52,12 @@ public class DriveTrain extends SubsystemBase {
   private static final double kA = 0.0;  // Acceleration Feedforward Gain.
   SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(kS, kV, kA);
   */
+
+  AHRS gyro;
   
   public DriveTrain() {
 
+    gyro = new AHRS();
     /* Setup the followers of the motors. */
     leftMotorFollower.follow(leftMotorLeader);
     rightMotorFollower.follow(rightMotorLeader);
@@ -108,9 +112,9 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.updateValues();
     } else {
       /* Update PID and stuff with edited values from the dash. */
-      drivePIDController.setP(SmartDashboard.getNumber("Left Motor P", drivePIDController.getP()));
-      drivePIDController.setI(SmartDashboard.getNumber("Left Motor I", drivePIDController.getI()));
-      drivePIDController.setD(SmartDashboard.getNumber("Left Motor D", drivePIDController.getD()));
+      drivePIDController.setP(SmartDashboard.getNumber("Motor P", drivePIDController.getP()));
+      drivePIDController.setI(SmartDashboard.getNumber("Motor I", drivePIDController.getI()));
+      drivePIDController.setD(SmartDashboard.getNumber("Motor D", drivePIDController.getD()));
         //leftPIDController.setFF(SmartDashboard.getNumber("Left Motor FF", leftPIDController.getFF()));
         //rightPIDController.setP(SmartDashboard.getNumber("Right Motor P", rightPIDController.getP()));
         //rightPIDController.setI(SmartDashboard.getNumber("Right Motor I", rightPIDController.getI()));
@@ -128,20 +132,21 @@ public class DriveTrain extends SubsystemBase {
 
   //The arcade drive mode, don't ask why it's swapped.
   public void driveArcade (double forwardBackSpeed, double rotationSpeed) {
-    differentialDrive.arcadeDrive(forwardBackSpeed, rotationSpeed/1.25);
+    differentialDrive.arcadeDrive(forwardBackSpeed, rotationSpeed);
   }
 
   public void driveTank(double leftMotorSpeed, double rightMotorSpeed){
     differentialDrive.tankDrive(leftMotorSpeed, rightMotorSpeed);
   }
 
-  //TODO: find what these values represent
+  //(position * wheel diameter * pi) / gear ratio
+  //gear ratio = driven gears / driving gears
   public double rightDistance() {
-    return Units.inchesToMeters((rightMotorLeader.getEncoder().getPosition() * 6 * Math.PI) / 8.01);
+    return Units.inchesToMeters((rightMotorLeader.getEncoder().getPosition() * 2.45 * Math.PI) / 5.87);
   }
 
   public double leftDistance() {
-    return Units.inchesToMeters((leftMotorLeader.getEncoder().getPosition() * 6 * Math.PI) / 8.01);
+    return Units.inchesToMeters(-(leftMotorLeader.getEncoder().getPosition() * 2.45 * Math.PI) / 5.87);
   }
 
   public void moveVolts(double leftVoltage, double rightVoltage) {
@@ -153,6 +158,24 @@ public class DriveTrain extends SubsystemBase {
     leftMotorLeader.getEncoder().setPosition(0);
     rightMotorLeader.getEncoder().setPosition(0);
   }
+
+  public double leftEncoderPosition() {
+    return leftMotorLeader.getEncoder().getPosition();
+  }
+
+  public double rightEncoderPosition() {
+    return rightMotorLeader.getEncoder().getPosition();
+  }
+
+  public double getGyroAngle() {
+    return gyro.getAngle();
+  }
+
+  public void zeroGyro() {
+    gyro.reset();
+  }
+
+
 
   /* 
   public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {

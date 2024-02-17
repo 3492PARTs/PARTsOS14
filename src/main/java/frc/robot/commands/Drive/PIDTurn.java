@@ -4,50 +4,42 @@
 
 package frc.robot.commands.Drive;
 
-import com.revrobotics.CANSparkBase.ControlType;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.PIDValues;
 
-public class PIDdrive extends Command {
-  double initialPos;
+public class PIDTurn extends Command {
+  /** Creates a new PIDTurn. */
+  double initialAngle;
   double setPoint;
-  DriveTrain driveTrain;
   double [] pidValues;
-  //PIDController drivePIDController;
+  PIDController rotPIDController;
+  DriveTrain driveTrain;
 
-  /** Creates a new PIDdrive. */
-  public PIDdrive( double setPoint) {
+  public PIDTurn(PIDValues values, double setPoint) {
     // Use addRequirements() here to declare subsystem dependencies.
-    
-    //this.pidValues = pidValues.getPIDValues();
-    //drivePIDController = new PIDController (pidValues[0], pidValues[1], pidValues[2]);
-    this.setPoint = setPoint;
     this.driveTrain = DriveTrain.getInstance();
+    this.pidValues = values.getPIDValues();
+    rotPIDController = new PIDController(pidValues[0], pidValues[1], pidValues[2]);
+    this.setPoint = setPoint;
     addRequirements(driveTrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //calculates average distance
-    initialPos = (driveTrain.leftDistance() + driveTrain.rightDistance()) /2;
-
-    driveTrain.drivePIDController.setSetpoint(setPoint);
+    initialAngle = driveTrain.getGyroAngle();
+    rotPIDController.setSetpoint(setPoint);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = driveTrain.drivePIDController.calculate(((driveTrain.leftDistance() + driveTrain.rightDistance()) /2) - initialPos);
-
-    speed = MathUtil.clamp(speed, -7, 7);
-
-    driveTrain.moveVolts(speed, speed);
+    double speed = rotPIDController.calculate(driveTrain.getGyroAngle() - initialAngle);
+    speed = MathUtil.clamp(speed, -1, 1);
+    driveTrain.driveTank(speed, -speed);
   }
 
   // Called once the command ends or is interrupted.
@@ -59,6 +51,6 @@ public class PIDdrive extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return driveTrain.drivePIDController.atSetpoint();
+    return rotPIDController.atSetpoint();
   }
 }

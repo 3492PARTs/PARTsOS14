@@ -18,6 +18,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -41,7 +42,7 @@ public class Arm extends SubsystemBase {
   ArmFeedforward armFeedForward;
 
   //TODO: tune PID values
-  double kP = 0.0;
+  double kP = 0.1;
   double kI = 0.0;
   double kD = 0.0;
 
@@ -66,8 +67,8 @@ public class Arm extends SubsystemBase {
     pivotLeftMotor= new CANSparkMax(Constants.Arm.LEFT_PIVOT_MOTOR, MotorType.kBrushless);
     pivotRightMotor = new CANSparkMax(Constants.Arm.RIGHT_PIVOT_MOTOR, MotorType.kBrushless);
 
-    pivotLeftMotor.setInverted(true);
-    pivotRightMotor.setInverted(false);
+    pivotLeftMotor.setInverted(false);
+    pivotRightMotor.setInverted(true);
 
     pivotLeftController = pivotLeftMotor.getPIDController();
     pivotRightController = pivotRightMotor.getPIDController();
@@ -128,6 +129,13 @@ public class Arm extends SubsystemBase {
     return s;
   }
 
+  public double rightPivotEncoderPosition() {
+    return pivotRightMotor.getEncoder().getPosition();
+  }
+
+  public double leftPivotEncoderPosition() {
+    return pivotLeftMotor.getEncoder().getPosition();
+  }
 
   //TODO: check number 60
   public double getRotationRate() {
@@ -149,6 +157,7 @@ public class Arm extends SubsystemBase {
 
 
   public void setPivotSpeed(double speed) {
+    speed = Math.abs(speed) > 0.1? speed:0;
     pivotLeftMotor.set(speed/2);
     pivotRightMotor.set(speed/2);
   }

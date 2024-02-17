@@ -5,6 +5,9 @@
 package frc.robot;
 
 import frc.robot.commands.Autos;
+import frc.robot.commands.ZeroPivotEncoders;
+import frc.robot.commands.Arm.ArmToPositionCmd;
+import frc.robot.commands.Drive.MoveForward;
 import frc.robot.commands.IntakeShoot.IntakeShootCmd;
 import frc.robot.commands.IntakeShoot.RunIntakeCmd;
 import frc.robot.subsystems.Arm;
@@ -13,6 +16,9 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -32,10 +38,12 @@ public class RobotContainer{
   private final Intake intake = Intake.getInstance();
   private final Shooter shooter = Shooter.getInstance();
 
-  private final SlewRateLimiter speedLimiter = new SlewRateLimiter(1, -1, 0);
+  //private final SlewRateLimiter speedLimiter = new SlewRateLimiter(1, -1, 0);
 
   private final CommandXboxController driveController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
+
+  SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   //Make SIM Input Device here. -R
   /*
@@ -48,12 +56,14 @@ public class RobotContainer{
    CommandJoystick simInput = new CommandJoystick(2);
 
   // Example: Replace with real later.
-  private ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+
+    SmartDashboard.putData("choose auto mode", autoChooser);
+    autoChooser.addOption("Move Forward 3 seconds", new MoveForward());
   }
 
   /**
@@ -66,13 +76,22 @@ public class RobotContainer{
    * joysticks}.
    */
   private void configureBindings() {
-     
+
     driveTrain.setDefaultCommand(
+        new RunCommand(() -> driveTrain.driveArcade(
+          driveController.getLeftY(), 
+          driveController.getRightX()),
+          driveTrain)
+    );
+     
+   /*  driveTrain.setDefaultCommand(
       new RunCommand(() -> driveTrain.driveArcade(
-        -speedLimiter.calculate(driveController.getLeftY()),
+        speedLimiter.calculate(driveController.getLeftY()),
         driveController.getRightX()),
         driveTrain)
     );
+
+    */
     
     //Operator Triggers and Axis
 
@@ -82,10 +101,10 @@ public class RobotContainer{
         arm)
     );
 
-    //TODO: may need to invert the values
       operatorController.leftTrigger(.4).whileTrue(new RunIntakeCmd(-1));
       operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
       operatorController.b().whileTrue(new IntakeShootCmd());
+      operatorController.a().whileTrue(new ZeroPivotEncoders());
     
 
     shooter.setDefaultCommand(
@@ -95,24 +114,9 @@ public class RobotContainer{
     );
 
     //Operator Buttons
-    //operatorController.b().whileTrue(new ArmToPositionCmd(10));
-
+    operatorController.x().onTrue(new ArmToPositionCmd(75));
 
     /* 
-      driveTrain.setDefaultCommand(
-        new RunCommand(() -> driveTrain.driveArcade(
-          driveController.getLeftY(), 
-          driveController.getRightX()),
-          driveTrain)
-      );
-
-    
-    driveTrain.setDefaultCommand(
-      new RunCommand(() -> driveTrain.drive(
-        driveController.getLeftY(), 
-        driveController.getRightX()),
-        driveTrain)
-    );
     
     intake.setDefaultCommand(
       new RunCommand(() -> intake.runIntake(
@@ -123,6 +127,14 @@ public class RobotContainer{
     */
   }
 
+  public void displaySmartDashboard() {
+    SmartDashboard.putNumber("left Drive Distance", DriveTrain.getInstance().leftDistance());
+    SmartDashboard.putNumber("right Drive Distance", DriveTrain.getInstance().rightDistance());
+    SmartDashboard.putNumber("left Drive Encoder", DriveTrain.getInstance().leftEncoderPosition());
+    SmartDashboard.putNumber("right Drive Encoder", DriveTrain.getInstance().rightEncoderPosition());
+    SmartDashboard.putNumber("left Pivot Encoder", Arm.getInstance().leftPivotEncoderPosition());
+    SmartDashboard.putNumber("right Pivot Encoder", Arm.getInstance().rightPivotEncoderPosition());
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -131,6 +143,6 @@ public class RobotContainer{
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return autoChooser.getSelected();
   }
 }

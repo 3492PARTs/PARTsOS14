@@ -9,38 +9,44 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
 public class Drive extends Command {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final DriveTrain driveTrain;
-
+    double duration;
+    DriveTrain driveTrain;
+    long startTime;
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public Drive(DriveTrain subsystem) {
+  public Drive(double duration ) {
     driveTrain = DriveTrain.getInstance();
-    addRequirements(subsystem);
+    this.duration = duration;
+    addRequirements(driveTrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    startTime = System.currentTimeMillis();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveTrain.driveArcade(0.05, 0);
+    System.out.println("hello");
+    driveTrain.driveArcade(-0.5, 0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    driveTrain.driveArcade(0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    System.out.println("hello");
+    return System.currentTimeMillis() - startTime >= duration * 1000;
   }
 }
 
