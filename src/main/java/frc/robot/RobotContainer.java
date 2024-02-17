@@ -13,7 +13,6 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -26,15 +25,14 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
-public class RobotContainer {
+public class RobotContainer{
   // The robot's subsystems and commands are defined here...
   private final DriveTrain driveTrain = DriveTrain.getInstance();
   private final Arm arm = Arm.getInstance();
   private final Intake intake = Intake.getInstance();
   private final Shooter shooter = Shooter.getInstance();
 
-  // private final SlewRateLimiter speedLimiter = new SlewRateLimiter(3);
-  //private final SlewRateLimiter rotLimiter = new SlewRateLimiter(3);
+  private final SlewRateLimiter speedLimiter = new SlewRateLimiter(1, -1, 0);
 
   private final CommandXboxController driveController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
@@ -68,42 +66,14 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    /* 
-    //Sim setup
-    if (!RobotBase.isReal()) {
-      driveTrain.setDefaultCommand(new RunCommand(() -> driveTrain.driveArcade(simInput.getY(), simInput.getX()), driveTrain));
-    }
-
-    //binds arcade drive to a command and runs it as default
      
-    if (RobotBase.isReal()) {
-      driveTrain.setDefaultCommand(
-        new RunCommand(() -> driveTrain.driveArcade(
-          driveController.getLeftY(), 
-          driveController.getRightX()),
-          driveTrain)
-      );
-    }
-
-    */
-
     driveTrain.setDefaultCommand(
-      new RunCommand(() -> driveTrain.drive(
-        driveController.getLeftY(), 
+      new RunCommand(() -> driveTrain.driveArcade(
+        -speedLimiter.calculate(driveController.getLeftY()),
         driveController.getRightX()),
         driveTrain)
     );
     
-
-    /* 
-    driveTrain.setDefaultCommand(
-      new RunCommand(() -> driveTrain.drive(
-        -speedLimiter.calculate(driveController.getLeftY()) * Constants.Drive.MAX_SPEED,
-         -rotLimiter.calculate(driveController.getRightX()) * Constants.Drive.MAX_ANGULAR_SPEED),
-        driveTrain)
-    );
-    */
-
     //Operator Triggers and Axis
 
     arm.setDefaultCommand(
@@ -116,12 +86,6 @@ public class RobotContainer {
       operatorController.leftTrigger(.4).whileTrue(new RunIntakeCmd(-1));
       operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
       operatorController.b().whileTrue(new IntakeShootCmd());
-        
-    /*intake.setDefaultCommand(
-      new RunCommand(() -> intake.runIntake(
-        -operatorController.getLeftTriggerAxis()),
-        intake)
-    );*/
     
 
     shooter.setDefaultCommand(
@@ -131,10 +95,34 @@ public class RobotContainer {
     );
 
     //Operator Buttons
-
-    //TODO: check for degrees or rotations for PID
     //operatorController.b().whileTrue(new ArmToPositionCmd(10));
+
+
+    /* 
+      driveTrain.setDefaultCommand(
+        new RunCommand(() -> driveTrain.driveArcade(
+          driveController.getLeftY(), 
+          driveController.getRightX()),
+          driveTrain)
+      );
+
+    
+    driveTrain.setDefaultCommand(
+      new RunCommand(() -> driveTrain.drive(
+        driveController.getLeftY(), 
+        driveController.getRightX()),
+        driveTrain)
+    );
+    
+    intake.setDefaultCommand(
+      new RunCommand(() -> intake.runIntake(
+        -operatorController.getLeftTriggerAxis()),
+        intake)
+    );
+
+    */
   }
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
