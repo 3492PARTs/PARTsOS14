@@ -39,15 +39,15 @@ public final class Constants {
 
 
   public static final class Intake {
-      public static final int INTAKE_MOTOR = 27;
+      public static final int INTAKE_MOTOR = 11;
       public static final double INTAKE_SPEED = .5;
   }
 
 
   public static final class Shooter {
     // These should be the values but are most likley in the wrong order.
-    public static final int LEFT_SHOOTER_MOTOR = 5;
-    public static final int RIGHT_SHOOTER_MOTOR = 1;
+    public static final int LEFT_SHOOTER_MOTOR = 12;
+    public static final int RIGHT_SHOOTER_MOTOR = 10;
 
   }
 

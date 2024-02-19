@@ -6,6 +6,7 @@ package frc.robot.commands.Arm;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
@@ -15,20 +16,21 @@ import frc.robot.subsystems.Intake;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ProfiledPivotArm extends ProfiledPIDCommand {
   /** Creates a new profiledPivotArm. */
+  double angle;
   public ProfiledPivotArm(double angle) {
     super(
         // The ProfiledPIDController used by the command
         new ProfiledPIDController(
             // The PID gains (tune later)
-            0.1,
-            0,
+            2.7, //2,7
+            0.0,
             0,
             // The motion profile constraints
             Arm.getInstance().getConstraints()),
         // This should return the measurement
-        () -> Arm.getInstance().getCurrentState().position,
+        () -> Arm.getInstance().getCurrentState().position, //getCurrentState() is a trapezoid profile object
         // This should return the goal (can also be a constant)
-        new TrapezoidProfile.State(Math.toRadians(angle), 0),
+        new TrapezoidProfile.State(Math.toRadians(angle), 0).position,
         // This uses the output
         (output, setpoint) -> {
 
@@ -41,11 +43,15 @@ public class ProfiledPivotArm extends ProfiledPIDCommand {
     addRequirements(Intake.getInstance());
     // Configure additional PID options by calling `getController` here.
     getController().setTolerance(2);
+    this.angle = angle;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    SmartDashboard.putNumber("set position", new TrapezoidProfile.State(Math.toRadians(angle), 0).position);
+    SmartDashboard.putNumber("current pos", Arm.getInstance().getCurrentState().position);
+    SmartDashboard.putBoolean("goal pos", getController().atGoal());
     return getController().atGoal();
   }
 }

@@ -33,7 +33,7 @@ public class IntakeShootCmd extends Command {
   public void execute() {
     shooter.runShooter(1);
 
-    if (shooterEncoder.getRate() >= 0.98) {
+    if (shooterEncoder.getDistance() >= 0.98) {
       new RunIntakeCmd(-1).schedule();
     }
   }

@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.commands.Autos;
 import frc.robot.commands.Arm.ArmToPositionCmd;
+import frc.robot.commands.Arm.ProfiledPivotArm;
 import frc.robot.commands.Arm.ZeroPivotEncoders;
 import frc.robot.commands.Drive.MoveForward;
 import frc.robot.commands.IntakeShoot.IntakeShootCmd;
@@ -20,6 +21,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -82,10 +84,10 @@ public class RobotContainer{
         arm)
     );
 
-      //operatorController.leftTrigger(.4).whileTrue(new RunIntakeCmd(-1));
-      //operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
-     // operatorController.b().whileTrue(new IntakeShootCmd());
-     // operatorController.a().whileTrue(new ZeroPivotEncoders());
+    operatorController.leftTrigger(.4).whileTrue(new RunIntakeCmd(-1));
+    operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
+    operatorController.b().whileTrue(new IntakeShootCmd());
+    operatorController.a().whileTrue(new ZeroPivotEncoders());
     
 
     shooter.setDefaultCommand(
@@ -96,12 +98,16 @@ public class RobotContainer{
 
     //Operator Buttons
     //operatorController.x().onTrue(new ArmToPositionCmd(75));
+    operatorController.x().onTrue(new ProfiledPivotArm(75));
+    operatorController.b().onTrue(new ProfiledPivotArm(45));
 
     //SysID
+    /* 
     operatorController.a().whileTrue(arm.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward));
     operatorController.b().whileTrue(arm.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse));
     operatorController.x().whileTrue(arm.sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward));
     operatorController.y().whileTrue(arm.sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
+    */
   }
 
   public void displaySmartDashboard() {
