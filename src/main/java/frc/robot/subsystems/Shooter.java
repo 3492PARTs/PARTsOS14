@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -19,6 +20,7 @@ public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   public static TalonSRX shooterLeftLeader; 
   static TalonSRX shooterRightFollower; 
+  
 
   public Shooter() {
     // Intialize the motors.
@@ -27,8 +29,8 @@ public class Shooter extends SubsystemBase {
 
     shooterRightFollower.follow(shooterLeftLeader);
 
-    shooterRightFollower.setInverted(true);
-    shooterLeftLeader.setInverted(false);
+    shooterRightFollower.setInverted(false);
+    shooterLeftLeader.setInverted(true);
   }
 
   public static Shooter getInstance() {

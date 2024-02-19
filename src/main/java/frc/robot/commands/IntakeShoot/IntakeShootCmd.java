@@ -3,7 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot.commands.IntakeShoot;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -12,10 +12,12 @@ public class IntakeShootCmd extends Command {
   /** Creates a new RunIntakeCmd. */
   Intake intake;
   Shooter shooter;
+  Encoder shooterEncoder;
   public IntakeShootCmd() {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = Intake.getInstance();
     this.shooter = Shooter.getInstance();
+    //shooterEncoder = new Encoder(null, null);
     addRequirements(intake);
     addRequirements(shooter);
   }
@@ -31,7 +33,7 @@ public class IntakeShootCmd extends Command {
   public void execute() {
     shooter.runShooter(1);
 
-    if (Shooter.shooterLeftLeader.getMotorOutputPercent() >= 0.98) {
+    if (shooterEncoder.getDistance() >= 0.98) {
       new RunIntakeCmd(-1).schedule();
     }
   }

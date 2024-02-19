@@ -4,7 +4,9 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
+import org.littletonrobotics.urcl.URCL;
+
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -13,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Constants.Drive;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 
@@ -38,8 +41,10 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     Arm.getInstance().zeroPivotEncoders();
     DriveTrain.getInstance().zeroDriveEncoders();
-    
+    DriveTrain.getInstance().zeroGyro();
 
+    DataLogManager.start();
+    URCL.start();
   }
 
   /**
@@ -56,6 +61,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    m_robotContainer.displaySmartDashboard();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -89,15 +95,15 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    DriveTrain.getInstance().zeroDriveEncoders();
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {
-
+  public void teleopPeriodic() {}
    
 
-  }
 
   @Override
   public void testInit() {
@@ -112,18 +118,6 @@ public class Robot extends TimedRobot {
   /** This function is called once when the robot is first started up. */
   @Override
   public void simulationInit() {
-    //Add SmartDahboard stuff here.
-    ShuffleboardTab drivetrainTab = Shuffleboard.getTab("Drivetrain Test");
-
-    Command moveForward = new InstantCommand(() -> {
-        // Drivetrain test code here for forward movement.
-    });
-    drivetrainTab.add("Forward", moveForward).withWidget(BuiltInWidgets.kCommand);
-
-    Command moveBack = new InstantCommand(() -> {
-        // Drivetrain test code here for back movement.
-    });
-    drivetrainTab.add("Backward", moveBack).withWidget(BuiltInWidgets.kCommand);
   }
 
   /** This function is called periodically whilst in simulation. */

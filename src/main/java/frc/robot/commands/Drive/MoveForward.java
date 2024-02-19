@@ -15,7 +15,8 @@ public class MoveForward extends SequentialCommandGroup {
   public MoveForward() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new PIDdrive(Units.inchesToMeters(36)));
+    addCommands(new Drive (3));
+    //addCommands(new PIDdrive(Units.inchesToMeters(156)));
     //addCommands(new PIDValues(0.0, 0.0, 0.0), new PIDdrive(Units.inchesToMeters(36)));
   }
 }

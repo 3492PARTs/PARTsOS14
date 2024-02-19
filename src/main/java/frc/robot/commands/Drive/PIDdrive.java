@@ -45,7 +45,7 @@ public class PIDdrive extends Command {
   public void execute() {
     double speed = driveTrain.drivePIDController.calculate(((driveTrain.leftDistance() + driveTrain.rightDistance()) /2) - initialPos);
 
-    speed = MathUtil.clamp(speed, -12, 12);
+    speed = MathUtil.clamp(speed, -7, 7);
 
     driveTrain.moveVolts(speed, speed);
   }
