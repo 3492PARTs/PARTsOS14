@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.commands.Autos;
 import frc.robot.commands.Arm.ArmToPositionCmd;
+import frc.robot.commands.Arm.HoldArmInPosition;
 import frc.robot.commands.Arm.ProfiledPivotArm;
 import frc.robot.commands.Arm.ZeroPivotEncoders;
 import frc.robot.commands.Drive.MoveForward;
@@ -40,6 +41,8 @@ public class RobotContainer{
   private final Arm arm = Arm.getInstance();
   private final Intake intake = Intake.getInstance();
   private final Shooter shooter = Shooter.getInstance();
+
+  HoldArmInPosition h = null;
 
   //private final SlewRateLimiter speedLimiter = new SlewRateLimiter(1, -1, 0);
 
@@ -79,10 +82,31 @@ public class RobotContainer{
     //Operator Triggers and Axis
 
     arm.setDefaultCommand(
-      new RunCommand(() -> arm.setPivotSpeed(
-        operatorController.getRightY()),
+      new RunCommand(() -> {
+        if (Math.abs(operatorController.getRightY()) > .1) {
+          if (h != null) {
+            System.out.println("UNschedule");
+            h.cancel();
+            h = null;
+          }
+          
+          arm.setPivotSpeed(operatorController.getRightY());
+        }
+        else {
+          if (h == null) {
+            System.out.println("schedule");
+            System.out.println("angle " + arm.getAngle());
+            arm.setPivotSpeed(0);
+            h = new HoldArmInPosition(arm.getAngle());
+            h.schedule();   
+          }
+          //arm.driveMotorVolts(arm.calcOutputVoltage(0));
+        }
+    },
         arm)
     );
+
+
 
     operatorController.leftTrigger(.4).whileTrue(new RunIntakeCmd(-1));
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
@@ -119,6 +143,10 @@ public class RobotContainer{
     SmartDashboard.putNumber("right Pivot Encoder", Arm.getInstance().rightPivotEncoderPosition());
   }
 
+
+  public CommandXboxController getOperatorController () {
+    return operatorController;
+  }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

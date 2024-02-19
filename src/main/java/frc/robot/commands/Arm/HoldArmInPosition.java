@@ -8,16 +8,18 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ProfiledPivotArm extends ProfiledPIDCommand {
+public class HoldArmInPosition extends ProfiledPIDCommand {
   /** Creates a new profiledPivotArm. */
   double angle;
-  public ProfiledPivotArm(double angle) {
+  RobotContainer m_RobotContainer;
+  public HoldArmInPosition(double angle) {
     super(
         // The ProfiledPIDController used by the command
         new ProfiledPIDController(
@@ -44,12 +46,17 @@ public class ProfiledPivotArm extends ProfiledPIDCommand {
     // Configure additional PID options by calling `getController` here.
     getController().setTolerance(2);
     this.angle = angle;
+    m_RobotContainer = new RobotContainer();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-
-    return getController().atGoal();
+    SmartDashboard.putNumber("set position", new TrapezoidProfile.State(Math.toRadians(angle), 0).position);
+    SmartDashboard.putNumber("current pos", Arm.getInstance().getCurrentState().position);
+    SmartDashboard.putBoolean("goal pos", getController().atGoal());
+    System.out.println("op cont " + m_RobotContainer.getOperatorController().getRightY());
+    System.out.println("hold in pos is finish " + (Math.abs(m_RobotContainer.getOperatorController().getRightY()) > .1));
+    return Math.abs(m_RobotContainer.getOperatorController().getRightY()) > .1;
   }
 }

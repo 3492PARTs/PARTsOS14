@@ -25,6 +25,7 @@ import edu.wpi.first.units.Velocity;
 import edu.wpi.first.units.Voltage;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
@@ -155,6 +156,7 @@ public class Arm extends SubsystemBase {
   //calculates the voltage the arm feedforward needs
   public double calcOutputVoltage(double velocity) {
     double output = (armFeedForward.calculate(Math.toRadians((getAngle())), velocity));
+    SmartDashboard.putNumber("calcOutputVoltage", output);
     return output;
   }
 
