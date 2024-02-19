@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Intake;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -19,7 +20,7 @@ public class ProfiledPivotArm extends ProfiledPIDCommand {
         // The ProfiledPIDController used by the command
         new ProfiledPIDController(
             // The PID gains (tune later)
-            0,
+            0.1,
             0,
             0,
             // The motion profile constraints
@@ -37,6 +38,7 @@ public class ProfiledPivotArm extends ProfiledPIDCommand {
         });
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Arm.getInstance());
+    addRequirements(Intake.getInstance());
     // Configure additional PID options by calling `getController` here.
     getController().setTolerance(2);
   }

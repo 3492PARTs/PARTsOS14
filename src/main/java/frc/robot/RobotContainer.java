@@ -5,8 +5,8 @@
 package frc.robot;
 
 import frc.robot.commands.Autos;
-import frc.robot.commands.ZeroPivotEncoders;
 import frc.robot.commands.Arm.ArmToPositionCmd;
+import frc.robot.commands.Arm.ZeroPivotEncoders;
 import frc.robot.commands.Drive.MoveForward;
 import frc.robot.commands.IntakeShoot.IntakeShootCmd;
 import frc.robot.commands.IntakeShoot.RunIntakeCmd;
@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -44,18 +45,6 @@ public class RobotContainer{
   private final CommandXboxController operatorController = new CommandXboxController(1);
 
   SendableChooser<Command> autoChooser = new SendableChooser<>();
-
-  //Make SIM Input Device here. -R
-  /*
-   * Explanation:
-   * I need to make a simulated input device \so that I can test the motor PID controllers.
-   * I'm going to make an input device using a keyboard for motor testing.
-   *  Better to tune the PID controllers now than later.
-   * It's late and I'm tired. -R
-   */
-   CommandJoystick simInput = new CommandJoystick(2);
-
-  // Example: Replace with real later.
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -83,15 +72,7 @@ public class RobotContainer{
           driveController.getRightX()),
           driveTrain)
     );
-     
-   /*  driveTrain.setDefaultCommand(
-      new RunCommand(() -> driveTrain.driveArcade(
-        speedLimiter.calculate(driveController.getLeftY()),
-        driveController.getRightX()),
-        driveTrain)
-    );
 
-    */
     
     //Operator Triggers and Axis
 
@@ -101,10 +82,10 @@ public class RobotContainer{
         arm)
     );
 
-      operatorController.leftTrigger(.4).whileTrue(new RunIntakeCmd(-1));
-      operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
-      operatorController.b().whileTrue(new IntakeShootCmd());
-      operatorController.a().whileTrue(new ZeroPivotEncoders());
+      //operatorController.leftTrigger(.4).whileTrue(new RunIntakeCmd(-1));
+      //operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
+     // operatorController.b().whileTrue(new IntakeShootCmd());
+     // operatorController.a().whileTrue(new ZeroPivotEncoders());
     
 
     shooter.setDefaultCommand(
@@ -114,17 +95,13 @@ public class RobotContainer{
     );
 
     //Operator Buttons
-    operatorController.x().onTrue(new ArmToPositionCmd(75));
+    //operatorController.x().onTrue(new ArmToPositionCmd(75));
 
-    /* 
-    
-    intake.setDefaultCommand(
-      new RunCommand(() -> intake.runIntake(
-        -operatorController.getLeftTriggerAxis()),
-        intake)
-    );
-
-    */
+    //SysID
+    operatorController.a().whileTrue(arm.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward));
+    operatorController.b().whileTrue(arm.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse));
+    operatorController.x().whileTrue(arm.sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward));
+    operatorController.y().whileTrue(arm.sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
   }
 
   public void displaySmartDashboard() {

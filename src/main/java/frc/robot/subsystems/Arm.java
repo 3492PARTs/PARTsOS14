@@ -10,6 +10,8 @@ import com.revrobotics.SparkPIDController;
 
 import java.util.function.DoubleSupplier;
 
+import static edu.wpi.first.units.Units.Volts;
+
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -18,11 +20,10 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 
-//TODO: implement PID values
 public class Arm extends SubsystemBase {
 
   private static Arm armInstance;
@@ -46,6 +47,10 @@ public class Arm extends SubsystemBase {
   double kI = 0.0;
   double kD = 0.0;
 
+  double kS = 0.0;
+  double kG = 0.0;
+  double kV = 0.0;
+
   //TODO: tune PID values
   //PID for only armfeedforward
   PIDController velocityPID = new PIDController(1.05, 8, .001); 
@@ -53,6 +58,16 @@ public class Arm extends SubsystemBase {
 
   //TODO: update gear ratio 
   double pivotGearRatio = Constants.Arm.PIVOT_GEAR_RATIO;
+
+  //SysID routine
+  public final SysIdRoutine sysIdRoutine = new SysIdRoutine(
+    new SysIdRoutine.Config(),
+    new SysIdRoutine.Mechanism(
+      (voltage) -> armInstance.driveMotorVolts(voltage.in(Volts)),
+       null,
+      armInstance
+    )
+  );
 
   public Arm() {
 
@@ -77,7 +92,7 @@ public class Arm extends SubsystemBase {
     pivotLeftController.setP(kP);
     pivotLeftController.setI(kI);
     pivotLeftController.setD(kD);
-    pivotLeftController.setOutputRange(0,0);
+    pivotLeftController.setOutputRange(kI,kD);
 
     pivotRightController.setP(kP);
     pivotRightController.setI(kI);
@@ -92,8 +107,8 @@ public class Arm extends SubsystemBase {
 
     Shuffleboard.getTab("debug").addNumber("arm angle", getAngleSupplier());
     Shuffleboard.getTab("debug").addNumber("arm angular velocity", getAnglularVelocitySupplier());
-
   }
+
 
   public static Arm getInstance() {
     // If instance is null, then make a new instance.
@@ -111,7 +126,7 @@ public class Arm extends SubsystemBase {
 
   //calculates the voltage the arm feedforward needs
   public double calcOutputVoltage(double velocity) {
-    double output = (armFeedForward.calculate(Math.toRadians((getAngle()) - 95.735), velocity) + velocityPID.calculate(Math.toRadians(getRotationRate()), velocity));
+    double output = (armFeedForward.calculate(Math.toRadians((getAngle())), velocity) + velocityPID.calculate(Math.toRadians(getRotationRate()), velocity));
     return output;
   }
 
@@ -148,7 +163,6 @@ public class Arm extends SubsystemBase {
     return s;
   }
 
-
   //added method in robotinit() in Robot.java
   public void zeroPivotEncoders() {
     pivotLeftMotor.getEncoder().setPosition(0);
@@ -162,7 +176,6 @@ public class Arm extends SubsystemBase {
     pivotRightMotor.set(speed/2);
   }
 
-  //TODO: check to see if position is multiplied to gear ratio
   public void setPivotPoint(double position) {
     pivotLeftController.setReference(position, ControlType.kPosition);
     pivotRightController.setReference(position, ControlType.kPosition);

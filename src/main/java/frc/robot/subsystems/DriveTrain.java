@@ -175,8 +175,6 @@ public class DriveTrain extends SubsystemBase {
     gyro.reset();
   }
 
-
-
   /* 
   public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
     SmartDashboard.putNumber("left wheel speed ", speeds.leftMetersPerSecond);

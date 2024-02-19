@@ -63,8 +63,7 @@ public class Intake extends SubsystemBase {
   }
 
   public Boolean hasNote() {
-    //return photoEye.get();
-    return true;
+    return photoEye.get();
   }
 
   public BooleanSupplier hasNoteSupplier() {

@@ -4,7 +4,6 @@
 package frc.robot.commands.IntakeShoot;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -34,7 +33,7 @@ public class IntakeShootCmd extends Command {
   public void execute() {
     shooter.runShooter(1);
 
-    if (shooterEncoder.getDistance() >= 0.98) {
+    if (shooterEncoder.getRate() >= 0.98) {
       new RunIntakeCmd(-1).schedule();
     }
   }
