@@ -1,4 +1,4 @@
-# PARTsOS14 ![Progress](https://progress-bar.dev/34)
+# PARTsOS14 ![Progress](https://progress-bar.dev/43/?suffix=.5%)
 Source code for the PARTs 2024 robot.
 
 ## Code
