@@ -23,16 +23,23 @@ Keeping the ```SysIdRoutine.Config()``` blank will be desirable in most cases.
 However, for the ```SysIdRoutine.Mechanism()``` you will need to supply the argument ```log -> {}``` to actually log the motor(s) for each frame.\
 Inside of ```log -> {}``` you can specify each motor with ```log.motor()```.\
 Under ```log.motor()``` specifying ```.voltage()```, ```.linearPosition()```, and ```.linearVelocity()``` is needed to properly log the motors each frame.
-- New SysIdRoutine
-- - new SysIdRoutine.Config()
-- - new SysIdRoutine.Mechanism(
-- - - (voltage) -> this.driveMotorVolts(voltage.in(Volts)),
-- - - log {
-- - - - log.motor(motorName)
-- - - - - .voltage()
-- - - - - .linearPosition()
-- - - - - .linearVelocity()
-- - - }, this));
+```java
+public SysIdRoutine sysIdRoutine = new SysIdRoutine(
+    new SysIdRoutine.Config(),
+    new SysIdRoutine.Mechanism(
+      (voltage) -> this.driveMotorVolts(voltage.in(Volts)),
+
+      log -> {
+        // Record a frame for the motor.
+        log.motor("motor")
+            .voltage(m_appliedVoltage.mut_replace(theVoltage, Volts))
+            .angularPosition(m_angle.mut_replace(thePosition, Rotations))
+            .angularVelocity(m_velocity.mut_replace(theVelocity, RotationsPerSecond));
+      },
+      this
+    )
+  );
+```
 ## Running the Routine
 Follow the WPILib guide for this. [Running the Identification Routine](https://docs.wpilib.org/en/stable/docs/software/advanced-controls/system-identification/running-routine.html).
 ## Getting the Data
