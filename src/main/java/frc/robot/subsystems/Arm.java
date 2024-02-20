@@ -55,19 +55,14 @@ public class Arm extends SubsystemBase {
   double kV = 0.10239;
   double kG = 0.041986;
 
-  //TODO: tune PID values
-  //PID for only armfeedforward
- // PIDController velocityPID = new PIDController(kP, kI, kD); 
-
-  //TODO: update gear ratio 
   double pivotGearRatio = Constants.Arm.PIVOT_GEAR_RATIO;
 
 
+  //SysID routine
   private final MutableMeasure<Voltage> m_appliedVoltage = mutable(Volts.of(0));
   private final MutableMeasure<Angle> m_angle = mutable(Rotations.of(0));
   private final MutableMeasure<Velocity<Angle>> m_velocity = mutable(RotationsPerSecond.of(0));
 
-  //SysID routine
   public SysIdRoutine sysIdRoutine = new SysIdRoutine(
     new SysIdRoutine.Config(),
     new SysIdRoutine.Mechanism(
@@ -86,6 +81,7 @@ public class Arm extends SubsystemBase {
       this
     )
   );
+
 
   public Arm() {
 
@@ -106,36 +102,15 @@ public class Arm extends SubsystemBase {
     pivotLeftController = pivotLeftMotor.getPIDController();
     pivotRightController = pivotRightMotor.getPIDController();
 
-    //TODO: tune these values
-    /* 
-    pivotLeftController.setP(kP);
-    pivotLeftController.setI(kI);
-    pivotLeftController.setD(kD);
-    pivotLeftController.setOutputRange(kI,kD);
-
-    pivotRightController.setP(kP);
-    pivotRightController.setI(kI);
-    pivotRightController.setD(kD);
-    pivotRightController.setOutputRange(kI, kD);
-    */
-
     pivotLeftMotor.setIdleMode(IdleMode.kBrake);
     pivotRightMotor.setIdleMode(IdleMode.kBrake);
 
     pivotLeftMotor.setOpenLoopRampRate(Constants.Arm.OPEN_LOOP_RATE);
     pivotRightMotor.setOpenLoopRampRate(Constants.Arm.OPEN_LOOP_RATE);
 
+
     Shuffleboard.getTab("debug").addNumber("arm angle", getAngleSupplier());
     Shuffleboard.getTab("debug").addNumber("arm angular velocity", getAnglularVelocitySupplier());
-
-  }
-
-  public double getAverageVoltage() {
-    double averageVolts = ((pivotLeftMotor.getAppliedOutput() * pivotLeftMotor.getBusVoltage()) + (pivotRightMotor.getAppliedOutput() * pivotRightMotor.getBusVoltage())) / 2;
-    System.out.println("pivot Left motor" + pivotLeftMotor.getAppliedOutput()); 
-    System.out.println("battery volt " + pivotLeftMotor.getBusVoltage());
-    System.out.println("Average Volts " + averageVolts);
-    return averageVolts;
   }
 
 
@@ -145,6 +120,21 @@ public class Arm extends SubsystemBase {
     return armInstance;
   }
 
+
+  //Setting calculations
+  public void setPivotSpeed(double speed) {
+    speed = Math.abs(speed) > 0.1? speed:0;
+    pivotLeftMotor.set(speed/2);
+    pivotRightMotor.set(speed/2);
+  }
+
+  public void setPivotPoint(double position) {
+    pivotLeftController.setReference(position, ControlType.kPosition);
+    pivotRightController.setReference(position, ControlType.kPosition);
+  }
+
+
+  //Trapezoid Profiling
   public TrapezoidProfile.Constraints getConstraints() {
     return ArmConstraints;
   }
@@ -153,7 +143,8 @@ public class Arm extends SubsystemBase {
     return new TrapezoidProfile.State(Math.toRadians(getAngle()), Math.toRadians(getAnglularVelocitySupplier().getAsDouble()));
   }
 
-  //calculates the voltage the arm feedforward needs
+
+  //voltage calculations
   public double calcOutputVoltage(double velocity) {
     double output = (armFeedForward.calculate(Math.toRadians((getAngle())), velocity));
     SmartDashboard.putNumber("calcOutputVoltage", output);
@@ -165,10 +156,8 @@ public class Arm extends SubsystemBase {
     pivotRightMotor.setVoltage(volts);
   }
 
-  public double getRPS() {
-    return ((pivotLeftMotor.getEncoder().getVelocity()/60) + (pivotLeftMotor.getEncoder().getVelocity()/60))/2;
-  }
 
+  //Angle calculations
   public double getAngle() {
     return 360 * pivotLeftMotor.getEncoder().getPosition() / pivotGearRatio;
   }
@@ -178,14 +167,8 @@ public class Arm extends SubsystemBase {
     return s;
   }
 
-  public double rightPivotEncoderPosition() {
-    return pivotRightMotor.getEncoder().getPosition();
-  }
 
-  public double leftPivotEncoderPosition() {
-    return pivotLeftMotor.getEncoder().getPosition();
-  }
-
+  //Rotation calculations
   public double getRotationRate() {
     return 360 * pivotLeftMotor.getEncoder().getVelocity() /  (60);
   }
@@ -195,6 +178,17 @@ public class Arm extends SubsystemBase {
     return s;
   }
 
+
+  //Encoder calculations
+  public double rightPivotEncoderPosition() {
+    return pivotRightMotor.getEncoder().getPosition();
+  }
+
+  public double leftPivotEncoderPosition() {
+    return pivotLeftMotor.getEncoder().getPosition();
+  }
+
+
   //added method in robotinit() in Robot.java
   public void zeroPivotEncoders() {
     pivotLeftMotor.getEncoder().setPosition(0);
@@ -202,16 +196,19 @@ public class Arm extends SubsystemBase {
   }
 
 
-  public void setPivotSpeed(double speed) {
-    speed = Math.abs(speed) > 0.1? speed:0;
-    pivotLeftMotor.set(speed/2);
-    pivotRightMotor.set(speed/2);
+  //SysID methods
+  public double getAverageVoltage() {
+    double averageVolts = ((pivotLeftMotor.getAppliedOutput() * pivotLeftMotor.getBusVoltage()) + (pivotRightMotor.getAppliedOutput() * pivotRightMotor.getBusVoltage())) / 2;
+    System.out.println("pivot Left motor" + pivotLeftMotor.getAppliedOutput()); 
+    System.out.println("battery volt " + pivotLeftMotor.getBusVoltage());
+    System.out.println("Average Volts " + averageVolts);
+    return averageVolts;
   }
 
-  public void setPivotPoint(double position) {
-    pivotLeftController.setReference(position, ControlType.kPosition);
-    pivotRightController.setReference(position, ControlType.kPosition);
+  public double getRPS() {
+    return ((pivotLeftMotor.getEncoder().getVelocity()/60) + (pivotLeftMotor.getEncoder().getVelocity()/60))/2;
   }
+  
 
   @Override
   public void periodic() {

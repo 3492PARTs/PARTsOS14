@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
@@ -24,9 +25,9 @@ public class HoldArmInPosition extends ProfiledPIDCommand {
         // The ProfiledPIDController used by the command
         new ProfiledPIDController(
             // The PID gains (tune later)
-            2.7, //2,7
-            0.0,
-            0,
+            Constants.Arm.kP, //2,7
+            Constants.Arm.kI,
+            Constants.Arm.kD,
             // The motion profile constraints
             Arm.getInstance().getConstraints()),
         // This should return the measurement
@@ -52,11 +53,11 @@ public class HoldArmInPosition extends ProfiledPIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    SmartDashboard.putNumber("set position", new TrapezoidProfile.State(Math.toRadians(angle), 0).position);
-    SmartDashboard.putNumber("current pos", Arm.getInstance().getCurrentState().position);
-    SmartDashboard.putBoolean("goal pos", getController().atGoal());
-    System.out.println("op cont " + m_RobotContainer.getOperatorController().getRightY());
-    System.out.println("hold in pos is finish " + (Math.abs(m_RobotContainer.getOperatorController().getRightY()) > .1));
+    //SmartDashboard.putNumber("set position", new TrapezoidProfile.State(Math.toRadians(angle), 0).position);
+    //SmartDashboard.putNumber("current pos", Arm.getInstance().getCurrentState().position);
+    //SmartDashboard.putBoolean("goal pos", getController().atGoal());
+    //System.out.println("op cont " + m_RobotContainer.getOperatorController().getRightY());
+    //System.out.println("hold in pos is finish " + (Math.abs(m_RobotContainer.getOperatorController().getRightY()) > .1));
     return Math.abs(m_RobotContainer.getOperatorController().getRightY()) > .1;
   }
 }

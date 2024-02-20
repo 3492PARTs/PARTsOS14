@@ -32,7 +32,6 @@ public class Drive extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("hello");
     driveTrain.driveArcade(-0.5, 0);
   }
 
@@ -45,7 +44,6 @@ public class Drive extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    System.out.println("hello");
     return System.currentTimeMillis() - startTime >= duration * 1000;
   }
 }

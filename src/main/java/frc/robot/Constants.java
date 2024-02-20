@@ -35,6 +35,10 @@ public final class Constants {
 
     public static final double PIVOT_GEAR_RATIO = 234;
     public static final double OPEN_LOOP_RATE = 0.8;
+
+    public static final double kP = 2.7;
+    public static final double kI = 0.0;
+    public static final double kD = 0.0;
   }
 
 

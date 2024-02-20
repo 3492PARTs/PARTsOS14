@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
+import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 
@@ -15,16 +16,16 @@ import frc.robot.subsystems.Intake;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ProfiledPivotArm extends ProfiledPIDCommand {
+
   /** Creates a new profiledPivotArm. */
-  double angle;
   public ProfiledPivotArm(double angle) {
     super(
         // The ProfiledPIDController used by the command
         new ProfiledPIDController(
             // The PID gains (tune later)
-            2.7, //2,7
-            0.0,
-            0,
+            Constants.Arm.kP, //2,7
+            Constants.Arm.kI,
+            Constants.Arm.kD,
             // The motion profile constraints
             Arm.getInstance().getConstraints()),
         // This should return the measurement
@@ -43,7 +44,6 @@ public class ProfiledPivotArm extends ProfiledPIDCommand {
     addRequirements(Intake.getInstance());
     // Configure additional PID options by calling `getController` here.
     getController().setTolerance(2);
-    this.angle = angle;
   }
 
   // Returns true when the command should end.

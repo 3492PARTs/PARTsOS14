@@ -43,8 +43,8 @@ public class Robot extends TimedRobot {
     DriveTrain.getInstance().zeroDriveEncoders();
     DriveTrain.getInstance().zeroGyro();
 
-    DataLogManager.start();
-    URCL.start();
+    //DataLogManager.start();
+    //URCL.start();
   }
 
   /**

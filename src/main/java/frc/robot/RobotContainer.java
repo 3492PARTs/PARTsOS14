@@ -42,9 +42,7 @@ public class RobotContainer{
   private final Intake intake = Intake.getInstance();
   private final Shooter shooter = Shooter.getInstance();
 
-  HoldArmInPosition h = null;
-
-  //private final SlewRateLimiter speedLimiter = new SlewRateLimiter(1, -1, 0);
+  HoldArmInPosition holdArmInPosition = null;
 
   private final CommandXboxController driveController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
@@ -78,41 +76,30 @@ public class RobotContainer{
           driveTrain)
     );
 
-    
-    //Operator Triggers and Axis
 
     arm.setDefaultCommand(
       new RunCommand(() -> {
         if (Math.abs(operatorController.getRightY()) > .1) {
-          if (h != null) {
-            System.out.println("UNschedule");
-            h.cancel();
-            h = null;
+          if (holdArmInPosition != null) {
+            //System.out.println("UNschedule");
+            holdArmInPosition.cancel();
+            holdArmInPosition = null;
           }
-          
           arm.setPivotSpeed(operatorController.getRightY());
         }
+
         else {
-          if (h == null) {
-            System.out.println("schedule");
-            System.out.println("angle " + arm.getAngle());
+          if (holdArmInPosition == null) {
+            //System.out.println("schedule");
+            //System.out.println("angle " + arm.getAngle());
             arm.setPivotSpeed(0);
-            h = new HoldArmInPosition(arm.getAngle());
-            h.schedule();   
+            holdArmInPosition = new HoldArmInPosition(arm.getAngle());
+            holdArmInPosition.schedule();   
           }
-          //arm.driveMotorVolts(arm.calcOutputVoltage(0));
         }
-    },
-        arm)
-    );
-
-
-
-    operatorController.leftTrigger(.4).whileTrue(new RunIntakeCmd(-1));
-    operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
-    operatorController.b().whileTrue(new IntakeShootCmd());
-    operatorController.a().whileTrue(new ZeroPivotEncoders());
-    
+      },
+      arm)
+  );
 
     shooter.setDefaultCommand(
       new RunCommand(() -> shooter.runShooter(
@@ -121,9 +108,14 @@ public class RobotContainer{
     );
 
     //Operator Buttons
-    //operatorController.x().onTrue(new ArmToPositionCmd(75));
     operatorController.x().onTrue(new ProfiledPivotArm(75));
     operatorController.b().onTrue(new ProfiledPivotArm(45));
+
+    operatorController.leftTrigger(.4).whileTrue(new RunIntakeCmd(-1));
+    operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
+    operatorController.b().whileTrue(new IntakeShootCmd());
+    operatorController.a().whileTrue(new ZeroPivotEncoders());
+
 
     //SysID
     /* 
@@ -147,6 +139,7 @@ public class RobotContainer{
   public CommandXboxController getOperatorController () {
     return operatorController;
   }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
