@@ -40,7 +40,6 @@ public class ProfiledPivotArm extends ProfiledPIDCommand {
         });
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Arm.getInstance());
-    addRequirements(Intake.getInstance());
     // Configure additional PID options by calling `getController` here.
     getController().setTolerance(2);
   }

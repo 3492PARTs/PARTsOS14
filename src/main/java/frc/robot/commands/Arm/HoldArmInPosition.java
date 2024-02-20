@@ -43,7 +43,6 @@ public class HoldArmInPosition extends ProfiledPIDCommand {
         });
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Arm.getInstance());
-    addRequirements(Intake.getInstance());
     // Configure additional PID options by calling `getController` here.
     getController().setTolerance(2);
     this.angle = angle;

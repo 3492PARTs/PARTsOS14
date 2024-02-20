@@ -9,9 +9,9 @@ import frc.robot.subsystems.Intake;
 
 public class RunIntakeCmd extends Command {
   /** Creates a new RunIntakeCmd. */
-  int direction;
+  double direction;
   Intake intake;
-  public RunIntakeCmd(int direction) {
+  public RunIntakeCmd(double direction) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = Intake.getInstance();
     this.direction = direction;

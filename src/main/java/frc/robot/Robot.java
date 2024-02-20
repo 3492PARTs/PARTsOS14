@@ -36,7 +36,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     Arm.getInstance().zeroPivotEncoders();
     DriveTrain.getInstance().zeroDriveEncoders();
-    DriveTrain.getInstance().zeroGyro();
+    //DriveTrain.getInstance().zeroGyro();
 
     //DataLogManager.start();
     //URCL.start();

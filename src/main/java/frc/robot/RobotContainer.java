@@ -10,6 +10,7 @@ import frc.robot.commands.Arm.ZeroPivotEncoders;
 import frc.robot.commands.Drive.MoveForward;
 import frc.robot.commands.IntakeShoot.IntakeShootCmd;
 import frc.robot.commands.IntakeShoot.RunIntakeCmd;
+import frc.robot.commands.IntakeShoot.ShootCmd;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
@@ -76,7 +77,7 @@ public class RobotContainer{
         if (Math.abs(operatorController.getRightY()) > .1) {
           if (holdArmInPosition != null) {
             //System.out.println("UNschedule");
-            holdArmInPosition.cancel();
+            //holdArmInPosition.cancel();
             holdArmInPosition = null;
           }
           arm.setPivotSpeed(operatorController.getRightY());
@@ -95,19 +96,24 @@ public class RobotContainer{
       arm)
   );
 
+  
     shooter.setDefaultCommand(
       new RunCommand(() -> shooter.runShooter(
-        operatorController.getRightTriggerAxis()),
+        operatorController.getRightTriggerAxis() > 0? 1:0),
         shooter)
     );
+    
 
     //Operator Buttons
     operatorController.x().onTrue(new ProfiledPivotArm(75));
     operatorController.b().onTrue(new ProfiledPivotArm(45));
+    operatorController.y().onTrue(new ProfiledPivotArm(-5.09));
 
-    operatorController.leftTrigger(.4).whileTrue(new RunIntakeCmd(-1));
+    //operatorController.rightTrigger(.4).whileTrue(new ShootCmd());
+
+    operatorController.leftTrigger(.4).whileTrue(new RunIntakeCmd(-.75));
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
-    operatorController.b().whileTrue(new IntakeShootCmd());
+    //operatorController.b().whileTrue(new IntakeShootCmd());
     operatorController.a().whileTrue(new ZeroPivotEncoders());
 
 
@@ -127,6 +133,7 @@ public class RobotContainer{
     SmartDashboard.putNumber("right Drive Encoder", DriveTrain.getInstance().rightEncoderPosition());
     SmartDashboard.putNumber("left Pivot Encoder", Arm.getInstance().leftPivotEncoderPosition());
     SmartDashboard.putNumber("right Pivot Encoder", Arm.getInstance().rightPivotEncoderPosition());
+    SmartDashboard.putNumber("current voltage", Shooter.shooterLeftLeader.getBusVoltage());
   }
 
 
