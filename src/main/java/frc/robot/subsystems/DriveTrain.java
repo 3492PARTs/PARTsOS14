@@ -27,7 +27,7 @@ public class DriveTrain extends SubsystemBase {
   static CANSparkMax rightMotorLeader = new CANSparkMax(Constants.Drive.FRONT_RIGHT_DRIVE_MOTOR, MotorType.kBrushless);
   static CANSparkMax rightMotorFollower = new CANSparkMax(Constants.Drive.BACK_RIGHT_DRIVE_MOTOR, MotorType.kBrushless);
 
-   //TODO: TUNE THESE VALUES BEFORE FIRST RUN.
+   ////Tune values at some point.
    private static final double kP = 0.1;
    private static final double kI = 0.0;
    private static final double kD = 0.0;
