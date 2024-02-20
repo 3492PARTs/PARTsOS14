@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import frc.robot.commands.Autos;
-import frc.robot.commands.Arm.ArmToPositionCmd;
 import frc.robot.commands.Arm.HoldArmInPosition;
 import frc.robot.commands.Arm.ProfiledPivotArm;
 import frc.robot.commands.Arm.ZeroPivotEncoders;
@@ -14,20 +12,14 @@ import frc.robot.commands.IntakeShoot.IntakeShootCmd;
 import frc.robot.commands.IntakeShoot.RunIntakeCmd;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -39,6 +31,8 @@ public class RobotContainer{
   // The robot's subsystems and commands are defined here...
   private final DriveTrain driveTrain = DriveTrain.getInstance();
   private final Arm arm = Arm.getInstance();
+  // Supressing this for now because I know we're gonna use it but this is driving me mad.
+  @SuppressWarnings("unused")
   private final Intake intake = Intake.getInstance();
   private final Shooter shooter = Shooter.getInstance();
 
