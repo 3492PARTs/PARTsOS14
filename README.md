@@ -15,3 +15,5 @@ They are powered by one Talon SRX.
 ## Shooter
 The shooter is a configuration of much larger rollers designed to shoot out the notes at high speeds.\
 It is powered by two Talon SRXs.
+## Controllers
+[Visit our page about our controllers!](./docs/controller/ControllerBindings.md)

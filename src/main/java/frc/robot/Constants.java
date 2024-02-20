@@ -13,7 +13,6 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  // TODO: REPLACE PLACEHOLDERS
 
   public static final class Drive {
     public static final int FRONT_RIGHT_DRIVE_MOTOR = 5;
