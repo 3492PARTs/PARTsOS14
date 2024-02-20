@@ -7,7 +7,7 @@ Drivetrain:
 - - X Axis - Steer the robot left or right.
 - - Y Axis - Push the robot forward.
 <!-- end list -->
-![Drivetrain Layout](./xbox-controller-drivetrain.png)
+![Drivetrain Layout](./xbox-controller-drivetrain.png)\
 Arm:
  - Right Stick - Move the arm.
  - - Y Axis - Move the arm up and down via the Y Axis.
