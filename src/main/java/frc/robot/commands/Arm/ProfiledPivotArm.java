@@ -9,8 +9,11 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
+<<<<<<< HEAD
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PIDValues;
+=======
+>>>>>>> d40fee9c35e0598b3c329f3c36b056af3000c3c1
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
