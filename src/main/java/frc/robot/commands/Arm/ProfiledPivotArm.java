@@ -10,21 +10,22 @@ import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.PIDValues;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ProfiledPivotArm extends ProfiledPIDCommand {
-
+  
   /** Creates a new profiledPivotArm. */
-  public ProfiledPivotArm(double angle) {
+  public ProfiledPivotArm(double angle, double kP, double kI, double kD) {
     super(
         // The ProfiledPIDController used by the command
         new ProfiledPIDController(
             // The PID gains (tune later)
-            Constants.Arm.kP, //2,7
-            Constants.Arm.kI,
-            Constants.Arm.kD,
+            kP,//2,7
+            kI,
+            kD,
             // The motion profile constraints
             Arm.getInstance().getConstraints()),
         // This should return the measurement
@@ -41,7 +42,7 @@ public class ProfiledPivotArm extends ProfiledPIDCommand {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Arm.getInstance());
     // Configure additional PID options by calling `getController` here.
-    getController().setTolerance(2);
+    getController().setTolerance(1);
   }
 
   // Returns true when the command should end.

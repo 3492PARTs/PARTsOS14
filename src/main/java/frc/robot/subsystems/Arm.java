@@ -81,7 +81,7 @@ public class Arm extends SubsystemBase {
   public Arm() {
 
     //TODO: change angdeg higher later (faster the better)
-    ArmConstraints = new TrapezoidProfile.Constraints(Math.toRadians(30), Math.toRadians(6));
+    ArmConstraints = new TrapezoidProfile.Constraints(Math.toRadians(40), Math.toRadians(6));
 
     //ks: overcomes static friction
     //kg: voltage needed to maintain speed

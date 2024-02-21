@@ -13,10 +13,13 @@ public class IntakeShootCmd extends Command {
   Intake intake;
   Shooter shooter;
   Encoder shooterEncoder;
-  public IntakeShootCmd() {
+  double speedOfIntake;
+
+  public IntakeShootCmd(double speedOfIntake) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = Intake.getInstance();
     this.shooter = Shooter.getInstance();
+    this.speedOfIntake = speedOfIntake;
     //shooterEncoder = new Encoder(null, null);
     addRequirements(intake);
     addRequirements(shooter);
@@ -32,10 +35,11 @@ public class IntakeShootCmd extends Command {
   @Override
   public void execute() {
     shooter.runShooter(1);
-
-    if (shooterEncoder.getDistance() >= 0.98) {
-      new RunIntakeCmd(-1).schedule();
+/* 
+    if ( ) {
+      new RunIntakeCmd(speedOfIntake).schedule();
     }
+    */
   }
 
   // Called once the command ends or is interrupted.

@@ -102,12 +102,17 @@ public class RobotContainer{
         operatorController.getRightTriggerAxis() > 0? 1:0),
         shooter)
     );
+
+    //operatorController.rightTrigger(.4).whileTrue(new IntakeShootCmd(-.75));
+    //operatorController.rightBumper().whileTrue(new IntakeShootCmd())
+
+    //operatorController.rightTrigger(.4).whileTrue(new ShootCmd());
     
 
     //Operator Buttons
-    operatorController.x().onTrue(new ProfiledPivotArm(75));
-    operatorController.b().onTrue(new ProfiledPivotArm(45));
-    operatorController.y().onTrue(new ProfiledPivotArm(-5.09));
+    operatorController.x().onTrue(new ProfiledPivotArm(70, 2.7, 0.0, 0.0));
+    operatorController.b().onTrue(new ProfiledPivotArm(30, 2.7, 0.0, 0.0));
+    operatorController.y().onTrue(new ProfiledPivotArm(-5.09, 3.0, 0.3, 0.0));
 
     //operatorController.rightTrigger(.4).whileTrue(new ShootCmd());
 

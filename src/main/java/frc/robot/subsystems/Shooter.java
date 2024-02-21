@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -18,6 +20,11 @@ public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   public static TalonSRX shooterLeftLeader; 
   static TalonSRX shooterRightFollower; 
+  public final int countsPerRev = 1024;
+  //final double shooterGearRatio;
+  final double shooterWheelRadius = 3.98;
+
+  //Encoder shooterEncoder;
   
 
   public Shooter() {
@@ -40,6 +47,15 @@ public class Shooter extends SubsystemBase {
   public void runShooter(double speed) {
     shooterLeftLeader.set(ControlMode.PercentOutput, speed);
   }
+/* 
+  public double countsToMeters (double counts) {
+    double motorRotations = (double) counts/countsPerRev;
+    double wheelRotations = motorRotations/shooterGearRatio;
+    double positionInMeters = wheelRotations * (2 * Math.PI * Units.inchesToMeters(shooterWheelRadius));
+    return positionInMeters;
+  }
+  */
+
 
   public void checkShooter() {
     // Grab motor output % and put it on the dashboard.
