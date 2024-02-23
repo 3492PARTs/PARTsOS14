@@ -7,8 +7,9 @@ package frc.robot;
 import frc.robot.commands.Arm.HoldArmInPosition;
 import frc.robot.commands.Arm.ProfiledPivotArm;
 import frc.robot.commands.Arm.ZeroPivotEncoders;
-import frc.robot.commands.Drive.MoveForward;
+import frc.robot.commands.Autos.MoveForward;
 import frc.robot.commands.IntakeShoot.RunIntakeCmd;
+import frc.robot.commands.IntakeShoot.ShootCmd;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
@@ -94,17 +95,18 @@ public class RobotContainer{
       arm)
   );
 
-  
+    /* 
     shooter.setDefaultCommand(
       new RunCommand(() -> shooter.runShooter(
         operatorController.getRightTriggerAxis() > 0? 1:0),
         shooter)
     );
+    */
 
     //operatorController.rightTrigger(.4).whileTrue(new IntakeShootCmd(-.75));
     //operatorController.rightBumper().whileTrue(new IntakeShootCmd())
 
-    //operatorController.rightTrigger(.4).whileTrue(new ShootCmd());
+    operatorController.rightTrigger(.4).whileTrue(new ShootCmd());
     
 
     //Operator Buttons
@@ -119,6 +121,7 @@ public class RobotContainer{
     //operatorController.b().whileTrue(new IntakeShootCmd());
     operatorController.a().whileTrue(new ZeroPivotEncoders());
 
+    
 
     //SysID
     /* 

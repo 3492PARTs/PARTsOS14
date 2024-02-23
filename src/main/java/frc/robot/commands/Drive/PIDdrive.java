@@ -5,22 +5,23 @@
 package frc.robot.commands.Drive;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.PIDValues;
 
 public class PIDdrive extends Command {
   double initialPos;
   double setPoint;
   DriveTrain driveTrain;
   double [] pidValues;
-  //PIDController drivePIDController;
+  PIDController drivePIDController;
 
   /** Creates a new PIDdrive. */
-  public PIDdrive( double setPoint) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    
-    //this.pidValues = pidValues.getPIDValues();
-    //drivePIDController = new PIDController (pidValues[0], pidValues[1], pidValues[2]);
+  public PIDdrive(PIDValues pValues, double setPoint) {
+    // Use addRequirements() here to declare subsystem dependencies.    
+    this.pidValues = pValues.getPIDValues();
+    drivePIDController = new PIDController (pidValues[0], pidValues[1], pidValues[2]);
     this.setPoint = setPoint;
     this.driveTrain = DriveTrain.getInstance();
     addRequirements(driveTrain);

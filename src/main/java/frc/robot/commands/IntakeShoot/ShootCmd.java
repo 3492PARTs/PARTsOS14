@@ -30,7 +30,7 @@ public class ShootCmd extends Command {
   @Override
   public void execute(){
     shooter.runShooter(1);
-    SmartDashboard.putNumber("get Rate", shooterEncoder.getRate());
+    SmartDashboard.putNumber("Rate of Shooter", shooterEncoder.getRate());
   }
 
   // Called once the command ends or is interrupted.
