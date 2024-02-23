@@ -8,6 +8,7 @@ import frc.robot.commands.Arm.HoldArmInPosition;
 import frc.robot.commands.Arm.ProfiledPivotArm;
 import frc.robot.commands.Arm.ZeroPivotEncoders;
 import frc.robot.commands.Autos.MoveForward;
+//import frc.robot.commands.Autos.MoveForward;
 import frc.robot.commands.IntakeShoot.RunIntakeCmd;
 import frc.robot.commands.IntakeShoot.ShootCmd;
 import frc.robot.subsystems.Arm;
@@ -22,16 +23,20 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
-public class RobotContainer{
+public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain driveTrain = DriveTrain.getInstance();
   private final Arm arm = Arm.getInstance();
-  // Supressing this for now because I know we're gonna use it but this is driving me mad.
+  // Supressing this for now because I know we're gonna use it but this is driving
+  // me mad.
   @SuppressWarnings("unused")
   private final Intake intake = Intake.getInstance();
   private final Shooter shooter = Shooter.getInstance();
@@ -43,7 +48,9 @@ public class RobotContainer{
 
   SendableChooser<Command> autoChooser = new SendableChooser<>();
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
@@ -53,83 +60,86 @@ public class RobotContainer{
   }
 
   /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
+   * Use this method to define your trigger->command mappings. Triggers can be
+   * created via the
+   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
+   * an arbitrary
    * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
+   * {@link
+   * CommandXboxController
+   * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+   * PS4} controllers or
+   * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
   private void configureBindings() {
 
     driveTrain.setDefaultCommand(
         new RunCommand(() -> driveTrain.driveArcade(
-          driveController.getLeftY(), 
-          driveController.getRightX()),
-          driveTrain)
-    );
-
+            driveController.getLeftY(),
+            driveController.getRightX()),
+            driveTrain));
 
     arm.setDefaultCommand(
-      new RunCommand(() -> {
-        if (Math.abs(operatorController.getRightY()) > .1) {
-          if (holdArmInPosition != null) {
-            //System.out.println("UNschedule");
-            //holdArmInPosition.cancel();
-            holdArmInPosition = null;
+        new RunCommand(() -> {
+          if (Math.abs(operatorController.getRightY()) > .1) {
+            if (holdArmInPosition != null) {
+              // System.out.println("UNschedule");
+              // holdArmInPosition.cancel();
+              holdArmInPosition = null;
+            }
+            arm.setPivotSpeed(operatorController.getRightY());
           }
-          arm.setPivotSpeed(operatorController.getRightY());
-        }
 
         else {
-          if (holdArmInPosition == null) {
-            //System.out.println("schedule");
-            //System.out.println("angle " + arm.getAngle());
-            arm.setPivotSpeed(0);
-            holdArmInPosition = new HoldArmInPosition(arm.getAngle());
-            holdArmInPosition.schedule();   
+            if (holdArmInPosition == null) {
+              // System.out.println("schedule");
+              // System.out.println("angle " + arm.getAngle());
+              arm.setPivotSpeed(0);
+              holdArmInPosition = new HoldArmInPosition(arm.getAngle());
+              holdArmInPosition.schedule();
+            }
           }
-        }
-      },
-      arm)
-  );
+        },
+            arm));
 
-    /* 
-    shooter.setDefaultCommand(
-      new RunCommand(() -> shooter.runShooter(
-        operatorController.getRightTriggerAxis() > 0? 1:0),
-        shooter)
-    );
-    */
+    /*
+     * shooter.setDefaultCommand(
+     * new RunCommand(() -> shooter.runShooter(
+     * operatorController.getRightTriggerAxis() > 0? 1:0),
+     * shooter)
+     * );
+     */
 
-    //operatorController.rightTrigger(.4).whileTrue(new IntakeShootCmd(-.75));
-    //operatorController.rightBumper().whileTrue(new IntakeShootCmd())
+    // operatorController.rightTrigger(.4).whileTrue(new IntakeShootCmd(-.75));
+    // operatorController.rightBumper().whileTrue(new IntakeShootCmd())
 
-    operatorController.rightTrigger(.4).whileTrue(new ShootCmd());
-    
+    operatorController.a().whileTrue(new ShootCmd());
 
-    //Operator Buttons
+    // Operator Buttons
     operatorController.x().onTrue(new ProfiledPivotArm(70, 2.7, 0.0, 0.0));
     operatorController.b().onTrue(new ProfiledPivotArm(30, 2.7, 0.0, 0.0));
     operatorController.y().onTrue(new ProfiledPivotArm(-5.09, 3.0, 0.3, 0.0));
 
-    //operatorController.rightTrigger(.4).whileTrue(new ShootCmd());
+    // operatorController.rightTrigger(.4).whileTrue(new ShootCmd());
 
     operatorController.leftTrigger(.4).whileTrue(new RunIntakeCmd(-.75));
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
-    //operatorController.b().whileTrue(new IntakeShootCmd());
-    operatorController.a().whileTrue(new ZeroPivotEncoders());
+    // operatorController.b().whileTrue(new IntakeShootCmd());
+    // operatorController.a().whileTrue(new ZeroPivotEncoders());
 
-    
-
-    //SysID
-    /* 
-    operatorController.a().whileTrue(arm.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward));
-    operatorController.b().whileTrue(arm.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse));
-    operatorController.x().whileTrue(arm.sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward));
-    operatorController.y().whileTrue(arm.sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
-    */
+    // SysID
+    /*
+     * operatorController.a().whileTrue(arm.sysIdRoutine.quasistatic(SysIdRoutine.
+     * Direction.kForward));
+     * operatorController.b().whileTrue(arm.sysIdRoutine.quasistatic(SysIdRoutine.
+     * Direction.kReverse));
+     * operatorController.x().whileTrue(arm.sysIdRoutine.dynamic(SysIdRoutine.
+     * Direction.kForward));
+     * operatorController.y().whileTrue(arm.sysIdRoutine.dynamic(SysIdRoutine.
+     * Direction.kReverse));
+     */
   }
 
   public void displaySmartDashboard() {
@@ -142,8 +152,7 @@ public class RobotContainer{
     SmartDashboard.putNumber("current voltage", Shooter.shooterLeftLeader.getBusVoltage());
   }
 
-
-  public CommandXboxController getOperatorController () {
+  public CommandXboxController getOperatorController() {
     return operatorController;
   }
 

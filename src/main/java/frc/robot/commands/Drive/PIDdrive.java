@@ -6,6 +6,7 @@ package frc.robot.commands.Drive;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.PIDValues;
@@ -14,14 +15,14 @@ public class PIDdrive extends Command {
   double initialPos;
   double setPoint;
   DriveTrain driveTrain;
-  double [] pidValues;
+  double[] pidValues;
   PIDController drivePIDController;
 
   /** Creates a new PIDdrive. */
   public PIDdrive(PIDValues pValues, double setPoint) {
-    // Use addRequirements() here to declare subsystem dependencies.    
+    // Use addRequirements() here to declare subsystem dependencies.
     this.pidValues = pValues.getPIDValues();
-    drivePIDController = new PIDController (pidValues[0], pidValues[1], pidValues[2]);
+    drivePIDController = new PIDController(pidValues[0], pidValues[1], pidValues[2]);
     this.setPoint = setPoint;
     this.driveTrain = DriveTrain.getInstance();
     addRequirements(driveTrain);
@@ -30,31 +31,32 @@ public class PIDdrive extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //calculates average distance
-    initialPos = (driveTrain.leftDistance() + driveTrain.rightDistance()) /2;
+    // calculates average distance
+    // initialPos = (driveTrain.leftDistance() + driveTrain.rightDistance()) /2;
 
-    driveTrain.drivePIDController.setSetpoint(setPoint);
+    drivePIDController.setSetpoint(setPoint);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = driveTrain.drivePIDController.calculate(((driveTrain.leftDistance() + driveTrain.rightDistance()) /2) - initialPos);
+    double speed = .2 + drivePIDController.calculate((driveTrain.leftDistance() + driveTrain.rightDistance()) / 2);
 
-    speed = MathUtil.clamp(speed, -7, 7);
+    speed = MathUtil.clamp(speed, -.5, .5);
 
-    driveTrain.moveVolts(speed, speed);
+    driveTrain.driveArcade(-speed, 0);
+    SmartDashboard.putNumber("drive setPoint", drivePIDController.getPositionError());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    driveTrain.driveTank(0,0);
+    driveTrain.driveTank(0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return driveTrain.drivePIDController.atSetpoint();
+    return drivePIDController.atSetpoint();
   }
 }

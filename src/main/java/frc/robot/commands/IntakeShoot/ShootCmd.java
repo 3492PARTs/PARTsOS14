@@ -3,6 +3,9 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot.commands.IntakeShoot;
 
+import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix6.hardware.CANcoder;
+
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,6 +19,7 @@ public class ShootCmd extends Command {
 
   public ShootCmd() {
     // Use addRequirements() here to declare subsystem dependencies.
+    // shooterEncoder = new Encoder()
     this.shooter = Shooter.getInstance();
     addRequirements(shooter);
   }
@@ -23,12 +27,12 @@ public class ShootCmd extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute(){
+  public void execute() {
     shooter.runShooter(1);
     SmartDashboard.putNumber("Rate of Shooter", shooterEncoder.getRate());
   }
