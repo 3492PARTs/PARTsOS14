@@ -4,8 +4,11 @@
 
 package frc.robot.commands.Drive;
 
+import java.security.cert.TrustAnchor;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.PIDValues;
@@ -37,9 +40,14 @@ public class PIDTurnCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = rotPIDController.calculate(driveTrain.getGyroAngle() - initialAngle);
-    speed = MathUtil.clamp(speed, -1, 1);
-    driveTrain.driveTank(speed, -speed);
+    // calculating how much distance covered and how much distance needed to cover
+    // to get to setpoint
+    double volts = rotPIDController.calculate(driveTrain.getGyroAngle() - initialAngle);
+    volts = MathUtil.clamp(volts, -6, 6);
+
+    driveTrain.moveVolts(volts, -volts);
+    SmartDashboard.putNumber("PID Turn", volts);
+
   }
 
   // Called once the command ends or is interrupted.

@@ -20,8 +20,6 @@ public class ShootInSpeakerCmd extends Command {
     shooter = Shooter.getInstance();
     intake = Intake.getInstance();
 
-    // TODO: add shooter encoder
-
     addRequirements(shooter);
     addRequirements(intake);
   }
@@ -37,7 +35,7 @@ public class ShootInSpeakerCmd extends Command {
     shooter.runShooter(.9);
 
     // TODO: get correct values
-    if (shooterEncoder.getRate() >= 100) {
+    if (shooter.getAverageShooterVelocity() >= 100) {
       intake.runIntake(.80);
     }
   }

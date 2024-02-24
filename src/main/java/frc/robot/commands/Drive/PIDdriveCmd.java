@@ -32,7 +32,7 @@ public class PIDdriveCmd extends Command {
   @Override
   public void initialize() {
     // calculates average distance
-    // initialPos = (driveTrain.leftDistance() + driveTrain.rightDistance()) /2;
+    initialPos = (driveTrain.leftDistance() + driveTrain.rightDistance()) / 2;
 
     drivePIDController.setSetpoint(setPoint);
   }
@@ -40,12 +40,18 @@ public class PIDdriveCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = .2 + drivePIDController.calculate((driveTrain.leftDistance() + driveTrain.rightDistance()) / 2);
+    // calculating how much distance covered and how much distance needed to cover
+    // to get to setpoint
+    double volts = drivePIDController
+        .calculate(((driveTrain.leftDistance() + driveTrain.rightDistance()) / 2) - initialPos);
 
-    speed = MathUtil.clamp(speed, -.5, .5);
+    volts = MathUtil.clamp(volts, -6, 6);
 
-    driveTrain.driveArcade(-speed, 0);
-    SmartDashboard.putNumber("drive setPoint", drivePIDController.getPositionError());
+    driveTrain.moveVolts(volts, volts);
+
+    SmartDashboard.putNumber("PID Drive", volts);
+    // SmartDashboard.putNumber("drive setPoint",
+    // drivePIDController.getPositionError());
   }
 
   // Called once the command ends or is interrupted.

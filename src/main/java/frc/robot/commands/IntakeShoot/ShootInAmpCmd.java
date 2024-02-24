@@ -13,14 +13,11 @@ public class ShootInAmpCmd extends Command {
   /** Creates a new ShootInAmpCmd. */
   Shooter shooter;
   Intake intake;
-  Encoder shooterEncoder;
 
   public ShootInAmpCmd() {
     // Use addRequirements() here to declare subsystem dependencies.
     shooter = Shooter.getInstance();
     intake = Intake.getInstance();
-
-    // TODO: add shooter encoder
 
     addRequirements(shooter);
     addRequirements(intake);
@@ -37,7 +34,7 @@ public class ShootInAmpCmd extends Command {
     shooter.runShooter(.5);
 
     // TODO: get correct values
-    if (shooterEncoder.getRate() >= 100) {
+    if (shooter.getAverageShooterVelocity() >= 100) {
       intake.runIntake(.5);
     }
   }
