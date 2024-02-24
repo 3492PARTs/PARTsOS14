@@ -18,7 +18,7 @@ public class AutoMoveForward extends SequentialCommandGroup {
   public AutoMoveForward() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new TimeDriveCmd(3));
+    addCommands(new Drive);
     // addCommands(new PIDdrive(new PIDValues(1.0, 0.0, 0.0),
     // Units.inchesToMeters(36)));
     // addCommands(new PIDValues(0.0, 0.0, 0.0), new
