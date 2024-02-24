@@ -4,12 +4,15 @@
 
 package frc.robot;
 
+import frc.robot.commands.Arm.ArmToPositionCmd;
 import frc.robot.commands.Arm.HoldArmInPositionCmd;
 import frc.robot.commands.Arm.ProfiledPivotArmCmd;
+import frc.robot.commands.Arm.ZeroPivotEncodersCmd;
 import frc.robot.commands.Autos.AutoMoveForward;
 import frc.robot.commands.Drive.ZeroDriveEncodersCmd;
 import frc.robot.commands.IntakeShoot.RunIntakeCmd;
 import frc.robot.commands.IntakeShoot.ShootCmd;
+import frc.robot.commands.IntakeShoot.ShootInSpeakerCmd;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
@@ -20,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -79,51 +83,65 @@ public class RobotContainer {
             driveController.getRightX()),
             driveTrain));
 
+    driveController.a().whileTrue(new ZeroPivotEncodersCmd());
+
     arm.setDefaultCommand(
         new RunCommand(() -> {
           if (Math.abs(operatorController.getRightY()) > .1) {
-            if (holdArmInPosition != null) {
-
-              holdArmInPosition = null;
-            }
             arm.setPivotSpeed(operatorController.getRightY());
+            /*
+             * if (holdArmInPosition != null) {
+             * 
+             * holdArmInPosition = null;
+             * }
+             * arm.setPivotSpeed(operatorController.getRightY());
+             */
+          } else {
+            arm.setPivotSpeed(0);
           }
-
-        else {
-            if (holdArmInPosition == null) {
-              arm.setPivotSpeed(0);
-              holdArmInPosition = new HoldArmInPositionCmd(arm.getAngle());
-              holdArmInPosition.schedule();
-            }
-          }
+          /*
+           * else {
+           * if (holdArmInPosition == null) {
+           * arm.setPivotSpeed(0);
+           * holdArmInPosition = new HoldArmInPositionCmd(arm.getAngle());
+           * holdArmInPosition.schedule();
+           * }
+           * }
+           */
         },
             arm));
 
     // arm.setDefaultCommand(new HoldArmInPosition(0));
-
     /*
      * shooter.setDefaultCommand(
      * new RunCommand(() -> shooter.runShooter(
-     * operatorController.getRightTriggerAxis() > 0? 1:0),
-     * shooter)
-     * );
+     * operatorController.getRightTriggerAxis() > 0 ? .5 : 0),
+     * shooter));
      */
 
-    // Operator Buttons
-    operatorController.x().onTrue(new ProfiledPivotArmCmd(80, 2.7, 0, 0)); // ground
-    operatorController.y().onTrue(new ProfiledPivotArmCmd(70, 2.7, 0.0, 0.0)); // speaker
+    operatorController.x().onTrue(new ArmToPositionCmd(5)); // ground
+    operatorController.y().onTrue(new ArmToPositionCmd(42.8)); // speaker
+    operatorController.b().onTrue(new ArmToPositionCmd(10)); // home
+    operatorController.a().onTrue(new ArmToPositionCmd(-5.09)); // amp
 
-    // TODO: fix home position value
-    operatorController.b().onTrue(new ProfiledPivotArmCmd(30, 2.7, 0.0, 0.0)); // home
-    operatorController.a().onTrue(new ProfiledPivotArmCmd(-5.09, 3.0, 0.3, 0.0)); // amp
-
-    // operatorController.rightTrigger(.4).whileTrue(new ShootCmd());
-    // operatorController.rightTrigger(.4).whileTrue(new IntakeShootCmd(-.75));
+    operatorController.rightTrigger(.1).whileTrue(new ShootInSpeakerCmd());
     // operatorController.rightBumper().whileTrue(new ShootInAmpCmd());
-    operatorController.a().whileTrue(new ShootCmd());
 
     operatorController.leftTrigger(.4).whileTrue(new RunIntakeCmd(-.75));
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
+
+    // Operator Buttons
+    /*
+     * operatorController.x().onTrue(new ProfiledPivotArmCmd(80, 2.7, 0, 0)); //
+     * ground
+     * operatorController.y().onTrue(new ProfiledPivotArmCmd(42.8, 3.0, 0.0, 0.0));
+     * // speaker
+     * // TODO: fix home position angle
+     * operatorController.b().onTrue(new ProfiledPivotArmCmd(30, 2.7, 0.0, 0.0)); //
+     * home
+     * // TODO: tune amp positions pid values
+     * operatorController.a().onTrue(new ProfiledPivotArmCmd(-5.09, 3.0, 0.3, 0.0));
+     */
 
     // SysID
     /*
@@ -142,20 +160,19 @@ public class RobotContainer {
     // Drive
     SmartDashboard.putNumber("left Drive Distance", DriveTrain.getInstance().leftDistance());
     SmartDashboard.putNumber("right Drive Distance", DriveTrain.getInstance().rightDistance());
-    SmartDashboard.putData("zero Drive Encoder", new ZeroDriveEncodersCmd());
+    // SmartDashboard.putData("zero Drive Encoder", new ZeroDriveEncodersCmd());
     // SmartDashboard.putNumber("left Drive Encoder",
     // DriveTrain.getInstance().leftEncoderPosition());
     // SmartDashboard.putNumber("right Drive Encoder",
     // DriveTrain.getInstance().rightEncoderPosition());
 
     // Pivot
-    // SmartDashboard.putData("zero Pivot Encoders", new ZeroPivotEncoders());
+    // SmartDashboard.putData("zero Pivot Encoders", new ZeroPivotEncodersCmd());
     SmartDashboard.putNumber("left Pivot Encoder", Arm.getInstance().leftPivotEncoderPosition());
     SmartDashboard.putNumber("right Pivot Encoder", Arm.getInstance().rightPivotEncoderPosition());
 
     // Shooter
-    SmartDashboard.putNumber("shooter Velocity", Shooter.getInstance().getAverageShooterVelocity());
-    SmartDashboard.putNumber("shooter position", Shooter.getInstance().getAverageShooterPosition());
+    SmartDashboard.putNumber("shooter RPM", Shooter.getInstance().getShooterRPM());
 
     // PhotoEye
     SmartDashboard.putBoolean("HAS NOTE", Intake.getInstance().hasNote());

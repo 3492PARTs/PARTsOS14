@@ -24,23 +24,15 @@ public class Shooter extends SubsystemBase {
   static TalonSRX shooterRightFollower;
   public final int countsPerRev = 1024;
   // final double shooterGearRatio;
-  final double shooterWheelRadius = 3.98;
-
-  WPI_CANCoder shooterLeftEncoder;
-  WPI_CANCoder shooterRightEncoder;
+  final double shooterWheelRadius = 2.0;
 
   public Shooter() {
     // Intialize the motors.
     shooterLeftLeader = new TalonSRX(Constants.Shooter.LEFT_MOTOR);
     shooterRightFollower = new TalonSRX(Constants.Shooter.RIGHT_MOTOR);
 
-    shooterRightFollower.follow(shooterLeftLeader);
-
-    shooterRightFollower.setInverted(false);
+    shooterRightFollower.setInverted(true);
     shooterLeftLeader.setInverted(true);
-
-    shooterLeftEncoder = new WPI_CANCoder(Constants.Shooter.LEFT_MOTOR);
-    shooterRightEncoder = new WPI_CANCoder(Constants.Shooter.RIGHT_MOTOR);
   }
 
   public static Shooter getInstance() {
@@ -53,16 +45,16 @@ public class Shooter extends SubsystemBase {
 
   public void runShooter(double speed) {
     shooterLeftLeader.set(ControlMode.PercentOutput, speed);
+    shooterRightFollower.set(ControlMode.PercentOutput, speed);
   }
 
-  public double getAverageShooterVelocity() {
-    double average = (shooterRightEncoder.getVelocity() + shooterLeftEncoder.getVelocity()) / 2;
-    return average;
-  }
-
-  public double getAverageShooterPosition() {
-    double average = (shooterLeftEncoder.getPosition() + shooterRightEncoder.getPosition()) / 2;
-    return average;
+  public double getShooterRPM() {
+    double RPM = -(((shooterRightFollower.getSelectedSensorVelocity() + shooterLeftLeader.getSelectedSensorVelocity())
+        / 2)
+        * (10.0 / 4096) * (2 * Math.PI * shooterWheelRadius));
+    // double average = (shooterRightEncoder.getVelocity() +
+    // shooterLeftEncoder.getVelocity()) / 2;
+    return RPM;
   }
 
   @Override

@@ -47,11 +47,13 @@ public class HoldArmInPositionCmd extends ProfiledPIDCommand {
     m_RobotContainer = new RobotContainer();
   }
 
-  @Override
-  public void initialize() {
-    super.initialize();
-    this.angle = Arm.getInstance().getAngle();
-  }
+  /*
+   * @Override
+   * public void initialize() {
+   * super.initialize();
+   * this.angle = Arm.getInstance().getAngle();
+   * }
+   */
 
   // Returns true when the command should end.
   @Override

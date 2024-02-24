@@ -34,9 +34,11 @@ public class ShootInAmpCmd extends Command {
     shooter.runShooter(.5);
 
     // TODO: get correct values
-    if (shooter.getAverageShooterVelocity() >= 100) {
-      intake.runIntake(.5);
-    }
+    /*
+     * if (shooter.getAverageShooterVelocity() >= 100) {
+     * intake.runIntake(.5);
+     * }
+     */
   }
 
   // Called once the command ends or is interrupted.

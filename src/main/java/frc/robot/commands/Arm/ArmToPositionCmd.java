@@ -23,8 +23,6 @@ public class ArmToPositionCmd extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // TODO: check to see if the parameter is in rotations or degrees
-    arm.setPivotPoint(Math.toRadians(angle));
   }
 
   // Called every time the scheduler runs while the command is scheduled.

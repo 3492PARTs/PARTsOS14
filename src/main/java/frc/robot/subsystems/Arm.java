@@ -46,9 +46,10 @@ public class Arm extends SubsystemBase {
 
   ArmFeedforward armFeedForward;
 
-  double kS = 0.38107;
-  double kV = 0.10239;
-  double kG = 0.041986;
+  double kS = 0.21092; // .38107
+  double kV = 0.11019; // .10239
+  double kG = 0.02501; // .02501
+  double kA = 0.021335;
 
   double pivotGearRatio = Constants.Arm.PIVOT_GEAR_RATIO;
 
@@ -79,12 +80,12 @@ public class Arm extends SubsystemBase {
   public Arm() {
 
     // TODO: change angdeg higher later (faster the better)
-    ArmConstraints = new TrapezoidProfile.Constraints(Math.toRadians(40), Math.toRadians(6));
+    ArmConstraints = new TrapezoidProfile.Constraints(Math.toRadians(40), Math.toRadians(27));
 
     // ks: overcomes static friction
     // kg: voltage needed to maintain speed
     // kv: voltage needed to accelerate
-    armFeedForward = new ArmFeedforward(kS, kG, kV);
+    armFeedForward = new ArmFeedforward(kS, kG, kV, kA);
 
     pivotLeftMotor = new CANSparkMax(Constants.Arm.LEFT_PIVOT_MOTOR, MotorType.kBrushless);
     pivotRightMotor = new CANSparkMax(Constants.Arm.RIGHT_PIVOT_MOTOR, MotorType.kBrushless);

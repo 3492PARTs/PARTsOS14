@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import org.littletonrobotics.urcl.URCL;
+
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -112,11 +115,12 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-
-    if (Intake.getInstance().hasNote()) {
-      // TODO: update values to fit arm within bumpers
-      new ProfiledPivotArmCmd(40, 2.7, 0, 0).schedule();
-    }
+    /*
+     * if (Intake.getInstance().hasNote()) {
+     * // TODO: update values to fit arm within bumpers
+     * new ProfiledPivotArmCmd(40, 2.7, 0, 0).schedule();
+     * }
+     */
   }
 
   @Override

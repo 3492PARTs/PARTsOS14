@@ -13,15 +13,13 @@ public class ShootInSpeakerCmd extends Command {
   /** Creates a new ShootInAmpCmd. */
   Shooter shooter;
   Intake intake;
-  Encoder shooterEncoder;
 
   public ShootInSpeakerCmd() {
     // Use addRequirements() here to declare subsystem dependencies.
     shooter = Shooter.getInstance();
     intake = Intake.getInstance();
-
-    addRequirements(shooter);
     addRequirements(intake);
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -32,12 +30,12 @@ public class ShootInSpeakerCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.runShooter(.9);
+    shooter.runShooter(.7);
 
-    // TODO: get correct values
-    if (shooter.getAverageShooterVelocity() >= 100) {
-      intake.runIntake(.80);
+    if (shooter.getShooterRPM() >= 1730) {
+      intake.runIntake(-.9);
     }
+
   }
 
   // Called once the command ends or is interrupted.
