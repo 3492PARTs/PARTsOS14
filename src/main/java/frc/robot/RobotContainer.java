@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.commands.Arm.HoldArmInPosition;
+import frc.robot.commands.Arm.PhotoEyeArmUpCmd;
 import frc.robot.commands.Arm.ProfiledPivotArm;
 import frc.robot.commands.Arm.ZeroPivotEncoders;
 import frc.robot.commands.Autos.MoveForward;
@@ -113,20 +114,20 @@ public class RobotContainer {
      */
 
     // operatorController.rightTrigger(.4).whileTrue(new IntakeShootCmd(-.75));
-    // operatorController.rightBumper().whileTrue(new IntakeShootCmd())
-
-    operatorController.a().whileTrue(new ShootCmd());
+    // operatorController.rightBumper().whileTrue(new ShootInAmpCmd());
 
     // Operator Buttons
-    operatorController.x().onTrue(new ProfiledPivotArm(70, 2.7, 0.0, 0.0));
-    operatorController.b().onTrue(new ProfiledPivotArm(30, 2.7, 0.0, 0.0));
-    operatorController.y().onTrue(new ProfiledPivotArm(-5.09, 3.0, 0.3, 0.0));
+    operatorController.x().onTrue(new PhotoEyeArmUpCmd()); // ground & home
+    operatorController.y().onTrue(new ProfiledPivotArm(70, 2.7, 0.0, 0.0)); // speaker
+    // TODO: fix home position value
+    operatorController.b().onTrue(new ProfiledPivotArm(30, 2.7, 0.0, 0.0)); // home
+    operatorController.a().onTrue(new ProfiledPivotArm(-5.09, 3.0, 0.3, 0.0)); // amp
 
     // operatorController.rightTrigger(.4).whileTrue(new ShootCmd());
+    operatorController.a().whileTrue(new ShootCmd());
 
     operatorController.leftTrigger(.4).whileTrue(new RunIntakeCmd(-.75));
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
-    // operatorController.b().whileTrue(new IntakeShootCmd());
     // operatorController.a().whileTrue(new ZeroPivotEncoders());
 
     // SysID

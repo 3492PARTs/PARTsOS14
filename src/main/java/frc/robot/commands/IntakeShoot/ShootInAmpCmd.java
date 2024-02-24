@@ -1,6 +1,7 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
+
 package frc.robot.commands.IntakeShoot;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -8,23 +9,21 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-public class IntakeShootCmd extends Command {
-  /** Creates a new RunIntakeCmd. */
-  Intake intake;
+public class ShootInAmpCmd extends Command {
+  /** Creates a new ShootInAmpCmd. */
   Shooter shooter;
+  Intake intake;
   Encoder shooterEncoder;
-  double speedOfIntake;
-  double speedOfShooter;
 
-  public IntakeShootCmd(double speedOfIntake, double speedOfShooter) {
+  public ShootInAmpCmd() {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.intake = Intake.getInstance();
-    this.shooter = Shooter.getInstance();
-    this.speedOfIntake = speedOfIntake;
-    this.speedOfShooter = speedOfShooter;
-    // shooterEncoder = new Encoder(null, null);
-    addRequirements(intake);
+    shooter = Shooter.getInstance();
+    intake = Intake.getInstance();
+
+    // TODO: add shooter encoder
+
     addRequirements(shooter);
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
@@ -33,22 +32,21 @@ public class IntakeShootCmd extends Command {
   }
 
   // Called every time the scheduler runs while the command is scheduled.
-  //
   @Override
   public void execute() {
-    shooter.runShooter(speedOfShooter);
-    /*
-     * if () {
-     * new RunIntakeCmd(speedOfIntake).schedule();
-     * }
-     */
+    shooter.runShooter(.5);
+
+    // TODO: get correct values
+    if (shooterEncoder.getRate() >= 100) {
+      intake.runIntake(.5);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.runIntake(0);
     shooter.runShooter(0);
+    intake.runIntake(0);
   }
 
   // Returns true when the command should end.
