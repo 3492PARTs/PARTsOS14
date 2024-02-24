@@ -21,17 +21,12 @@ public class Intake extends SubsystemBase {
 
   static TalonSRX intakeMotor;
 
-  // photoeye initialization
-  // private boolean hasGamePiece = true;
   // TODO: update digital input number
-  DigitalInput photoEye = new DigitalInput(0);
+  DigitalInput photoEye = new DigitalInput(Constants.Intake.PHOTOEYE);
 
   /** Creates a new Intake. */
   public Intake() {
     intakeMotor = new TalonSRX(Constants.Intake.INTAKE_MOTOR);
-
-    // displays HAS NOTE
-    SmartDashboard.putBoolean("HAS NOTE", hasNoteSupplier().getAsBoolean());
   }
 
   public static Intake getInstance() {
@@ -54,16 +49,6 @@ public class Intake extends SubsystemBase {
   }
 
   // methods for note detection using photoEyes
-
-  /*
-   * public boolean hasGamePiece() {
-   * return hasGamePiece;
-   * }
-   * 
-   * public void setGamePiece(boolean hasGamePiece) {
-   * this.hasGamePiece = hasGamePiece;
-   * }
-   */
 
   public Boolean hasNote() {
     return photoEye.get();

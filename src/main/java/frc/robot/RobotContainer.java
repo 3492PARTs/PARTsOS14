@@ -4,19 +4,16 @@
 
 package frc.robot;
 
-import frc.robot.commands.Arm.HoldArmInPosition;
-import frc.robot.commands.Arm.PhotoEyeArmUpCmd;
-import frc.robot.commands.Arm.ProfiledPivotArm;
-import frc.robot.commands.Arm.ZeroPivotEncoders;
-import frc.robot.commands.Autos.MoveForward;
-//import frc.robot.commands.Autos.MoveForward;
+import frc.robot.commands.Arm.HoldArmInPositionCmd;
+import frc.robot.commands.Arm.ProfiledPivotArmCmd;
+import frc.robot.commands.Autos.AutoMoveForward;
+import frc.robot.commands.Drive.ZeroDriveEncodersCmd;
 import frc.robot.commands.IntakeShoot.RunIntakeCmd;
 import frc.robot.commands.IntakeShoot.ShootCmd;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -37,13 +34,10 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain driveTrain = DriveTrain.getInstance();
   private final Arm arm = Arm.getInstance();
-  // Supressing this for now because I know we're gonna use it but this is driving
-  // me mad.
-  @SuppressWarnings("unused")
   private final Intake intake = Intake.getInstance();
   private final Shooter shooter = Shooter.getInstance();
 
-  HoldArmInPosition holdArmInPosition = null;
+  HoldArmInPositionCmd holdArmInPosition = null;
 
   private final CommandXboxController driveController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
@@ -53,12 +47,13 @@ public class RobotContainer {
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
+
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
 
     SmartDashboard.putData("choose auto mode", autoChooser);
-    autoChooser.addOption("Move Forward 3 seconds", new MoveForward());
+    autoChooser.addOption("Move Forward 3 seconds", new AutoMoveForward());
   }
 
   /**
@@ -75,6 +70,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
+
   private void configureBindings() {
 
     driveTrain.setDefaultCommand(
@@ -87,8 +83,7 @@ public class RobotContainer {
         new RunCommand(() -> {
           if (Math.abs(operatorController.getRightY()) > .1) {
             if (holdArmInPosition != null) {
-              // System.out.println("UNschedule");
-              // holdArmInPosition.cancel();
+
               holdArmInPosition = null;
             }
             arm.setPivotSpeed(operatorController.getRightY());
@@ -96,10 +91,8 @@ public class RobotContainer {
 
         else {
             if (holdArmInPosition == null) {
-              // System.out.println("schedule");
-              // System.out.println("angle " + arm.getAngle());
               arm.setPivotSpeed(0);
-              holdArmInPosition = new HoldArmInPosition(arm.getAngle());
+              holdArmInPosition = new HoldArmInPositionCmd(arm.getAngle());
               holdArmInPosition.schedule();
             }
           }
@@ -116,22 +109,21 @@ public class RobotContainer {
      * );
      */
 
-    // operatorController.rightTrigger(.4).whileTrue(new IntakeShootCmd(-.75));
-    // operatorController.rightBumper().whileTrue(new ShootInAmpCmd());
-
     // Operator Buttons
-    operatorController.x().onTrue(new ProfiledPivotArm(80, 2.7, 0, 0)); // ground
-    operatorController.y().onTrue(new ProfiledPivotArm(70, 2.7, 0.0, 0.0)); // speaker
+    operatorController.x().onTrue(new ProfiledPivotArmCmd(80, 2.7, 0, 0)); // ground
+    operatorController.y().onTrue(new ProfiledPivotArmCmd(70, 2.7, 0.0, 0.0)); // speaker
+
     // TODO: fix home position value
-    operatorController.b().onTrue(new ProfiledPivotArm(30, 2.7, 0.0, 0.0)); // home
-    operatorController.a().onTrue(new ProfiledPivotArm(-5.09, 3.0, 0.3, 0.0)); // amp
+    operatorController.b().onTrue(new ProfiledPivotArmCmd(30, 2.7, 0.0, 0.0)); // home
+    operatorController.a().onTrue(new ProfiledPivotArmCmd(-5.09, 3.0, 0.3, 0.0)); // amp
 
     // operatorController.rightTrigger(.4).whileTrue(new ShootCmd());
+    // operatorController.rightTrigger(.4).whileTrue(new IntakeShootCmd(-.75));
+    // operatorController.rightBumper().whileTrue(new ShootInAmpCmd());
     operatorController.a().whileTrue(new ShootCmd());
 
     operatorController.leftTrigger(.4).whileTrue(new RunIntakeCmd(-.75));
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
-    // operatorController.a().whileTrue(new ZeroPivotEncoders());
 
     // SysID
     /*
@@ -147,17 +139,26 @@ public class RobotContainer {
   }
 
   public void displaySmartDashboard() {
+    // Drive
     SmartDashboard.putNumber("left Drive Distance", DriveTrain.getInstance().leftDistance());
     SmartDashboard.putNumber("right Drive Distance", DriveTrain.getInstance().rightDistance());
+    SmartDashboard.putData("zero Drive Encoder", new ZeroDriveEncodersCmd());
     // SmartDashboard.putNumber("left Drive Encoder",
     // DriveTrain.getInstance().leftEncoderPosition());
     // SmartDashboard.putNumber("right Drive Encoder",
     // DriveTrain.getInstance().rightEncoderPosition());
+
+    // Pivot
+    // SmartDashboard.putData("zero Pivot Encoders", new ZeroPivotEncoders());
     SmartDashboard.putNumber("left Pivot Encoder", Arm.getInstance().leftPivotEncoderPosition());
     SmartDashboard.putNumber("right Pivot Encoder", Arm.getInstance().rightPivotEncoderPosition());
+
+    // Shooter
     SmartDashboard.putNumber("shooter Velocity", Shooter.getInstance().getAverageShooterVelocity());
     SmartDashboard.putNumber("shooter position", Shooter.getInstance().getAverageShooterPosition());
-    // SmartDashboard.putData("zero Pivot Encoders", new ZeroPivotEncoders());
+
+    // PhotoEye
+    SmartDashboard.putBoolean("HAS NOTE", Intake.getInstance().hasNote());
   }
 
   public CommandXboxController getOperatorController() {

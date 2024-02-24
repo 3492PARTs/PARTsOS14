@@ -13,21 +13,21 @@ import frc.robot.subsystems.Arm;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ProfiledPivotArm extends ProfiledPIDCommand {
+public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
 
   /** Creates a new profiledPivotArm. */
-  public ProfiledPivotArm(double angle, double kP, double kI, double kD) {
+  public ProfiledPivotArmCmd(double angle, double kP, double kI, double kD) {
     super(
         // The ProfiledPIDController used by the command
         new ProfiledPIDController(
             // The PID gains (tune later)
-            kP,//2,7
+            kP, // 2,7
             kI,
             kD,
             // The motion profile constraints
             Arm.getInstance().getConstraints()),
         // This should return the measurement
-        () -> Arm.getInstance().getCurrentState().position, //getCurrentState() is a trapezoid profile object
+        () -> Arm.getInstance().getCurrentState().position, // getCurrentState() is a trapezoid profile object
         // This should return the goal (can also be a constant)
         new TrapezoidProfile.State(Math.toRadians(angle), 0).position,
         // This uses the output

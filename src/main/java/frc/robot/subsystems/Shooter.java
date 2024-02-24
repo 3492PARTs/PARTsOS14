@@ -31,16 +31,16 @@ public class Shooter extends SubsystemBase {
 
   public Shooter() {
     // Intialize the motors.
-    shooterLeftLeader = new TalonSRX(Constants.Shooter.LEFT_SHOOTER_MOTOR);
-    shooterRightFollower = new TalonSRX(Constants.Shooter.RIGHT_SHOOTER_MOTOR);
+    shooterLeftLeader = new TalonSRX(Constants.Shooter.LEFT_MOTOR);
+    shooterRightFollower = new TalonSRX(Constants.Shooter.RIGHT_MOTOR);
 
     shooterRightFollower.follow(shooterLeftLeader);
 
     shooterRightFollower.setInverted(false);
     shooterLeftLeader.setInverted(true);
 
-    shooterLeftEncoder = new WPI_CANCoder(Constants.Shooter.LEFT_SHOOTER_MOTOR);
-    shooterRightEncoder = new WPI_CANCoder(Constants.Shooter.RIGHT_SHOOTER_MOTOR);
+    shooterLeftEncoder = new WPI_CANCoder(Constants.Shooter.LEFT_MOTOR);
+    shooterRightEncoder = new WPI_CANCoder(Constants.Shooter.RIGHT_MOTOR);
   }
 
   public static Shooter getInstance() {
@@ -64,15 +64,6 @@ public class Shooter extends SubsystemBase {
     double average = (shooterLeftEncoder.getPosition() + shooterRightEncoder.getPosition()) / 2;
     return average;
   }
-  /*
-   * public double countsToMeters (double counts) {
-   * double motorRotations = (double) counts/countsPerRev;
-   * double wheelRotations = motorRotations/shooterGearRatio;
-   * double positionInMeters = wheelRotations * (2 * Math.PI *
-   * Units.inchesToMeters(shooterWheelRadius));
-   * return positionInMeters;
-   * }
-   */
 
   @Override
   public void periodic() {

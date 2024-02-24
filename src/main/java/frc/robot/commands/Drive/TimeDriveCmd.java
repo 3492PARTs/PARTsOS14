@@ -8,16 +8,17 @@ import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class Drive extends Command {
-    double duration;
-    DriveTrain driveTrain;
-    long startTime;
+public class TimeDriveCmd extends Command {
+  double duration;
+  DriveTrain driveTrain;
+  long startTime;
+
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public Drive(double duration ) {
+  public TimeDriveCmd(double duration) {
     driveTrain = DriveTrain.getInstance();
     this.duration = duration;
     addRequirements(driveTrain);
@@ -47,4 +48,3 @@ public class Drive extends Command {
     return System.currentTimeMillis() - startTime >= duration * 1000;
   }
 }
-

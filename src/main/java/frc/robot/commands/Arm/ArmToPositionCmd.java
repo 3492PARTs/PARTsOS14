@@ -23,7 +23,7 @@ public class ArmToPositionCmd extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //TODO: check to see if the parameter is in rotations or degrees
+    // TODO: check to see if the parameter is in rotations or degrees
     arm.setPivotPoint(Math.toRadians(angle));
   }
 
@@ -32,11 +32,10 @@ public class ArmToPositionCmd extends Command {
   public void execute() {
     direction = arm.getAngle() > angle;
 
-    //TODO: use slower speeds
+    // TODO: use slower speeds
     if (direction) {
       arm.setPivotSpeed(-0.2);
-    }
-    else {
+    } else {
       arm.setPivotSpeed(0.2);
     }
   }
@@ -49,9 +48,6 @@ public class ArmToPositionCmd extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //TODO: may need to add rotation rate to return statement
-    //return (Math.abs(angle - Elevator.getInstance().getAngle()) < 3) && Elevator.getInstance().getRotationRate() < 30;
     return (Math.abs(angle - arm.getAngle()) < 3);
   }
 }
-

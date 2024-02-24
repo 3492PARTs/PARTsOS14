@@ -18,11 +18,11 @@ package frc.robot;
 public final class Constants {
 
   public static final class Drive {
-    public static final int FRONT_RIGHT_DRIVE_MOTOR = 6;
-    public static final int BACK_RIGHT_DRIVE_MOTOR = 5;
+    public static final int FRONT_RIGHT_MOTOR = 6;
+    public static final int BACK_RIGHT_MOTOR = 5;
 
-    public static final int FRONT_LEFT_DRIVE_MOTOR = 3;
-    public static final int BACK_LEFT_DRIVE_MOTOR = 2;
+    public static final int FRONT_LEFT_MOTOR = 3;
+    public static final int BACK_LEFT_MOTOR = 2;
 
     public static final double OPEN_LOOP_RATE = 0.8;
 
@@ -45,12 +45,13 @@ public final class Constants {
   public static final class Intake {
     public static final int INTAKE_MOTOR = 11;
     public static final double INTAKE_SPEED = .5;
+    public static final int PHOTOEYE = 0;
   }
 
   public static final class Shooter {
     // These should be the values but are most likley in the wrong order.
-    public static final int LEFT_SHOOTER_MOTOR = 12;
-    public static final int RIGHT_SHOOTER_MOTOR = 10;
+    public static final int LEFT_MOTOR = 12;
+    public static final int RIGHT_MOTOR = 10;
 
   }
 
