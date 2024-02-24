@@ -32,10 +32,7 @@ public class PhotoEyeArmUpCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (intake.hasNote()) {
-      // TODO: update values to fit arm within bumpers
-      new ProfiledPivotArm(40, 2.7, 0, 0).schedule();
-    }
+
   }
 
   // Called once the command ends or is interrupted.

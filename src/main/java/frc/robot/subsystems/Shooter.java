@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.WPI_CANCoder;
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
@@ -24,7 +26,8 @@ public class Shooter extends SubsystemBase {
   // final double shooterGearRatio;
   final double shooterWheelRadius = 3.98;
 
-  // Encoder shooterEncoder;
+  WPI_CANCoder shooterLeftEncoder;
+  WPI_CANCoder shooterRightEncoder;
 
   public Shooter() {
     // Intialize the motors.
@@ -35,6 +38,9 @@ public class Shooter extends SubsystemBase {
 
     shooterRightFollower.setInverted(false);
     shooterLeftLeader.setInverted(true);
+
+    shooterLeftEncoder = new WPI_CANCoder(Constants.Shooter.LEFT_SHOOTER_MOTOR);
+    shooterRightEncoder = new WPI_CANCoder(Constants.Shooter.RIGHT_SHOOTER_MOTOR);
   }
 
   public static Shooter getInstance() {
@@ -47,6 +53,16 @@ public class Shooter extends SubsystemBase {
 
   public void runShooter(double speed) {
     shooterLeftLeader.set(ControlMode.PercentOutput, speed);
+  }
+
+  public double getAverageShooterVelocity() {
+    double average = (shooterRightEncoder.getVelocity() + shooterLeftEncoder.getVelocity()) / 2;
+    return average;
+  }
+
+  public double getAverageShooterPosition() {
+    double average = (shooterLeftEncoder.getPosition() + shooterRightEncoder.getPosition()) / 2;
+    return average;
   }
   /*
    * public double countsToMeters (double counts) {

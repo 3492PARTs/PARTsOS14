@@ -4,23 +4,24 @@
 package frc.robot.commands.IntakeShoot;
 
 import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.WPI_CANCoder;
 import com.ctre.phoenix6.hardware.CANcoder;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-
+import frc.robot.Constants;
 import frc.robot.subsystems.Shooter;
 
 public class ShootCmd extends Command {
   /** Creates a new Shoot. */
   Shooter shooter;
-  Encoder shooterEncoder;
 
   public ShootCmd() {
     // Use addRequirements() here to declare subsystem dependencies.
     // shooterEncoder = new Encoder()
     this.shooter = Shooter.getInstance();
+
     addRequirements(shooter);
   }
 
@@ -34,7 +35,6 @@ public class ShootCmd extends Command {
   @Override
   public void execute() {
     shooter.runShooter(1);
-    SmartDashboard.putNumber("Rate of Shooter", shooterEncoder.getRate());
   }
 
   // Called once the command ends or is interrupted.

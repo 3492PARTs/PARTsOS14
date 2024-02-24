@@ -16,6 +16,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -105,6 +106,8 @@ public class RobotContainer {
         },
             arm));
 
+    // arm.setDefaultCommand(new HoldArmInPosition(0));
+
     /*
      * shooter.setDefaultCommand(
      * new RunCommand(() -> shooter.runShooter(
@@ -117,7 +120,7 @@ public class RobotContainer {
     // operatorController.rightBumper().whileTrue(new ShootInAmpCmd());
 
     // Operator Buttons
-    operatorController.x().onTrue(new PhotoEyeArmUpCmd()); // ground & home
+    operatorController.x().onTrue(new ProfiledPivotArm(80, 2.7, 0, 0)); // ground
     operatorController.y().onTrue(new ProfiledPivotArm(70, 2.7, 0.0, 0.0)); // speaker
     // TODO: fix home position value
     operatorController.b().onTrue(new ProfiledPivotArm(30, 2.7, 0.0, 0.0)); // home
@@ -146,11 +149,15 @@ public class RobotContainer {
   public void displaySmartDashboard() {
     SmartDashboard.putNumber("left Drive Distance", DriveTrain.getInstance().leftDistance());
     SmartDashboard.putNumber("right Drive Distance", DriveTrain.getInstance().rightDistance());
-    SmartDashboard.putNumber("left Drive Encoder", DriveTrain.getInstance().leftEncoderPosition());
-    SmartDashboard.putNumber("right Drive Encoder", DriveTrain.getInstance().rightEncoderPosition());
+    // SmartDashboard.putNumber("left Drive Encoder",
+    // DriveTrain.getInstance().leftEncoderPosition());
+    // SmartDashboard.putNumber("right Drive Encoder",
+    // DriveTrain.getInstance().rightEncoderPosition());
     SmartDashboard.putNumber("left Pivot Encoder", Arm.getInstance().leftPivotEncoderPosition());
     SmartDashboard.putNumber("right Pivot Encoder", Arm.getInstance().rightPivotEncoderPosition());
-    SmartDashboard.putNumber("current voltage", Shooter.shooterLeftLeader.getBusVoltage());
+    SmartDashboard.putNumber("shooter Velocity", Shooter.getInstance().getAverageShooterVelocity());
+    SmartDashboard.putNumber("shooter position", Shooter.getInstance().getAverageShooterPosition());
+    // SmartDashboard.putData("zero Pivot Encoders", new ZeroPivotEncoders());
   }
 
   public CommandXboxController getOperatorController() {
