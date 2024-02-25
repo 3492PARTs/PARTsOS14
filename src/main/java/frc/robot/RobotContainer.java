@@ -84,39 +84,25 @@ public class RobotContainer {
 
     driveController.a().whileTrue(new ZeroPivotEncodersCmd());
 
-    /*
-     * arm.setDefaultCommand(
-     * new RunCommand(
-     * () -> {
-     * if (Math.abs(operatorController.getRightY()) > .1) {
-     * arm.setPivotSpeed(operatorController.getRightY());
-     * if (holdArmInPosition != null) {
-     * holdArmInPosition = null;
-     * } else {
-     * arm.setPivotSpeed(0);
-     * }
-     * } else {
-     * if (holdArmInPosition == null) {
-     * arm.setPivotSpeed(0);
-     * holdArmInPosition = new HoldArmInPositionCmd(arm.getAngle());
-     * holdArmInPosition.schedule();
-     * }
-     * 
-     * }
-     * },
-     * arm));
-     */
+    arm.setDefaultCommand(
+        new RunCommand(() -> {
+          if (Math.abs(operatorController.getRightY()) > .1) {
+            if (holdArmInPosition != null) {
+
+              holdArmInPosition = null;
+            }
+            arm.setPivotSpeed(operatorController.getRightY());
+          } else {
+            if (holdArmInPosition == null) {
+              arm.setPivotSpeed(0);
+              holdArmInPosition = new HoldArmInPositionCmd(arm.getAngle());
+              holdArmInPosition.schedule();
+            }
+          }
+        },
+            arm));
 
     // arm.setDefaultCommand(new HoldArmInPositionCmd());
-
-    arm.setDefaultCommand(new RunCommand(() -> {
-      if (Math.abs(operatorController.getRightY()) > .2) {
-        Arm.getInstance().setPivotSpeed(operatorController.getRightY());
-      } else {
-        Arm.getInstance().setPivotSpeed(0);
-      }
-    },
-        arm));
 
     operatorController.x().onTrue(new ArmToPositionCmd(Constants.Arm.GROUND)); // ground
     operatorController.y().onTrue(new ArmToPositionCmd(Constants.Arm.SPEAKER)); // speaker
