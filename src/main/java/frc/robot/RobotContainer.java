@@ -6,12 +6,9 @@ package frc.robot;
 
 import frc.robot.commands.Arm.ArmToPositionCmd;
 import frc.robot.commands.Arm.HoldArmInPositionCmd;
-import frc.robot.commands.Arm.ProfiledPivotArmCmd;
 import frc.robot.commands.Arm.ZeroPivotEncodersCmd;
 import frc.robot.commands.Autos.AutoMoveForward;
-import frc.robot.commands.Drive.ZeroDriveEncodersCmd;
 import frc.robot.commands.IntakeShoot.RunIntakeCmd;
-import frc.robot.commands.IntakeShoot.ShootCmd;
 import frc.robot.commands.IntakeShoot.ShootInSpeakerCmd;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
@@ -35,7 +32,6 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
   private final DriveTrain driveTrain = DriveTrain.getInstance();
   private final Arm arm = Arm.getInstance();
   private final Intake intake = Intake.getInstance();
@@ -57,7 +53,7 @@ public class RobotContainer {
     configureBindings();
 
     SmartDashboard.putData("choose auto mode", autoChooser);
-    autoChooser.addOption("Move Forward 3 seconds", new AutoMoveForward());
+    autoChooser.addOption("Move Forward", new AutoMoveForward());
   }
 
   /**
@@ -112,34 +108,26 @@ public class RobotContainer {
             arm));
 
     // arm.setDefaultCommand(new HoldArmInPosition(0));
-    /*
-     * shooter.setDefaultCommand(
-     * new RunCommand(() -> shooter.runShooter(
-     * operatorController.getRightTriggerAxis() > 0 ? .5 : 0),
-     * shooter));
-     */
 
-    operatorController.x().onTrue(new ArmToPositionCmd(5)); // ground
-    operatorController.y().onTrue(new ArmToPositionCmd(42.8)); // speaker
-    operatorController.b().onTrue(new ArmToPositionCmd(10)); // home
-    operatorController.a().onTrue(new ArmToPositionCmd(-5.09)); // amp
+    operatorController.x().onTrue(new ArmToPositionCmd(Constants.Arm.GROUND)); // ground
+    operatorController.y().onTrue(new ArmToPositionCmd(Constants.Arm.SPEAKER)); // speaker
+    operatorController.b().onTrue(new ArmToPositionCmd(Constants.Arm.HOME)); // home
+    operatorController.a().onTrue(new ArmToPositionCmd(Constants.Arm.AMP)); // amp
 
     operatorController.rightTrigger(.1).whileTrue(new ShootInSpeakerCmd());
     // operatorController.rightBumper().whileTrue(new ShootInAmpCmd());
 
-    operatorController.leftTrigger(.4).whileTrue(new RunIntakeCmd(-.75));
+    operatorController.leftTrigger(.1).whileTrue(new RunIntakeCmd(-.75));
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
 
-    // Operator Buttons
+    // Profiled Pivot Buttons
     /*
      * operatorController.x().onTrue(new ProfiledPivotArmCmd(80, 2.7, 0, 0)); //
      * ground
      * operatorController.y().onTrue(new ProfiledPivotArmCmd(42.8, 3.0, 0.0, 0.0));
      * // speaker
-     * // TODO: fix home position angle
      * operatorController.b().onTrue(new ProfiledPivotArmCmd(30, 2.7, 0.0, 0.0)); //
      * home
-     * // TODO: tune amp positions pid values
      * operatorController.a().onTrue(new ProfiledPivotArmCmd(-5.09, 3.0, 0.3, 0.0));
      */
 

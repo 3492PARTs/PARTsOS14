@@ -5,12 +5,10 @@
 package frc.robot.commands.IntakeShoot;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
 
 public class TimeIntakeCmd extends Command {
   /** Creates a new Intake. */
-  // Make sure to initalize these to avoid weird Java shananigans.
   Intake intake;
   long startTime = 0;
   double duration = 0.0;
@@ -32,7 +30,7 @@ public class TimeIntakeCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.runIntake(Constants.Intake.INTAKE_SPEED);
+    intake.runIntake(.8);
   }
 
   // Called once the command ends or is interrupted.

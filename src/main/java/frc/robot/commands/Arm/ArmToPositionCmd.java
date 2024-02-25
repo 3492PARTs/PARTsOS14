@@ -30,7 +30,6 @@ public class ArmToPositionCmd extends Command {
   public void execute() {
     direction = arm.getAngle() > angle;
 
-    // TODO: use slower speeds
     if (direction) {
       arm.setPivotSpeed(-0.2);
     } else {
@@ -46,6 +45,6 @@ public class ArmToPositionCmd extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (Math.abs(angle - arm.getAngle()) < 3);
+    return (Math.abs(angle - arm.getAngle()) < 2);
   }
 }

@@ -11,6 +11,7 @@ public class RunIntakeCmd extends Command {
   /** Creates a new RunIntakeCmd. */
   double direction;
   Intake intake;
+
   public RunIntakeCmd(double direction) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = Intake.getInstance();
@@ -20,12 +21,12 @@ public class RunIntakeCmd extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //TODO: add intake.hasNote() in parameters when adding in photoEye
     intake.runIntake(direction);
   }
 

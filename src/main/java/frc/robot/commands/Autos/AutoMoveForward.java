@@ -6,9 +6,7 @@ package frc.robot.commands.Autos;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.Drive.TimeDriveCmd;
-import frc.robot.commands.Drive.PIDdriveCmd;
-import frc.robot.subsystems.PIDValues;
+import frc.robot.commands.Drive.DriveDistanceCmd;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -17,11 +15,6 @@ public class AutoMoveForward extends SequentialCommandGroup {
   /** Creates a new MoveForward. */
   public AutoMoveForward() {
     // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new Drive);
-    // addCommands(new PIDdrive(new PIDValues(1.0, 0.0, 0.0),
-    // Units.inchesToMeters(36)));
-    // addCommands(new PIDValues(0.0, 0.0, 0.0), new
-    // PIDdrive(Units.inchesToMeters(36)));
+    addCommands(new DriveDistanceCmd(Units.inchesToMeters(36)));
   }
 }

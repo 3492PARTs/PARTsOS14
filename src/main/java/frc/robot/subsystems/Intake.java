@@ -11,7 +11,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -21,7 +20,6 @@ public class Intake extends SubsystemBase {
 
   static TalonSRX intakeMotor;
 
-  // TODO: update digital input number
   DigitalInput photoEye = new DigitalInput(Constants.Intake.PHOTOEYE);
 
   /** Creates a new Intake. */
@@ -49,7 +47,6 @@ public class Intake extends SubsystemBase {
   }
 
   // methods for note detection using photoEyes
-
   public Boolean hasNote() {
     return photoEye.get();
   }
@@ -62,7 +59,5 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    // SmartDashboard.putBoolean("HAS NOTE", hasNoteSupplier().getAsBoolean());
-    // SmartDashboard.putBoolean("Sensor 0", photoEye.get());
   }
 }

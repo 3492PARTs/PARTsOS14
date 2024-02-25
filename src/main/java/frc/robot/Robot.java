@@ -11,10 +11,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.Arm.ProfiledPivotArmCmd;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Intake;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -118,7 +116,7 @@ public class Robot extends TimedRobot {
     /*
      * if (Intake.getInstance().hasNote()) {
      * // TODO: update values to fit arm within bumpers
-     * new ProfiledPivotArmCmd(40, 2.7, 0, 0).schedule();
+     * new ArmToPositionCmd(10).schedule();
      * }
      */
   }

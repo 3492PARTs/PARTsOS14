@@ -50,8 +50,6 @@ public class PIDdriveCmd extends Command {
     driveTrain.moveVolts(volts, volts);
 
     SmartDashboard.putNumber("PID Drive", volts);
-    // SmartDashboard.putNumber("drive setPoint",
-    // drivePIDController.getPositionError());
   }
 
   // Called once the command ends or is interrupted.

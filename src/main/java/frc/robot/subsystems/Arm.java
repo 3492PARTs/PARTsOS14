@@ -18,7 +18,6 @@ import edu.wpi.first.units.MutableMeasure;
 import edu.wpi.first.units.Velocity;
 import edu.wpi.first.units.Voltage;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
@@ -177,7 +176,6 @@ public class Arm extends SubsystemBase {
     return pivotLeftMotor.getEncoder().getPosition();
   }
 
-  // added method in robotinit() in Robot.java
   public void zeroPivotEncoders() {
     pivotLeftMotor.getEncoder().setPosition(0);
     pivotRightMotor.getEncoder().setPosition(0);

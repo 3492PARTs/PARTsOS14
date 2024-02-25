@@ -25,9 +25,6 @@ public final class Constants {
     public static final int BACK_LEFT_MOTOR = 2;
 
     public static final double OPEN_LOOP_RATE = 0.8;
-
-    // last year was 44/30
-    // public static final double DRIVE_GEAR_RATIO = null;
   }
 
   public static final class Arm {
@@ -40,6 +37,11 @@ public final class Constants {
     public static final double kP = 2.7;
     public static final double kI = 0.0;
     public static final double kD = 0.0;
+
+    public static final double GROUND = 5;
+    public static final double SPEAKER = 42.8;
+    public static final double HOME = 10;
+    public static final double AMP = -5.09;
   }
 
   public static final class Intake {
@@ -49,15 +51,9 @@ public final class Constants {
   }
 
   public static final class Shooter {
-    // These should be the values but are most likley in the wrong order.
     public static final int LEFT_MOTOR = 10;
     public static final int RIGHT_MOTOR = 12;
 
-  }
-
-  public static class Operator {
-    // ? Unkown for now.
-    public static final int kDriverControllerPort = 0;
   }
 
   // THIS IS FOR SHUFFLEBOARD DEBUG PLUS OTHER MISC THINGS //
