@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.commands.Arm.HoldArmInPositionCmd;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -39,9 +40,11 @@ public class RobotContainer {
 
   HoldArmInPositionCmd holdArmInPosition = null;
 
+  // Drive controls drivetrain, operator controls arm, intake, and shooter.
   private final CommandXboxController driveController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
 
+  // SmartDashboard chooser for auto tasks.
   SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   /**
@@ -82,31 +85,27 @@ public class RobotContainer {
     driveController.a().whileTrue(new ZeroPivotEncodersCmd());
 
     /*
-     * arm.setDefaultCommand(
-     * new RunCommand(() -> {
-     * if (Math.abs(operatorController.getRightY()) > .1) {
-     * arm.setPivotSpeed(operatorController.getRightY());
-     * 
-     * if (holdArmInPosition != null) {
-     * 
-     * holdArmInPosition = null;
-     * }
-     * arm.setPivotSpeed(operatorController.getRightY());
-     * 
-     * }
-     * else {
-     * arm.setPivotSpeed(0);
-     * }
-     * else {
-     * if (holdArmInPosition == null) {
-     * arm.setPivotSpeed(0);
-     * holdArmInPosition = new HoldArmInPositionCmd(arm.getAngle());
-     * holdArmInPosition.schedule();
-     * }
-     * }
-     * },
-     * arm));
-     */
+    arm.setDefaultCommand(
+      new RunCommand(
+        () -> {
+          if (Math.abs(operatorController.getRightY()) > .1) {
+            arm.setPivotSpeed(operatorController.getRightY());
+            if (holdArmInPosition != null) {
+              holdArmInPosition = null;
+            } else {
+              arm.setPivotSpeed(0);
+            }
+          } else {
+            if (holdArmInPosition == null) {
+              arm.setPivotSpeed(0);
+              holdArmInPosition = new HoldArmInPositionCmd(arm.getAngle());
+              holdArmInPosition.schedule();
+            }
+          
+          }
+        },
+      arm));
+      */
 
     arm.setDefaultCommand(new HoldArmInPositionCmd());
 
@@ -133,16 +132,12 @@ public class RobotContainer {
      */
 
     // SysID
-    /*
-     * operatorController.a().whileTrue(arm.sysIdRoutine.quasistatic(SysIdRoutine.
-     * Direction.kForward));
-     * operatorController.b().whileTrue(arm.sysIdRoutine.quasistatic(SysIdRoutine.
-     * Direction.kReverse));
-     * operatorController.x().whileTrue(arm.sysIdRoutine.dynamic(SysIdRoutine.
-     * Direction.kForward));
-     * operatorController.y().whileTrue(arm.sysIdRoutine.dynamic(SysIdRoutine.
-     * Direction.kReverse));
-     */
+    if (Constants.Arm.SYSID) {
+      operatorController.a().whileTrue(arm.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward));
+      operatorController.b().whileTrue(arm.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse));
+      operatorController.x().whileTrue(arm.sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward));
+      operatorController.y().whileTrue(arm.sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
+    }
   }
 
   public void displaySmartDashboard() {

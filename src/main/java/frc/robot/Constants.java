@@ -42,6 +42,8 @@ public final class Constants {
     public static final double SPEAKER = 42.8;
     public static final double HOME = 10;
     public static final double AMP = -5.09;
+
+    public static final boolean SYSID = false;
   }
 
   public static final class Intake {
