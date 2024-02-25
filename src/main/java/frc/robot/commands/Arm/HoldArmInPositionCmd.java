@@ -43,7 +43,6 @@ public class HoldArmInPositionCmd extends ProfiledPIDCommand {
     addRequirements(Arm.getInstance());
     // Configure additional PID options by calling `getController` here.
     getController().setTolerance(2);
-    System.out.println(Arm.getInstance().getAngle());
     m_RobotContainer = RobotContainer.getInstance();
   }
 

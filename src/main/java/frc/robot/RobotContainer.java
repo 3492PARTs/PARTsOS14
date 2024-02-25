@@ -141,8 +141,10 @@ public class RobotContainer {
 
   public void displaySmartDashboard() {
     // Drive
-    SmartDashboard.putNumber("left Drive Distance", DriveTrain.getInstance().leftDistance());
-    SmartDashboard.putNumber("right Drive Distance", DriveTrain.getInstance().rightDistance());
+    // SmartDashboard.putNumber("left Drive Distance",
+    // DriveTrain.getInstance().leftDistance());
+    // SmartDashboard.putNumber("right Drive Distance",
+    // DriveTrain.getInstance().rightDistance());
     // SmartDashboard.putData("zero Drive Encoder", new ZeroDriveEncodersCmd());
     // SmartDashboard.putNumber("left Drive Encoder",
     // DriveTrain.getInstance().leftEncoderPosition());
@@ -151,8 +153,10 @@ public class RobotContainer {
 
     // Pivot
     // SmartDashboard.putData("zero Pivot Encoders", new ZeroPivotEncodersCmd());
-    SmartDashboard.putNumber("left Pivot Encoder", Arm.getInstance().leftPivotEncoderPosition());
-    SmartDashboard.putNumber("right Pivot Encoder", Arm.getInstance().rightPivotEncoderPosition());
+    // SmartDashboard.putNumber("left Pivot Encoder",
+    // Arm.getInstance().leftPivotEncoderPosition());
+    // SmartDashboard.putNumber("right Pivot Encoder",
+    // Arm.getInstance().rightPivotEncoderPosition());
 
     // Shooter
     SmartDashboard.putNumber("shooter RPM", Shooter.getInstance().getShooterRPM());

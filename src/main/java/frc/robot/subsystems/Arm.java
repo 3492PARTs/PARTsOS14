@@ -102,7 +102,8 @@ public class Arm extends SubsystemBase {
     pivotRightMotor.setOpenLoopRampRate(Constants.Arm.OPEN_LOOP_RATE);
 
     Shuffleboard.getTab("debug").addNumber("arm angle", getAngleSupplier());
-    Shuffleboard.getTab("debug").addNumber("arm angular velocity", getAnglularVelocitySupplier());
+    // Shuffleboard.getTab("debug").addNumber("arm angular velocity",
+    // getAnglularVelocitySupplier());
   }
 
   public static Arm getInstance() {
