@@ -5,6 +5,8 @@
 package frc.robot.commands.Arm;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
+import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeCommand;
 import frc.robot.subsystems.Arm;
 
 public class ArmToPositionCmd extends Command {
@@ -40,6 +42,9 @@ public class ArmToPositionCmd extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    if (angle == Constants.Arm.GROUND) {
+      new RunIntakePhotoEyeCommand(.5).schedule();
+    }
   }
 
   // Returns true when the command should end.
