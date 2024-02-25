@@ -38,10 +38,10 @@ public final class Constants {
     public static final double kI = 0.0;
     public static final double kD = 0.0;
 
-    public static final double GROUND = 70.0;
+    public static final double GROUND = 67;
     public static final double SPEAKER = 42.8;
     public static final double HOME = 10;
-    public static final double AMP = -7;
+    public static final double AMP = -10;
 
     public static final boolean SYSID = false;
   }
