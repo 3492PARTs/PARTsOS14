@@ -21,7 +21,7 @@ public class RunIntakePhotoEyeCommand extends Command {
     this.intake = Intake.getInstance();
     this.speed = speed;
     addRequirements(intake);
-    m_robotContainer = new RobotContainer();
+    m_robotContainer = RobotContainer.getInstance();
   }
 
   // Called when the command is initially scheduled.

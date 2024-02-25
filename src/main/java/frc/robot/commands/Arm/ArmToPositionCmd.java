@@ -42,8 +42,9 @@ public class ArmToPositionCmd extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    arm.setPivotSpeed(0);
     if (angle == Constants.Arm.GROUND) {
-      new RunIntakePhotoEyeCommand(.5).schedule();
+      new RunIntakePhotoEyeCommand(-.5).schedule();
     }
   }
 

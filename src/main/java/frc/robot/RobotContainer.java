@@ -38,6 +38,7 @@ public class RobotContainer {
   private final Arm arm = Arm.getInstance();
   private final Intake intake = Intake.getInstance();
   private final Shooter shooter = Shooter.getInstance();
+  private static RobotContainer robotContainerInstance;
 
   HoldArmInPositionCmd holdArmInPosition = null;
 
@@ -58,6 +59,14 @@ public class RobotContainer {
 
     SmartDashboard.putData("choose auto mode", autoChooser);
     autoChooser.addOption("Move Forward", new AutoMoveForward());
+  }
+
+  public static RobotContainer getInstance() {
+    // If instance is null, then make a new instance.
+    if (robotContainerInstance == null) {
+      robotContainerInstance = new RobotContainer();
+    }
+    return robotContainerInstance;
   }
 
   /**

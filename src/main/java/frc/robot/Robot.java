@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_robotContainer = new RobotContainer();
+    m_robotContainer = RobotContainer.getInstance();
     Arm.getInstance().zeroPivotEncoders();
     DriveTrain.getInstance().zeroDriveEncoders();
     DriveTrain.getInstance().zeroGyro();
