@@ -56,6 +56,10 @@ public class HoldArmInPositionCmd extends ProfiledPIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(m_RobotContainer.getOperatorController().getRightY()) > .1;
+    return Math.abs(m_RobotContainer.getOperatorController().getRightY()) > .1 ||
+        m_RobotContainer.getOperatorController().a().getAsBoolean() ||
+        m_RobotContainer.getOperatorController().b().getAsBoolean() ||
+        m_RobotContainer.getOperatorController().x().getAsBoolean() ||
+        m_RobotContainer.getOperatorController().y().getAsBoolean();
   }
 }
