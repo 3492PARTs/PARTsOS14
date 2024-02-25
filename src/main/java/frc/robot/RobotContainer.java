@@ -84,34 +84,33 @@ public class RobotContainer {
             driveTrain));
 
     driveController.a().whileTrue(new ZeroPivotEncodersCmd());
-
+    /* 
     arm.setDefaultCommand(
         new RunCommand(() -> {
           if (Math.abs(operatorController.getRightY()) > .1) {
             arm.setPivotSpeed(operatorController.getRightY());
-            /*
-             * if (holdArmInPosition != null) {
-             * 
-             * holdArmInPosition = null;
-             * }
-             * arm.setPivotSpeed(operatorController.getRightY());
-             */
-          } else {
+    
+             if (holdArmInPosition != null) {
+             
+             holdArmInPosition = null;
+            }
+             arm.setPivotSpeed(operatorController.getRightY());
+             
+          } 
+          else {
             arm.setPivotSpeed(0);
           }
-          /*
-           * else {
-           * if (holdArmInPosition == null) {
-           * arm.setPivotSpeed(0);
-           * holdArmInPosition = new HoldArmInPositionCmd(arm.getAngle());
-           * holdArmInPosition.schedule();
-           * }
-           * }
-           */
+           else {
+           if (holdArmInPosition == null) {
+           arm.setPivotSpeed(0);
+           holdArmInPosition = new HoldArmInPositionCmd(arm.getAngle());
+           holdArmInPosition.schedule();
+           }
+           }
         },
             arm));
-
-    // arm.setDefaultCommand(new HoldArmInPosition(0));
+    */
+    arm.setDefaultCommand(new HoldArmInPositionCmd());
     /*
      * shooter.setDefaultCommand(
      * new RunCommand(() -> shooter.runShooter(

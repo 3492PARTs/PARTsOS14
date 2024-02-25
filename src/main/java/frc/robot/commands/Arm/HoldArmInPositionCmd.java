@@ -16,10 +16,7 @@ import frc.robot.subsystems.Arm;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class HoldArmInPositionCmd extends ProfiledPIDCommand {
   /** Creates a new profiledPivotArm. */
-  double angle;
-  RobotContainer m_RobotContainer;
-
-  public HoldArmInPositionCmd(double angle) {
+  public HoldArmInPositionCmd() {
     super(
         // The ProfiledPIDController used by the command
         new ProfiledPIDController(
@@ -32,10 +29,9 @@ public class HoldArmInPositionCmd extends ProfiledPIDCommand {
         // This should return the measurement
         () -> Arm.getInstance().getCurrentState().position, // getCurrentState() is a trapezoid profile object
         // This should return the goal (can also be a constant)
-        new TrapezoidProfile.State(Math.toRadians(angle), 0).position,
+        new TrapezoidProfile.State(Math.toRadians(Arm.getInstance().getAngle()), 0).position,
         // This uses the output
         (output, setpoint) -> {
-
           double volts = Arm.getInstance().calcOutputVoltage(setpoint.velocity);
           Arm.getInstance().driveMotorVolts(volts + output);
         });
@@ -43,21 +39,16 @@ public class HoldArmInPositionCmd extends ProfiledPIDCommand {
     addRequirements(Arm.getInstance());
     // Configure additional PID options by calling `getController` here.
     getController().setTolerance(2);
-    this.angle = angle;
-    m_RobotContainer = new RobotContainer();
   }
 
-  /*
-   * @Override
-   * public void initialize() {
-   * super.initialize();
-   * this.angle = Arm.getInstance().getAngle();
-   * }
-   */
+  @Override
+  public void initialize() {
+    super.initialize();
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(m_RobotContainer.getOperatorController().getRightY()) > .1;
+    return false;
   }
 }
