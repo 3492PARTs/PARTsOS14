@@ -115,9 +115,9 @@ public class Arm extends SubsystemBase {
 
   // Setting calculations
   public void setPivotSpeed(double speed) {
-    speed = Math.abs(speed) > 0.1 ? speed : 0;
-    pivotLeftMotor.set(speed / 2);
-    pivotRightMotor.set(speed / 2);
+    // speed = Math.abs(speed) > 0.1 ? speed : 0;
+    pivotLeftMotor.set(speed);
+    pivotRightMotor.set(speed);
   }
 
   public void setPivotPoint(double position) {

@@ -38,11 +38,7 @@ public class HoldArmInPositionCmd extends ProfiledPIDCommand {
     addRequirements(Arm.getInstance());
     // Configure additional PID options by calling `getController` here.
     getController().setTolerance(2);
-  }
-
-  @Override
-  public void initialize() {
-    super.initialize();
+    System.out.println(Arm.getInstance().getAngle());
   }
 
   // Returns true when the command should end.
