@@ -8,6 +8,7 @@ import frc.robot.commands.Arm.ArmToPositionCmd;
 import frc.robot.commands.Arm.HoldArmInPositionCmd;
 import frc.robot.commands.Arm.ZeroPivotEncodersCmd;
 import frc.robot.commands.Autos.AutoMoveForward;
+import frc.robot.commands.Autos.AutoOneNoteMiddlePos;
 import frc.robot.commands.IntakeShoot.RunIntakeCmd;
 import frc.robot.commands.IntakeShoot.ShootInAmpCmd;
 import frc.robot.commands.IntakeShoot.ShootInSpeakerCmd;
@@ -60,6 +61,7 @@ public class RobotContainer {
 
     SmartDashboard.putData("choose auto mode", autoChooser);
     autoChooser.addOption("Move Forward", new AutoMoveForward());
+    autoChooser.addOption("One Note Middle", new AutoOneNoteMiddlePos());
   }
 
   public static RobotContainer getInstance() {
