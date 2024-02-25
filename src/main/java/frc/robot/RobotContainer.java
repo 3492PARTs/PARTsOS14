@@ -9,6 +9,7 @@ import frc.robot.commands.Arm.HoldArmInPositionCmd;
 import frc.robot.commands.Arm.ZeroPivotEncodersCmd;
 import frc.robot.commands.Autos.AutoMoveForward;
 import frc.robot.commands.IntakeShoot.RunIntakeCmd;
+import frc.robot.commands.IntakeShoot.ShootInAmpCmd;
 import frc.robot.commands.IntakeShoot.ShootInSpeakerCmd;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
@@ -110,7 +111,7 @@ public class RobotContainer {
     operatorController.a().onTrue(new ArmToPositionCmd(Constants.Arm.AMP)); // amp
 
     operatorController.rightTrigger(.1).whileTrue(new ShootInSpeakerCmd());
-    // operatorController.rightBumper().whileTrue(new ShootInAmpCmd());
+    operatorController.rightBumper().whileTrue(new ShootInAmpCmd());
 
     operatorController.leftTrigger(.1).whileTrue(new RunIntakeCmd(-.75));
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));

@@ -31,7 +31,7 @@ public class ShootInSpeakerCmd extends Command {
   public void execute() {
     shooter.runShooter(.7);
 
-    if (shooter.getShooterRPM() >= 1000) {
+    if (shooter.getShooterRPM() >= 1730) {
       intake.runIntake(-.9);
     }
 
