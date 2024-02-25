@@ -4,6 +4,8 @@
 
 package frc.robot.commands.Arm;
 
+import java.lang.invoke.ConstantCallSite;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeCommand;
@@ -44,7 +46,7 @@ public class ArmToPositionCmd extends Command {
   public void end(boolean interrupted) {
     arm.setPivotSpeed(0);
     if (angle == Constants.Arm.GROUND) {
-      new RunIntakePhotoEyeCommand(-.5).schedule();
+      new RunIntakePhotoEyeCommand(Constants.Intake.INTAKE_SPEED).schedule();
     }
   }
 

@@ -15,6 +15,6 @@ public class AutoMoveForward extends SequentialCommandGroup {
   /** Creates a new MoveForward. */
   public AutoMoveForward() {
     // Add your commands in the addCommands() call, e.g.
-    addCommands(new DriveDistanceCmd(Units.inchesToMeters(36)));
+    addCommands(new DriveDistanceCmd(Units.inchesToMeters(38)));
   }
 }

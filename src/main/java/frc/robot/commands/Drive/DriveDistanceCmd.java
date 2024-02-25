@@ -37,9 +37,9 @@ public class DriveDistanceCmd extends Command {
     // if distance is greater than set point, then drive backwards, otherwise drive
     // forward
     if (direction) {
-      driveTrain.driveArcade(-0.5, 0);
-    } else {
       driveTrain.driveArcade(0.5, 0);
+    } else {
+      driveTrain.driveArcade(-0.5, 0);
     }
 
   }

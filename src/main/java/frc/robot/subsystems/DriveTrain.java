@@ -73,7 +73,7 @@ public class DriveTrain extends SubsystemBase {
   // (position * wheel diameter * pi) / gear ratio
   // gear ratio = driven gears / driving gears
   public double rightDistance() {
-    return Units.inchesToMeters((rightMotorLeader.getEncoder().getPosition() * 3.2 * Math.PI) / 5.87);
+    return -Units.inchesToMeters((rightMotorLeader.getEncoder().getPosition() * 3.2 * Math.PI) / 5.87);
   }
   // 5.87
 

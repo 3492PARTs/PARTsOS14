@@ -48,6 +48,9 @@ public class RunIntakePhotoEyeCommand extends Command {
   public boolean isFinished() {
     return intake.hasNote() ||
         m_robotContainer.getOperatorController().leftBumper().getAsBoolean() ||
-        m_robotContainer.getOperatorController().leftTrigger().getAsBoolean();
+        m_robotContainer.getOperatorController().leftTrigger().getAsBoolean() ||
+        m_robotContainer.getOperatorController().a().getAsBoolean() ||
+        m_robotContainer.getOperatorController().b().getAsBoolean() ||
+        m_robotContainer.getOperatorController().y().getAsBoolean();
   }
 }

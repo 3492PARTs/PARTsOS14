@@ -38,7 +38,7 @@ public final class Constants {
     public static final double kI = 0.0;
     public static final double kD = 0.0;
 
-    public static final double GROUND = 67;
+    public static final double GROUND = 70;
     public static final double SPEAKER = 42.8;
     public static final double HOME = 15;
     public static final double AMP = -10;
@@ -48,7 +48,7 @@ public final class Constants {
 
   public static final class Intake {
     public static final int INTAKE_MOTOR = 11;
-    public static final double INTAKE_SPEED = .8;
+    public static final double INTAKE_SPEED = -.8;
     public static final int PHOTOEYE = 0;
   }
 
