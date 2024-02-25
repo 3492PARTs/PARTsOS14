@@ -4,6 +4,7 @@
 
 package frc.robot.commands.Autos;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.commands.Arm.ArmToPositionCmd;
@@ -17,6 +18,7 @@ public class AutoOneNoteMiddlePos extends SequentialCommandGroup {
   public AutoOneNoteMiddlePos() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new ArmToPositionCmd(Constants.Arm.SPEAKER).andThen(new ShootInSpeakerCmd()));
+    addCommands(new ArmToPositionCmd(Constants.Arm.SPEAKER)
+        .andThen(new ShootInSpeakerCmd()));
   }
 }

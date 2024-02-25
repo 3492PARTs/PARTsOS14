@@ -31,7 +31,7 @@ public class ShootInSpeakerCmd extends Command {
   public void execute() {
     shooter.runShooter(.7);
 
-    if (shooter.getShooterRPM() >= 1730) {
+    if (shooter.getShooterRPM() >= 1800) {
       intake.runIntake(-.9);
     }
 
@@ -47,6 +47,6 @@ public class ShootInSpeakerCmd extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return !intake.hasNote();
   }
 }
