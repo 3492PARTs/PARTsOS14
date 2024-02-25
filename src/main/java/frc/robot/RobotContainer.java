@@ -9,6 +9,7 @@ import frc.robot.commands.Arm.HoldArmInPositionCmd;
 import frc.robot.commands.Arm.ZeroPivotEncodersCmd;
 import frc.robot.commands.Autos.AutoMoveForward;
 import frc.robot.commands.Autos.AutoOneNoteMiddlePos;
+import frc.robot.commands.Autos.AutoTwoNoteMiddlePos;
 import frc.robot.commands.IntakeShoot.RunIntakeCmd;
 import frc.robot.commands.IntakeShoot.ShootInAmpCmd;
 import frc.robot.commands.IntakeShoot.ShootInSpeakerCmd;
@@ -40,11 +41,10 @@ public class RobotContainer {
   private final Arm arm = Arm.getInstance();
   private final Intake intake = Intake.getInstance();
   private final Shooter shooter = Shooter.getInstance();
-  private static RobotContainer robotContainerInstance;
 
   // Drive controls drivetrain, operator controls arm, intake, and shooter.
-  private final CommandXboxController driveController = new CommandXboxController(0);
-  private final CommandXboxController operatorController = new CommandXboxController(1);
+  public static final CommandXboxController driveController = new CommandXboxController(0);
+  public static final CommandXboxController operatorController = new CommandXboxController(1);
 
   // SmartDashboard chooser for auto tasks.
   SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -55,19 +55,12 @@ public class RobotContainer {
 
   public RobotContainer() {
     // Configure the trigger bindings
-    configureBindings();
+    // configureBindings();
 
     SmartDashboard.putData("choose auto mode", autoChooser);
     autoChooser.addOption("Move Forward", new AutoMoveForward());
     autoChooser.addOption("One Note Middle", new AutoOneNoteMiddlePos());
-  }
-
-  public static RobotContainer getInstance() {
-    // If instance is null, then make a new instance.
-    if (robotContainerInstance == null) {
-      robotContainerInstance = new RobotContainer();
-    }
-    return robotContainerInstance;
+    autoChooser.addOption("Two Note Middle", new AutoTwoNoteMiddlePos());
   }
 
   /**
@@ -85,7 +78,7 @@ public class RobotContainer {
    * joysticks}.
    */
 
-  private void configureBindings() {
+  public void configureBindings() {
 
     driveTrain.setDefaultCommand(
         new RunCommand(() -> driveTrain.driveArcade(
@@ -163,10 +156,6 @@ public class RobotContainer {
 
     // PhotoEye
     SmartDashboard.putBoolean("HAS NOTE", Intake.getInstance().hasNote());
-  }
-
-  public CommandXboxController getOperatorController() {
-    return operatorController;
   }
 
   /**

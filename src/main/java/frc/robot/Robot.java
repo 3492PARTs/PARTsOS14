@@ -34,7 +34,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_robotContainer = RobotContainer.getInstance();
+    m_robotContainer = new RobotContainer();
     Arm.getInstance().zeroPivotEncoders();
     DriveTrain.getInstance().zeroDriveEncoders();
     DriveTrain.getInstance().zeroGyro();
@@ -107,6 +107,8 @@ public class Robot extends TimedRobot {
     }
 
     DriveTrain.getInstance().zeroDriveEncoders();
+
+    m_robotContainer.configureBindings();
   }
 
   /** This function is called periodically during operator control. */

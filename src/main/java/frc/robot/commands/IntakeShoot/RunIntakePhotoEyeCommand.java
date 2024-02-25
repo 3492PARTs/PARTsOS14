@@ -14,14 +14,14 @@ public class RunIntakePhotoEyeCommand extends Command {
   /** Creates a new RunIntakePhotoEyeCommand. */
   double speed;
   Intake intake;
-  RobotContainer m_robotContainer;
+  double armPosition;
 
-  public RunIntakePhotoEyeCommand(double speed) {
+  public RunIntakePhotoEyeCommand(double speed, double armPosition) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = Intake.getInstance();
     this.speed = speed;
+    this.armPosition = armPosition;
     addRequirements(intake);
-    m_robotContainer = RobotContainer.getInstance();
   }
 
   // Called when the command is initially scheduled.
@@ -40,17 +40,17 @@ public class RunIntakePhotoEyeCommand extends Command {
   public void end(boolean interrupted) {
     intake.runIntake(0);
     if (intake.hasNote())
-      new ArmToPositionCmd(Constants.Arm.HOME).schedule();
+      new ArmToPositionCmd(armPosition).schedule();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return intake.hasNote() ||
-        m_robotContainer.getOperatorController().leftBumper().getAsBoolean() ||
-        m_robotContainer.getOperatorController().leftTrigger().getAsBoolean() ||
-        m_robotContainer.getOperatorController().a().getAsBoolean() ||
-        m_robotContainer.getOperatorController().b().getAsBoolean() ||
-        m_robotContainer.getOperatorController().y().getAsBoolean();
+        RobotContainer.operatorController.leftBumper().getAsBoolean() ||
+        RobotContainer.operatorController.leftTrigger().getAsBoolean() ||
+        RobotContainer.operatorController.a().getAsBoolean() ||
+        RobotContainer.operatorController.b().getAsBoolean() ||
+        RobotContainer.operatorController.y().getAsBoolean();
   }
 }

@@ -46,7 +46,7 @@ public class ArmToPositionCmd extends Command {
   public void end(boolean interrupted) {
     arm.setPivotSpeed(0);
     if (angle == Constants.Arm.GROUND) {
-      new RunIntakePhotoEyeCommand(Constants.Intake.INTAKE_SPEED).schedule();
+      new RunIntakePhotoEyeCommand(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME).schedule();
     }
   }
 

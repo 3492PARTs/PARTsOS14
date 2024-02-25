@@ -17,7 +17,6 @@ import frc.robot.subsystems.Arm;
 public class HoldArmInPositionCmd extends ProfiledPIDCommand {
   /** Creates a new profiledPivotArm. */
   double angle;
-  RobotContainer m_RobotContainer;
 
   public HoldArmInPositionCmd(double angle) {
     super(
@@ -43,16 +42,15 @@ public class HoldArmInPositionCmd extends ProfiledPIDCommand {
     addRequirements(Arm.getInstance());
     // Configure additional PID options by calling `getController` here.
     getController().setTolerance(2);
-    m_RobotContainer = RobotContainer.getInstance();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(m_RobotContainer.getOperatorController().getRightY()) > .1 ||
-        m_RobotContainer.getOperatorController().a().getAsBoolean() ||
-        m_RobotContainer.getOperatorController().b().getAsBoolean() ||
-        m_RobotContainer.getOperatorController().x().getAsBoolean() ||
-        m_RobotContainer.getOperatorController().y().getAsBoolean();
+    return Math.abs(RobotContainer.operatorController.getRightY()) > .1 ||
+        RobotContainer.operatorController.a().getAsBoolean() ||
+        RobotContainer.operatorController.b().getAsBoolean() ||
+        RobotContainer.operatorController.x().getAsBoolean() ||
+        RobotContainer.operatorController.y().getAsBoolean();
   }
 }
