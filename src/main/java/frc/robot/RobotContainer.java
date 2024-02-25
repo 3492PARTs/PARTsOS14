@@ -42,8 +42,6 @@ public class RobotContainer {
   private final Shooter shooter = Shooter.getInstance();
   private static RobotContainer robotContainerInstance;
 
-  HoldArmInPositionCmd holdArmInPosition = null;
-
   // Drive controls drivetrain, operator controls arm, intake, and shooter.
   private final CommandXboxController driveController = new CommandXboxController(0);
   private final CommandXboxController operatorController = new CommandXboxController(1);
@@ -100,20 +98,10 @@ public class RobotContainer {
     arm.setDefaultCommand(
         new RunCommand(() -> {
           if (Math.abs(operatorController.getRightY()) > .1) {
-            if (holdArmInPosition != null) {
-              holdArmInPosition = null;
-            }
             arm.setPivotSpeed(operatorController.getRightY());
           } else {
-            if (CommandScheduler.getInstance().requiring(arm) == null) {
-              holdArmInPosition = null;
-            }
-
-            if (holdArmInPosition == null) {
-              arm.setPivotSpeed(0);
-              holdArmInPosition = new HoldArmInPositionCmd(arm.getAngle());
-              holdArmInPosition.schedule();
-            }
+            arm.setPivotSpeed(0);
+            new HoldArmInPositionCmd(arm.getAngle()).schedule();
           }
         },
             arm));
