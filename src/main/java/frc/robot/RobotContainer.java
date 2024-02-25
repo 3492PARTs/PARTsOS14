@@ -18,6 +18,7 @@ import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -98,11 +99,14 @@ public class RobotContainer {
         new RunCommand(() -> {
           if (Math.abs(operatorController.getRightY()) > .1) {
             if (holdArmInPosition != null) {
-
               holdArmInPosition = null;
             }
             arm.setPivotSpeed(operatorController.getRightY());
           } else {
+            if (CommandScheduler.getInstance().requiring(arm) == null) {
+              holdArmInPosition = null;
+            }
+
             if (holdArmInPosition == null) {
               arm.setPivotSpeed(0);
               holdArmInPosition = new HoldArmInPositionCmd(arm.getAngle());
