@@ -51,6 +51,7 @@ public class HoldArmInPositionCmd extends ProfiledPIDCommand {
         RobotContainer.operatorController.a().getAsBoolean() ||
         RobotContainer.operatorController.b().getAsBoolean() ||
         RobotContainer.operatorController.x().getAsBoolean() ||
-        RobotContainer.operatorController.y().getAsBoolean();
+        RobotContainer.operatorController.y().getAsBoolean() ||
+        RobotContainer.driveController.a().getAsBoolean();
   }
 }

@@ -8,16 +8,16 @@ import java.lang.invoke.ConstantCallSite;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeCommand;
+import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeTeleopCmd;
 import frc.robot.subsystems.Arm;
 
-public class ArmToPositionCmd extends Command {
+public class ArmToPositionTeleopCmd extends Command {
   /** Creates a new armToPosition. */
   Arm arm;
   double angle;
   boolean direction;
 
-  public ArmToPositionCmd(double angle) {
+  public ArmToPositionTeleopCmd(double angle) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.angle = angle;
     this.arm = Arm.getInstance();
@@ -46,7 +46,7 @@ public class ArmToPositionCmd extends Command {
   public void end(boolean interrupted) {
     arm.setPivotSpeed(0);
     if (angle == Constants.Arm.GROUND) {
-      new RunIntakePhotoEyeCommand(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME).schedule();
+      new RunIntakePhotoEyeTeleopCmd(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME).schedule();
     }
   }
 

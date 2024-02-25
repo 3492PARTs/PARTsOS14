@@ -54,6 +54,7 @@ public class DriveDistanceCmd extends Command {
   @Override
   public boolean isFinished() {
     // distance is in meters
+
     return Math.abs(distance - ((driveTrain.leftDistance() + driveTrain.rightDistance()) / 2)) < .2;
   }
 }

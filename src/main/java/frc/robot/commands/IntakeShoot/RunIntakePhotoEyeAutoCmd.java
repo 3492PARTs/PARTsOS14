@@ -7,20 +7,18 @@ package frc.robot.commands.IntakeShoot;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.commands.Arm.ArmToPositionCmd;
+import frc.robot.commands.Arm.ArmToPositionTeleopCmd;
 import frc.robot.subsystems.Intake;
 
-public class RunIntakePhotoEyeCommand extends Command {
+public class RunIntakePhotoEyeAutoCmd extends Command {
   /** Creates a new RunIntakePhotoEyeCommand. */
   double speed;
   Intake intake;
-  double armPosition;
 
-  public RunIntakePhotoEyeCommand(double speed, double armPosition) {
+  public RunIntakePhotoEyeAutoCmd(double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = Intake.getInstance();
     this.speed = speed;
-    this.armPosition = armPosition;
     addRequirements(intake);
   }
 
@@ -39,8 +37,6 @@ public class RunIntakePhotoEyeCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     intake.runIntake(0);
-    if (intake.hasNote())
-      new ArmToPositionCmd(armPosition).schedule();
   }
 
   // Returns true when the command should end.

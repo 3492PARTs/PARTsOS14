@@ -6,12 +6,16 @@ package frc.robot.commands.Autos;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
-import frc.robot.commands.Arm.ArmToPositionCmd;
+import frc.robot.commands.Arm.ArmToPositionAutoCmd;
+import frc.robot.commands.Arm.ArmToPositionTeleopCmd;
 import frc.robot.commands.Drive.DriveDistanceCmd;
+import frc.robot.commands.Drive.ZeroDriveMotors;
 import frc.robot.commands.IntakeShoot.RunIntakeCmd;
-import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeCommand;
+import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeAutoCmd;
+import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeTeleopCmd;
 import frc.robot.commands.IntakeShoot.ShootInSpeakerCmd;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -22,14 +26,15 @@ public class AutoTwoNoteMiddlePos extends SequentialCommandGroup {
   public AutoTwoNoteMiddlePos() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new ArmToPositionCmd(Constants.Arm.SPEAKER),
-        new ShootInSpeakerCmd(),
-        new ArmToPositionCmd(Constants.Arm.GROUND),
-        new ParallelCommandGroup(
-            new RunIntakePhotoEyeCommand(Constants.Intake.INTAKE_SPEED,
-                Constants.Arm.SPEAKER),
-            new DriveDistanceCmd(Units.inchesToMeters(35))),
-        new DriveDistanceCmd(Units.inchesToMeters(-35)),
+    addCommands(
+        new ParallelRaceGroup(new ZeroDriveMotors(),
+            new SequentialCommandGroup(new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
+                new ShootInSpeakerCmd(),
+                new ArmToPositionAutoCmd(Constants.Arm.GROUND))),
+        new ParallelCommandGroup(new DriveDistanceCmd(Units.inchesToMeters(35)),
+            new RunIntakePhotoEyeAutoCmd(Constants.Intake.INTAKE_SPEED)),
+        new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
+        new DriveDistanceCmd(Units.inchesToMeters(-4)),
         new ShootInSpeakerCmd());
   }
 }

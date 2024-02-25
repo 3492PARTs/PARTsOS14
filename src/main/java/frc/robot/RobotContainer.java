@@ -4,7 +4,7 @@
 
 package frc.robot;
 
-import frc.robot.commands.Arm.ArmToPositionCmd;
+import frc.robot.commands.Arm.ArmToPositionTeleopCmd;
 import frc.robot.commands.Arm.HoldArmInPositionCmd;
 import frc.robot.commands.Arm.ZeroPivotEncodersCmd;
 import frc.robot.commands.Autos.AutoMoveForward;
@@ -101,10 +101,10 @@ public class RobotContainer {
 
     // arm.setDefaultCommand(new HoldArmInPositionCmd());
 
-    operatorController.x().onTrue(new ArmToPositionCmd(Constants.Arm.GROUND)); // ground
-    operatorController.y().onTrue(new ArmToPositionCmd(Constants.Arm.SPEAKER)); // speaker
-    operatorController.b().onTrue(new ArmToPositionCmd(Constants.Arm.HOME)); // home
-    operatorController.a().onTrue(new ArmToPositionCmd(Constants.Arm.AMP)); // amp
+    operatorController.x().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.GROUND)); // ground
+    operatorController.y().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.SPEAKER)); // speaker
+    operatorController.b().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.HOME)); // home
+    operatorController.a().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.AMP)); // amp
 
     operatorController.rightTrigger(.1).whileTrue(new ShootInSpeakerCmd());
     operatorController.rightBumper().whileTrue(new ShootInAmpCmd());
@@ -134,10 +134,8 @@ public class RobotContainer {
 
   public void displaySmartDashboard() {
     // Drive
-    // SmartDashboard.putNumber("left Drive Distance",
-    // DriveTrain.getInstance().leftDistance());
-    // SmartDashboard.putNumber("right Drive Distance",
-    // DriveTrain.getInstance().rightDistance());
+    SmartDashboard.putNumber("left Drive Distance", DriveTrain.getInstance().leftDistance());
+    SmartDashboard.putNumber("right Drive Distance", DriveTrain.getInstance().rightDistance());
     // SmartDashboard.putData("zero Drive Encoder", new ZeroDriveEncodersCmd());
     // SmartDashboard.putNumber("left Drive Encoder",
     // DriveTrain.getInstance().leftEncoderPosition());

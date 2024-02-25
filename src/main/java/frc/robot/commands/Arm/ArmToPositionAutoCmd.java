@@ -2,23 +2,26 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.IntakeShoot;
+package frc.robot.commands.Arm;
+
+import java.lang.invoke.ConstantCallSite;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
+import frc.robot.Constants;
+import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeTeleopCmd;
+import frc.robot.subsystems.Arm;
 
-public class ShootInSpeakerCmd extends Command {
-  /** Creates a new ShootInAmpCmd. */
-  Shooter shooter;
-  Intake intake;
+public class ArmToPositionAutoCmd extends Command {
+  /** Creates a new armToPosition. */
+  Arm arm;
+  double angle;
+  boolean direction;
 
-  public ShootInSpeakerCmd() {
+  public ArmToPositionAutoCmd(double angle) {
     // Use addRequirements() here to declare subsystem dependencies.
-    shooter = Shooter.getInstance();
-    intake = Intake.getInstance();
-    addRequirements(intake);
-    addRequirements(shooter);
+    this.angle = angle;
+    this.arm = Arm.getInstance();
+    addRequirements(arm);
   }
 
   // Called when the command is initially scheduled.
@@ -29,24 +32,24 @@ public class ShootInSpeakerCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.runShooter(1);
+    direction = arm.getAngle() > angle;
 
-    if (shooter.getShooterRPM() >= 1800) {
-      intake.runIntake(-.9);
+    if (direction) {
+      arm.setPivotSpeed(-0.18);
+    } else {
+      arm.setPivotSpeed(0.18);
     }
-
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.runShooter(0);
-    intake.runIntake(0);
+    arm.setPivotSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !intake.hasNote();
+    return (Math.abs(angle - arm.getAngle()) < .2);
   }
 }
