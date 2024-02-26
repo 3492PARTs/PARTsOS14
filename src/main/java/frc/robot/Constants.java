@@ -43,6 +43,8 @@ public final class Constants {
     public static final double HOME = 15;
     public static final double AMP = -10;
 
+    public static final double SPEAKER_SIDE_ANGLE = 41.0;
+
     public static final boolean SYSID = false;
   }
 
