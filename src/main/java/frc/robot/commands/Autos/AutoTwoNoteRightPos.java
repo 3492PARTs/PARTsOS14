@@ -14,6 +14,7 @@ import frc.robot.commands.Drive.DriveAngleCmd;
 import frc.robot.commands.Drive.DriveDistanceCmd;
 import frc.robot.commands.Drive.ZeroDriveMotors;
 import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeAutoCmd;
+import frc.robot.commands.IntakeShoot.ShootInAmpCmd;
 import frc.robot.commands.IntakeShoot.ShootInSpeakerCmd;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -29,9 +30,18 @@ public class AutoTwoNoteRightPos extends SequentialCommandGroup {
             new ShootInSpeakerCmd())),
         new DriveDistanceCmd(Units.inchesToMeters(10)).withTimeout(2),
         new DriveAngleCmd(-26.5),
-        new ArmToPositionAutoCmd(Constants.Arm.GROUND),
+        new ArmToPositionAutoCmd(76),
         new ParallelCommandGroup(new DriveDistanceCmd(Units.inchesToMeters(60)),
             new RunIntakePhotoEyeAutoCmd(Constants.Intake.INTAKE_SPEED)),
-        new ArmToPositionAutoCmd(Constants.Arm.HOME));
+        new ArmToPositionAutoCmd(Constants.Arm.HOME),
+        new DriveDistanceCmd(Units.inchesToMeters(6.5)),
+        new DriveAngleCmd(-45),
+        new DriveDistanceCmd(Units.inchesToMeters(-40)),
+        new ArmToPositionAutoCmd(Constants.Arm.AMP),
+        new ShootInAmpCmd(),
+        new ArmToPositionAutoCmd(Constants.Arm.HOME),
+        new DriveDistanceCmd(Units.inchesToMeters(5)),
+        new DriveAngleCmd(45),
+        new DriveDistanceCmd(Units.inchesToMeters(40)));
   }
 }
