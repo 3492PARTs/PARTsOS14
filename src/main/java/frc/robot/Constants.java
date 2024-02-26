@@ -38,7 +38,7 @@ public final class Constants {
     public static final double kI = 0.0;
     public static final double kD = 0.0;
 
-    public static final double GROUND = 74;
+    public static final double GROUND = 73.6;
     public static final double SPEAKER = 45.8;
     public static final double HOME = 15;
     public static final double AMP = -10;

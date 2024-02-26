@@ -14,49 +14,34 @@ import frc.robot.commands.Drive.DriveAngleCmd;
 import frc.robot.commands.Drive.DriveDistanceCmd;
 import frc.robot.commands.Drive.ZeroDriveMotors;
 import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeAutoCmd;
-import frc.robot.commands.IntakeShoot.ShootInAmpCmd;
 import frc.robot.commands.IntakeShoot.ShootInSpeakerCmd;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class AutoTwoNoteRightPos extends SequentialCommandGroup {
-  /** Creates a new AutoTwoNoteRightPos. */
-  public AutoTwoNoteRightPos() {
+public class AutoTwoNoteLeftPos extends SequentialCommandGroup {
+  /** Creates a new AutoTwoNoteLeftPos. */
+  public AutoTwoNoteLeftPos() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(new ParallelRaceGroup(new ZeroDriveMotors(),
         new SequentialCommandGroup(
-            // moves arm to angle that shoots in speaker from the side
             new ArmToPositionAutoCmd(Constants.Arm.SPEAKER_SIDE_ANGLE),
-            // shoots in speaker
             new ShootInSpeakerCmd())),
-        // drives FORWARD 10 inches
-        new DriveDistanceCmd(Units.inchesToMeters(10)).withTimeout(2),
-        // turns LEFT face note
-        new DriveAngleCmd(-26.5),
-        // moves arm to ground
+        new DriveDistanceCmd(Units.inchesToMeters(8)).withTimeout(2),
+        // TODO: increase angle
+        new DriveAngleCmd(27.5),
         new ArmToPositionAutoCmd(76),
         new ParallelCommandGroup(
             // drives forward while...
+            // TODO: drive more forward
             new DriveDistanceCmd(Units.inchesToMeters(60)),
             // ...running intake
             new RunIntakePhotoEyeAutoCmd(Constants.Intake.INTAKE_SPEED)),
-        // moves arm to home
-        new ArmToPositionAutoCmd(Constants.Arm.HOME),
-        // move forward 6.5
-        new DriveDistanceCmd(Units.inchesToMeters(6.5)),
-        // turn to amp
-        new DriveAngleCmd(-45),
-        // drive to amp
-        new DriveDistanceCmd(Units.inchesToMeters(-40)),
-        // moves arm to amp
-        new ArmToPositionAutoCmd(Constants.Arm.AMP),
-        // shoot in amp
-        new ShootInAmpCmd(),
-        new ArmToPositionAutoCmd(Constants.Arm.HOME),
-        new DriveDistanceCmd(Units.inchesToMeters(5)),
-        new DriveAngleCmd(45),
-        new DriveDistanceCmd(Units.inchesToMeters(40)));
+        new ParallelCommandGroup(
+            new ArmToPositionAutoCmd(Constants.Arm.SPEAKER_SIDE_ANGLE),
+            new DriveDistanceCmd(Units.inchesToMeters(-60))),
+        new DriveAngleCmd(-26.5),
+        new ShootInSpeakerCmd());
   }
 }

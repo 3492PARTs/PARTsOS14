@@ -89,6 +89,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.schedule();
     }
     DriveTrain.getInstance().zeroDriveEncoders();
+    Arm.getInstance().zeroPivotEncoders();
   }
 
   /** This function is called periodically during autonomous. */
@@ -107,7 +108,7 @@ public class Robot extends TimedRobot {
     }
 
     DriveTrain.getInstance().zeroDriveEncoders();
-
+    Arm.getInstance().zeroPivotEncoders();
     m_robotContainer.configureBindings();
   }
 

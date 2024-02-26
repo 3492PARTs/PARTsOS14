@@ -28,13 +28,23 @@ public class AutoTwoNoteMiddlePos extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
         new ParallelRaceGroup(new ZeroDriveMotors(),
-            new SequentialCommandGroup(new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
+            new SequentialCommandGroup(
+                // moves arm to speaker
+                new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
+                // shoots in speaker
                 new ShootInSpeakerCmd(),
+                // moves arm to ground
                 new ArmToPositionAutoCmd(Constants.Arm.GROUND))),
-        new ParallelCommandGroup(new DriveDistanceCmd(Units.inchesToMeters(35)),
+        new ParallelCommandGroup(
+            // drives forward while...
+            new DriveDistanceCmd(Units.inchesToMeters(35)),
+            // ...running intake
             new RunIntakePhotoEyeAutoCmd(Constants.Intake.INTAKE_SPEED)),
+        // moves arm up to speaker position after has note
         new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
+        // drives backward 4 inches
         new DriveDistanceCmd(Units.inchesToMeters(-4)),
+        // shoots in speaker
         new ShootInSpeakerCmd());
   }
 }

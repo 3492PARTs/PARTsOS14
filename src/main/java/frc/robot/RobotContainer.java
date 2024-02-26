@@ -11,6 +11,7 @@ import frc.robot.commands.Autos.AutoMoveForward;
 import frc.robot.commands.Autos.AutoOneNoteLeftPos;
 import frc.robot.commands.Autos.AutoOneNoteMiddlePos;
 import frc.robot.commands.Autos.AutoOneNoteRightPos;
+import frc.robot.commands.Autos.AutoTwoNoteLeftPos;
 import frc.robot.commands.Autos.AutoTwoNoteMiddlePos;
 import frc.robot.commands.Autos.AutoTwoNoteRightPos;
 import frc.robot.commands.IntakeShoot.RunIntakeCmd;
@@ -67,6 +68,7 @@ public class RobotContainer {
     autoChooser.addOption("One Note Left", new AutoOneNoteLeftPos());
     autoChooser.addOption("Two Note Middle", new AutoTwoNoteMiddlePos());
     autoChooser.addOption("Two Note Right", new AutoTwoNoteRightPos());
+    autoChooser.addOption("Two Note Left", new AutoTwoNoteLeftPos());
   }
 
   /**
@@ -113,7 +115,7 @@ public class RobotContainer {
     operatorController.a().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.AMP)); // amp
 
     operatorController.rightTrigger(.1).whileTrue(new ShootInSpeakerCmd());
-    operatorController.rightBumper().whileTrue(new ShootInAmpCmd());
+    operatorController.rightBumper().onTrue(new ShootInAmpCmd());
 
     operatorController.leftTrigger(.1).whileTrue(new RunIntakeCmd(-.75));
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));

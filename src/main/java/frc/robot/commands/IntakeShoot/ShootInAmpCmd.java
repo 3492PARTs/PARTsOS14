@@ -12,6 +12,7 @@ public class ShootInAmpCmd extends Command {
   /** Creates a new ShootInAmpCmd. */
   Shooter shooter;
   Intake intake;
+  long startTime;
 
   public ShootInAmpCmd() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -29,6 +30,9 @@ public class ShootInAmpCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (intake.hasNote())
+      this.startTime = System.currentTimeMillis();
+
     shooter.runShooter(.3);
 
     if (shooter.getShooterRPM() >= 250) {
@@ -47,6 +51,6 @@ public class ShootInAmpCmd extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !intake.hasNote();
+    return System.currentTimeMillis() - this.startTime > 500;
   }
 }
