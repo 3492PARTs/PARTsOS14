@@ -67,7 +67,6 @@ public class RobotContainer {
     autoChooser.addOption("One Note Left", new AutoOneNoteLeftPos());
     autoChooser.addOption("Two Note Middle", new AutoTwoNoteMiddlePos());
     autoChooser.addOption("Two Note Right", new AutoTwoNoteRightPos());
-
   }
 
   /**
