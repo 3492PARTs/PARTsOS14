@@ -8,6 +8,7 @@ import frc.robot.commands.Arm.ArmToPositionTeleopCmd;
 import frc.robot.commands.Arm.HoldArmInPositionCmd;
 import frc.robot.commands.Arm.ZeroPivotEncodersCmd;
 import frc.robot.commands.Autos.AutoMoveForward;
+import frc.robot.commands.Autos.AutoOneNoteLeftPos;
 import frc.robot.commands.Autos.AutoOneNoteMiddlePos;
 import frc.robot.commands.Autos.AutoOneNoteRightPos;
 import frc.robot.commands.Autos.AutoTwoNoteMiddlePos;
@@ -63,6 +64,7 @@ public class RobotContainer {
     autoChooser.addOption("Move Forward", new AutoMoveForward());
     autoChooser.addOption("One Note Middle", new AutoOneNoteMiddlePos());
     autoChooser.addOption("One Note Right ", new AutoOneNoteRightPos());
+    autoChooser.addOption("One Note Left", new AutoOneNoteLeftPos());
     autoChooser.addOption("Two Note Middle", new AutoTwoNoteMiddlePos());
     autoChooser.addOption("Two Note Right", new AutoTwoNoteRightPos());
 
