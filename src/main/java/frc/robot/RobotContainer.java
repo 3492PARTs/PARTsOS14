@@ -11,6 +11,7 @@ import frc.robot.commands.Autos.AutoMoveForward;
 import frc.robot.commands.Autos.AutoOneNoteMiddlePos;
 import frc.robot.commands.Autos.AutoOneNoteRightPos;
 import frc.robot.commands.Autos.AutoTwoNoteMiddlePos;
+import frc.robot.commands.Autos.AutoTwoNoteRightPos;
 import frc.robot.commands.IntakeShoot.RunIntakeCmd;
 import frc.robot.commands.IntakeShoot.ShootInAmpCmd;
 import frc.robot.commands.IntakeShoot.ShootInSpeakerCmd;
@@ -63,6 +64,8 @@ public class RobotContainer {
     autoChooser.addOption("One Note Middle", new AutoOneNoteMiddlePos());
     autoChooser.addOption("One Note Right ", new AutoOneNoteRightPos());
     autoChooser.addOption("Two Note Middle", new AutoTwoNoteMiddlePos());
+    autoChooser.addOption("Two Note Right", new AutoTwoNoteRightPos());
+
   }
 
   /**

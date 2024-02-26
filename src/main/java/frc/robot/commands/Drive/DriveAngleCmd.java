@@ -37,9 +37,9 @@ public class DriveAngleCmd extends Command {
     // if angle is greater than set point, then drive backwards, otherwise drive
     // forward
     if (direction) {
-      driveTrain.driveArcade(0, 0.5);
-    } else {
       driveTrain.driveArcade(0, -0.5);
+    } else {
+      driveTrain.driveArcade(0, 0.5);
     }
 
   }
@@ -54,7 +54,7 @@ public class DriveAngleCmd extends Command {
   @Override
   public boolean isFinished() {
     // angle is in meters
-
-    return Math.abs(angle - driveTrain.getGyroAngle()) < .2;
+    System.out.println(driveTrain.getGyroAngle());
+    return Math.abs(angle) - Math.abs(driveTrain.getGyroAngle()) < .3;
   }
 }
