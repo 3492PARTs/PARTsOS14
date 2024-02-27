@@ -24,12 +24,10 @@ import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.commands.Arm.HoldArmInPositionCmd;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -88,6 +86,7 @@ public class RobotContainer {
 
   public void configureBindings() {
 
+    //* Default commands */
     driveTrain.setDefaultCommand(
         new RunCommand(() -> driveTrain.driveArcade(
             driveController.getLeftY(),
@@ -98,16 +97,39 @@ public class RobotContainer {
 
     arm.setDefaultCommand(
         new RunCommand(() -> {
+          // manual control
           if (Math.abs(operatorController.getRightY()) > .1) {
+            /*
+            TODO: Test before implementation
+            
+            if (arm.getAngle() > Constants.Arm.LOWER_BOUND) {
+              if (operatorController.getRightY() > 0)
+                arm.setPivotSpeed(operatorController.getRightY());
+              else
+                arm.setPivotSpeed(0);
+            }
+            else if (arm.getAngle() < Constants.Arm.UPPER_BOUND) {
+              if (operatorController.getRightY() < 0)
+                arm.setPivotSpeed(operatorController.getRightY());
+              else
+                arm.setPivotSpeed(0);
+            }
+            else
+              arm.setPivotSpeed(operatorController.getRightY());
+            */
+
             arm.setPivotSpeed(operatorController.getRightY());
-          } else {
+          }
+          // hold arm in current position
+          else {
+            // TODO: Idea to help the arm get a more consistent stopping point angle. We schedule a command to stop the arm then a wait then the hold in position.
             arm.setPivotSpeed(0);
             new HoldArmInPositionCmd(arm.getAngle()).schedule();
           }
         },
             arm));
 
-    // arm.setDefaultCommand(new HoldArmInPositionCmd());
+    //* Controller Bindings */
 
     operatorController.x().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.GROUND)); // ground
     operatorController.y().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.SPEAKER)); // speaker
@@ -122,13 +144,13 @@ public class RobotContainer {
 
     // Profiled Pivot Buttons
     /*
-     * operatorController.x().onTrue(new ProfiledPivotArmCmd(80, 2.7, 0, 0)); //
-     * ground
-     * operatorController.y().onTrue(new ProfiledPivotArmCmd(42.8, 3.0, 0.0, 0.0));
-     * // speaker
-     * operatorController.b().onTrue(new ProfiledPivotArmCmd(30, 2.7, 0.0, 0.0)); //
-     * home
-     * operatorController.a().onTrue(new ProfiledPivotArmCmd(-5.09, 3.0, 0.3, 0.0));
+      operatorController.x().onTrue(new ProfiledPivotArmCmd(80, 2.7, 0, 0)); //
+      // ground
+      operatorController.y().onTrue(new ProfiledPivotArmCmd(42.8, 3.0, 0.0, 0.0));
+      // speaker
+      operatorController.b().onTrue(new ProfiledPivotArmCmd(30, 2.7, 0.0, 0.0)); //
+      // home
+      operatorController.a().onTrue(new ProfiledPivotArmCmd(-5.09, 3.0, 0.3, 0.0));
      */
 
     // SysID
@@ -142,8 +164,8 @@ public class RobotContainer {
 
   public void displaySmartDashboard() {
     // Drive
-    SmartDashboard.putNumber("left Drive Distance", DriveTrain.getInstance().leftDistance());
-    SmartDashboard.putNumber("right Drive Distance", DriveTrain.getInstance().rightDistance());
+    SmartDashboard.putNumber("left Drive Distance", driveTrain.leftDistance());
+    SmartDashboard.putNumber("right Drive Distance", driveTrain.rightDistance());
     // SmartDashboard.putData("zero Drive Encoder", new ZeroDriveEncodersCmd());
     // SmartDashboard.putNumber("left Drive Encoder",
     // DriveTrain.getInstance().leftEncoderPosition());
@@ -158,10 +180,10 @@ public class RobotContainer {
     // Arm.getInstance().rightPivotEncoderPosition());
 
     // Shooter
-    SmartDashboard.putNumber("shooter RPM", Shooter.getInstance().getShooterRPM());
+    SmartDashboard.putNumber("shooter RPM", shooter.getShooterRPM());
 
     // PhotoEye
-    SmartDashboard.putBoolean("HAS NOTE", Intake.getInstance().hasNote());
+    SmartDashboard.putBoolean("HAS NOTE", intake.hasNote());
   }
 
   /**

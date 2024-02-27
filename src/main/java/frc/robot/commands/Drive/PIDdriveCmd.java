@@ -9,7 +9,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.PIDValues;
+import frc.robot.util.PIDValues;
 
 public class PIDdriveCmd extends Command {
   double initialPos;
