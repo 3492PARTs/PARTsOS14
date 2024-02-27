@@ -23,12 +23,10 @@ import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.commands.Arm.HoldArmInPositionCmd;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -42,8 +40,6 @@ import frc.robot.commands.Arm.HoldArmInPositionCmd;
 public class RobotContainer {
   private final DriveTrain driveTrain = DriveTrain.getInstance();
   private final Arm arm = Arm.getInstance();
-  private final Intake intake = Intake.getInstance();
-  private final Shooter shooter = Shooter.getInstance();
 
   // Drive controls drivetrain, operator controls arm, intake, and shooter.
   public static final CommandXboxController driveController = new CommandXboxController(0);
@@ -102,8 +98,7 @@ public class RobotContainer {
             arm.setPivotSpeed(0);
             new HoldArmInPositionCmd(arm.getAngle()).schedule();
           }
-        },
-            arm));
+        }, arm));
 
     // arm.setDefaultCommand(new HoldArmInPositionCmd());
 
