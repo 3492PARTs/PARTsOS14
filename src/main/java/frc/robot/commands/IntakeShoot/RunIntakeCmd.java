@@ -12,6 +12,10 @@ public class RunIntakeCmd extends Command {
   double direction;
   Intake intake;
 
+  /**
+   * Command, runs the intake with the direction until completed or until interrupted by button input.
+   * @param direction The speed/direction for intake. (-1, 1)
+   */
   public RunIntakeCmd(double direction) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = Intake.getInstance();

@@ -76,6 +76,9 @@ public class Arm extends SubsystemBase {
           },
           this));
 
+  /**
+   * Creates a new Arm Subsystem.
+   */
   public Arm() {
 
     // TODO: change angdeg higher later (faster the better)
@@ -106,6 +109,10 @@ public class Arm extends SubsystemBase {
     // getAnglularVelocitySupplier());
   }
 
+  /** Returns the instance of the Arm subsystem.
+   * Creates new instance if one does not exist.
+   * @return Arm instance.
+   */
   public static Arm getInstance() {
     // If instance is null, then make a new instance.
     if (armInstance == null) {
@@ -115,12 +122,19 @@ public class Arm extends SubsystemBase {
   }
 
   // Setting calculations
+  /** Sets the speed of the pivot motors.
+   * @param speed The target speed.
+   */
   public void setPivotSpeed(double speed) {
     // speed = Math.abs(speed) > 0.1 ? speed : 0;
     pivotLeftMotor.set(speed);
     pivotRightMotor.set(speed);
   }
 
+  /** Sets the pivot point for the arm.
+   * The arm uses PID control with trapezoid profiling to reach the target position.
+   * @param position The target position.
+   */
   public void setPivotPoint(double position) {
     pivotLeftController.setReference(position, ControlType.kPosition);
     pivotRightController.setReference(position, ControlType.kPosition);
@@ -137,6 +151,10 @@ public class Arm extends SubsystemBase {
   }
 
   // voltage calculations
+  /** Calculates the output voltage for the arm.
+   * @param velocity The current velocity of the arm.
+   * @return The calculated output voltage as a double.
+   */
   public double calcOutputVoltage(double velocity) {
     double output = (armFeedForward.calculate(Math.toRadians((getAngle())), velocity));
     // SmartDashboard.putNumber("calcOutputVoltage", output);

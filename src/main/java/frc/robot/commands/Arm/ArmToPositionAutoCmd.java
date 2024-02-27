@@ -13,6 +13,9 @@ public class ArmToPositionAutoCmd extends Command {
   double angle;
   boolean direction;
 
+  /** Auto command, sets the position of the arm to the specified angle.
+ * @param angle The target angle.
+ */
   public ArmToPositionAutoCmd(double angle) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.angle = angle;

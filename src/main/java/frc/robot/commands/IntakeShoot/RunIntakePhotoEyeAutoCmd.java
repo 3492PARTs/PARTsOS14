@@ -13,6 +13,9 @@ public class RunIntakePhotoEyeAutoCmd extends Command {
   double speed;
   Intake intake;
 
+  /** Auto command, runs the intake at the specified speed until completed or until interrupted by button input.
+   * @param speed The speed to run the intake at.
+   */
   public RunIntakePhotoEyeAutoCmd(double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = Intake.getInstance();
