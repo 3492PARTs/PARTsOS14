@@ -4,13 +4,14 @@ One controller is for the Drivetrain and the other is for the Arm and it's funct
 ## Bindings
 Drivetrain:
 - Left Stick - Driving.
-- - X Axis - Steer the robot left or right.
-- - Y Axis - Push the robot forward.
+  - X Axis - Steer the robot left or right.
+  - Y Axis - Push the robot forward.
+- A - Zero the drive encoders.
 <!-- end list -->
 ![Drivetrain Layout](./xbox-controller-drivetrain.png)\
 Arm:
  - Right Stick - Move the arm.
- - - Y Axis - Move the arm up and down via the Y Axis.
+   - Y Axis - Move the arm up and down via the Y Axis.
  - Right Trigger - Runs the shooter.
  - Left Trigger - Run intake in.
  - Left Bumper - Run intake out.
