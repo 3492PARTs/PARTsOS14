@@ -48,7 +48,7 @@ public class RunIntakePhotoEyeTeleopCmd extends Command {
   public boolean isFinished() {
     return intake.hasNote() ||
         RobotContainer.operatorController.leftBumper().getAsBoolean() ||
-        RobotContainer.operatorController.leftTrigger().getAsBoolean() ||
+        //RobotContainer.operatorController.leftTrigger().getAsBoolean() ||
         RobotContainer.operatorController.a().getAsBoolean() ||
         RobotContainer.operatorController.b().getAsBoolean() ||
         RobotContainer.operatorController.y().getAsBoolean();

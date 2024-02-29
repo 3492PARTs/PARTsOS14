@@ -4,10 +4,14 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import java.util.function.DoubleSupplier;
+
+import com.revrobotics.AlternateEncoderType;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -57,6 +61,9 @@ public class Arm extends SubsystemBase {
   private final MutableMeasure<Angle> m_angle = mutable(Rotations.of(0));
   private final MutableMeasure<Velocity<Angle>> m_velocity = mutable(RotationsPerSecond.of(0));
 
+  CANEncoder alternateLeftEncoder;
+  CANEncoder alternateRightEncoder;
+
   public SysIdRoutine sysIdRoutine = new SysIdRoutine(
       new SysIdRoutine.Config(),
       new SysIdRoutine.Mechanism(
@@ -97,6 +104,9 @@ public class Arm extends SubsystemBase {
 
     pivotLeftMotor.setIdleMode(IdleMode.kBrake);
     pivotRightMotor.setIdleMode(IdleMode.kBrake);
+
+    alternateLeftEncoder = pivotLeftMotor.getAlternateEncoder(AlternateEncoderType.kQuadrature, 2048);
+    alternateRightEncoder = pivotRightMotor.getAlternateEncoder(AlternateEncoderType.kQuadrature, 2048);
 
     pivotLeftMotor.setOpenLoopRampRate(Constants.Arm.OPEN_LOOP_RATE);
     pivotRightMotor.setOpenLoopRampRate(Constants.Arm.OPEN_LOOP_RATE);
@@ -151,6 +161,15 @@ public class Arm extends SubsystemBase {
   // Angle calculations
   public double getAngle() {
     return 360 * pivotLeftMotor.getEncoder().getPosition() / pivotGearRatio;
+    //return 360 * pivotLeftMotor.getEncoder().getCountsPerRevolution() / 8192;
+  }
+
+  public double getAlternateEncoderPosition() {
+    return alternateLeftEncoder.getPosition() / alternateLeftEncoder.getCountsPerRevolution() * 360;
+  }
+
+  public double getAlternateEncoderCPR() {
+    return alternateLeftEncoder.getCountsPerRevolution();
   }
 
   public DoubleSupplier getAngleSupplier() {

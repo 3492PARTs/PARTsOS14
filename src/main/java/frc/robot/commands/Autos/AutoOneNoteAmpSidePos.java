@@ -25,10 +25,11 @@ import frc.robot.commands.IntakeShoot.ShootInSpeakerCmd;
 public class AutoOneNoteAmpSidePos extends SequentialCommandGroup {
   /** Creates a new AutoOneNoteRightPos. */
 
-  public AutoOneNoteAmpSidePos() {
+  public AutoOneNoteAmpSidePos(int red) {
+    /*
     int red = 1;
     Optional<Alliance> ally = DriverStation.getAlliance();
-
+    
     if (ally.isPresent()) {
       if (ally.get() == Alliance.Red) {
         red = 1;
@@ -37,6 +38,7 @@ public class AutoOneNoteAmpSidePos extends SequentialCommandGroup {
         red = -1;
       }
     }
+    */
 
     addCommands(new ParallelRaceGroup(new ZeroDriveMotors(),
         new SequentialCommandGroup(

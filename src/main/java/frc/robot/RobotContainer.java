@@ -23,6 +23,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -62,13 +63,22 @@ public class RobotContainer {
     // configureBindings();
 
     SmartDashboard.putData("choose auto mode", autoChooser);
+    // SIDE INDEPENDENT AUTOS
     autoChooser.addOption("Move Forward", new AutoMoveForward());
     autoChooser.addOption("One Note Middle", new AutoOneNoteMiddlePos());
-    autoChooser.addOption("One Note Amp Side ", new AutoOneNoteAmpSidePos());
-    autoChooser.addOption("One Note Empty Side", new AutoOneNoteEmptySide());
     autoChooser.addOption("Two Note Middle", new AutoTwoNoteMiddlePos());
-    autoChooser.addOption("Two Note Amp Side", new AutoTwoNoteAmpSidePos());
-    autoChooser.addOption("Two Note Empty Side", new AutoTwoNoteEmptySpacePos());
+
+    //RED AUTOS
+    autoChooser.addOption("RED: One Note Amp Side ", new AutoOneNoteAmpSidePos(1));
+    autoChooser.addOption("RED: One Note Empty Side", new AutoOneNoteEmptySide(1));
+    autoChooser.addOption("RED: Two Note Amp Side", new AutoTwoNoteAmpSidePos(1));
+    autoChooser.addOption("RED: Two Note Empty Side", new AutoTwoNoteEmptySpacePos(1));
+
+    //BLUE AUTOS
+    autoChooser.addOption("RED: One Note Amp Side ", new AutoOneNoteAmpSidePos(-1));
+    autoChooser.addOption("RED: One Note Empty Side", new AutoOneNoteEmptySide(-1));
+    autoChooser.addOption("RED: Two Note Amp Side", new AutoTwoNoteAmpSidePos(-1));
+    autoChooser.addOption("RED: Two Note Empty Side", new AutoTwoNoteEmptySpacePos(-1));
   }
 
   /**
@@ -137,12 +147,13 @@ public class RobotContainer {
     operatorController.y().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.SPEAKER)); // speaker
     operatorController.b().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.HOME)); // home
     operatorController.a().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.AMP)); // amp
+    operatorController.povRight().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.SPEAKER_SIDE_ANGLE)); //side angle
 
     operatorController.rightTrigger(.1).whileTrue(new ShootInSpeakerCmd());
     operatorController.rightBumper().onTrue(new ShootInAmpCmd());
 
     operatorController.leftTrigger(.1)
-        .whileTrue(new RunIntakePhotoEyeTeleopCmd(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME));
+        .onTrue(new RunIntakePhotoEyeTeleopCmd(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME));
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
 
     operatorController.povUp().whileTrue(new ShootCmd());
@@ -183,6 +194,10 @@ public class RobotContainer {
     // Arm.getInstance().leftPivotEncoderPosition());
     // SmartDashboard.putNumber("right Pivot Encoder",
     // Arm.getInstance().rightPivotEncoderPosition());
+
+    SmartDashboard.putNumber("CPR", Arm.getInstance().getAlternateEncoderCPR());
+
+    SmartDashboard.putNumber("Pos", Arm.getInstance().getAlternateEncoderPosition());
 
     // Shooter
     SmartDashboard.putNumber("shooter RPM", shooter.getShooterRPM());

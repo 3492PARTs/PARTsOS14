@@ -24,10 +24,11 @@ import frc.robot.commands.IntakeShoot.ShootInSpeakerCmd;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutoOneNoteEmptySide extends SequentialCommandGroup {
   /** Creates a new AutoTwoNoteLeftPos. */
-  public AutoOneNoteEmptySide() {
+  public AutoOneNoteEmptySide(int red) {
+    /*
     int red = 1;
     Optional<Alliance> ally = DriverStation.getAlliance();
-
+    
     if (ally.isPresent()) {
       if (ally.get() == Alliance.Red) {
         red = 1;
@@ -36,7 +37,7 @@ public class AutoOneNoteEmptySide extends SequentialCommandGroup {
         red = -1;
       }
     }
-
+    */
     addCommands(new ParallelRaceGroup(new ZeroDriveMotors(),
 
         new SequentialCommandGroup(
