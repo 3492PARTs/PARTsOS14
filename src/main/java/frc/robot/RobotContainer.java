@@ -8,13 +8,15 @@ import frc.robot.commands.Arm.ArmToPositionTeleopCmd;
 import frc.robot.commands.Arm.HoldArmInPositionCmd;
 import frc.robot.commands.Arm.ZeroPivotEncodersCmd;
 import frc.robot.commands.Autos.AutoMoveForward;
-import frc.robot.commands.Autos.AutoOneNoteLeftPos;
+import frc.robot.commands.Autos.AutoOneNoteEmptySide;
 import frc.robot.commands.Autos.AutoOneNoteMiddlePos;
-import frc.robot.commands.Autos.AutoOneNoteRightPos;
-import frc.robot.commands.Autos.AutoTwoNoteLeftPos;
+import frc.robot.commands.Autos.AutoOneNoteAmpSidePos;
+import frc.robot.commands.Autos.AutoTwoNoteEmptySpacePos;
 import frc.robot.commands.Autos.AutoTwoNoteMiddlePos;
-import frc.robot.commands.Autos.AutoTwoNoteRightPos;
+import frc.robot.commands.Autos.AutoTwoNoteAmpSidePos;
 import frc.robot.commands.IntakeShoot.RunIntakeCmd;
+import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeTeleopCmd;
+import frc.robot.commands.IntakeShoot.ShootCmd;
 import frc.robot.commands.IntakeShoot.ShootInAmpCmd;
 import frc.robot.commands.IntakeShoot.ShootInSpeakerCmd;
 import frc.robot.subsystems.Arm;
@@ -62,11 +64,11 @@ public class RobotContainer {
     SmartDashboard.putData("choose auto mode", autoChooser);
     autoChooser.addOption("Move Forward", new AutoMoveForward());
     autoChooser.addOption("One Note Middle", new AutoOneNoteMiddlePos());
-    autoChooser.addOption("One Note Right ", new AutoOneNoteRightPos());
-    autoChooser.addOption("One Note Left", new AutoOneNoteLeftPos());
+    autoChooser.addOption("One Note Amp Side ", new AutoOneNoteAmpSidePos());
+    autoChooser.addOption("One Note Empty Side", new AutoOneNoteEmptySide());
     autoChooser.addOption("Two Note Middle", new AutoTwoNoteMiddlePos());
-    autoChooser.addOption("Two Note Right", new AutoTwoNoteRightPos());
-    autoChooser.addOption("Two Note Left", new AutoTwoNoteLeftPos());
+    autoChooser.addOption("Two Note Amp Side", new AutoTwoNoteAmpSidePos());
+    autoChooser.addOption("Two Note Empty Side", new AutoTwoNoteEmptySpacePos());
   }
 
   /**
@@ -93,7 +95,7 @@ public class RobotContainer {
             driveController.getRightX()),
             driveTrain));
 
-    driveController.a().whileTrue(new ZeroPivotEncodersCmd());
+    //driveController.a().whileTrue(new ZeroPivotEncodersCmd());
 
     arm.setDefaultCommand(
         new RunCommand(() -> {
@@ -139,8 +141,11 @@ public class RobotContainer {
     operatorController.rightTrigger(.1).whileTrue(new ShootInSpeakerCmd());
     operatorController.rightBumper().onTrue(new ShootInAmpCmd());
 
-    operatorController.leftTrigger(.1).whileTrue(new RunIntakeCmd(-.75));
+    operatorController.leftTrigger(.1)
+        .whileTrue(new RunIntakePhotoEyeTeleopCmd(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME));
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
+
+    operatorController.povUp().whileTrue(new ShootCmd());
 
     // Profiled Pivot Buttons
     /*

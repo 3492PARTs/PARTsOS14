@@ -45,6 +45,8 @@ public class AutoTwoNoteMiddlePos extends SequentialCommandGroup {
         // drives backward 4 inches
         new DriveDistanceCmd(Units.inchesToMeters(-4)),
         // shoots in speaker
-        new ShootInSpeakerCmd());
+        new ShootInSpeakerCmd(),
+        //moves forward as far into the field
+        new DriveDistanceCmd(Units.inchesToMeters(50)));
   }
 }
