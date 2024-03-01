@@ -26,6 +26,12 @@ public class Shooter extends SubsystemBase {
 
     shooterRightMotor.setInverted(true);
     shooterLeftMotor.setInverted(true);
+
+    shooterRightMotor.configOpenloopRamp(1, 0);
+    shooterLeftMotor.configOpenloopRamp(1, 0);
+
+    shooterLeftMotor.configContinuousCurrentLimit(50, 500);
+    shooterRightMotor.configContinuousCurrentLimit(50, 500);
   }
 
   public static Shooter getInstance() {

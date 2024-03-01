@@ -33,13 +33,13 @@ public final class Constants {
     public static final int RIGHT_PIVOT_MOTOR = 7;
 
     public static final double PIVOT_GEAR_RATIO = 234;
-    public static final double OPEN_LOOP_RATE = 0.8;
+    public static final double OPEN_LOOP_RATE = 0.34;
 
     public static final double kP = 2.7;
     public static final double kI = 0.0;
     public static final double kD = 0.0;
 
-    public static final double GROUND = 73.6;
+    public static final double GROUND = 74.6;
     public static final double SPEAKER = 45.3;
     public static final double HOME = 15;
     public static final double AMP = -10;

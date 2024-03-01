@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
+import frc.robot.commands.TimerCmd;
 import frc.robot.commands.Arm.ArmToPositionAutoCmd;
 import frc.robot.commands.Arm.ArmToPositionTeleopCmd;
 import frc.robot.commands.Drive.DriveDistanceCmd;
@@ -34,16 +35,18 @@ public class AutoTwoNoteMiddlePos extends SequentialCommandGroup {
                 // shoots in speaker
                 new ShootInSpeakerCmd(),
                 // moves arm to ground
-                new ArmToPositionAutoCmd(Constants.Arm.GROUND))),
+                new ArmToPositionAutoCmd(Constants.Arm.GROUND + 2))),
+        new TimerCmd(.5),
         new ParallelCommandGroup(
             // drives forward while...
-            new DriveDistanceCmd(Units.inchesToMeters(35)),
+            new DriveDistanceCmd(Units.inchesToMeters(36)),
             // ...running intake
             new RunIntakePhotoEyeAutoCmd(Constants.Intake.INTAKE_SPEED)),
+
         // moves arm up to speaker position after has note
         new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
         // drives backward 4 inches
-        new DriveDistanceCmd(Units.inchesToMeters(-35)),
+        new DriveDistanceCmd(Units.inchesToMeters(-36)),
         // shoots in speaker
         new ShootInSpeakerCmd(),
         //moves forward as far into the field
