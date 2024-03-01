@@ -33,6 +33,12 @@ public class ArmToPositionTeleopCmd extends Command {
   @Override
   public void execute() {
     direction = arm.getAngle() > angle;
+    double downSpeed = -.25;
+    double upSpeed = .25;
+
+    if (angle == Constants.Arm.GROUND) {
+      downSpeed = -.35;
+    }
 
     if (direction) {
       arm.setPivotSpeed(-0.25);

@@ -147,7 +147,7 @@ public class RobotContainer {
     operatorController.y().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.SPEAKER)); // speaker
     operatorController.b().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.HOME)); // home
     operatorController.a().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.AMP)); // amp
-    operatorController.povRight().onTrue(new ArmToPositionTeleopCmd(0)); //side angle
+    operatorController.povRight().onTrue(new ArmToPositionTeleopCmd(-2)); //side angle
 
     operatorController.rightTrigger(.1).whileTrue(new ShootInSpeakerCmd());
     operatorController.rightBumper().onTrue(new ShootInAmpCmd());

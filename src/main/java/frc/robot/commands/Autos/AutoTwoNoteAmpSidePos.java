@@ -50,7 +50,7 @@ public class AutoTwoNoteAmpSidePos extends SequentialCommandGroup {
         // drives FORWARD 10 inches
         new DriveDistanceCmd(Units.inchesToMeters(10)).withTimeout(2),
         // turns LEFT face note
-        new DriveAngleCmd(-26.5 * red),
+        new DriveAngleCmd(-41.5 * red),
         // moves arm to ground
         new ArmToPositionAutoCmd(Constants.Arm.GROUND),
 

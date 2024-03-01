@@ -35,7 +35,7 @@ public class ShootInAmpCmd extends Command {
 
     shooter.runShooter(.3);
 
-    if (shooter.getShooterRPM() >= 250) {
+    if (shooter.getShooterRPM() >= 300) {
       intake.runIntake(-.9);
     }
 
