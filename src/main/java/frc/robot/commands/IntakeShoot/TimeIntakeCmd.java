@@ -12,10 +12,12 @@ public class TimeIntakeCmd extends Command {
   Intake intake;
   long startTime = 0;
   double duration = 0.0;
+  double speed = 0;
 
-  public TimeIntakeCmd(double seconds) {
+  public TimeIntakeCmd(double seconds, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.duration = seconds;
+    this.speed = speed;
     this.intake = Intake.getInstance();
     addRequirements(intake);
 
@@ -30,7 +32,7 @@ public class TimeIntakeCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.runIntake(.8);
+    intake.runIntake(speed);
   }
 
   // Called once the command ends or is interrupted.

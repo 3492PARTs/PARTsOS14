@@ -15,6 +15,7 @@ public class RunIntakePhotoEyeTeleopCmd extends Command {
   double speed;
   Intake intake;
   double armPosition;
+  long startTime = 0;
 
   public RunIntakePhotoEyeTeleopCmd(double speed, double armPosition) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -33,20 +34,25 @@ public class RunIntakePhotoEyeTeleopCmd extends Command {
   @Override
   public void execute() {
     intake.runIntake(speed);
+
+    if (!intake.hasNote())
+      this.startTime = System.currentTimeMillis();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     intake.runIntake(0);
-    if (intake.hasNote())
+    if (intake.hasNote()) {
+      new TimeIntakeCmd(.2, .2).schedule();
       new ArmToPositionTeleopCmd(armPosition).schedule();
+    }
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return intake.hasNote() ||
+    return System.currentTimeMillis() - this.startTime >= 200 ||
         RobotContainer.operatorController.leftBumper().getAsBoolean() ||
         //RobotContainer.operatorController.leftTrigger().getAsBoolean() ||
         RobotContainer.operatorController.a().getAsBoolean() ||
