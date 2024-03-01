@@ -75,10 +75,10 @@ public class RobotContainer {
     autoChooser.addOption("RED: Two Note Empty Side", new AutoTwoNoteEmptySpacePos(1));
 
     //BLUE AUTOS
-    autoChooser.addOption("RED: One Note Amp Side ", new AutoOneNoteAmpSidePos(-1));
-    autoChooser.addOption("RED: One Note Empty Side", new AutoOneNoteEmptySide(-1));
-    autoChooser.addOption("RED: Two Note Amp Side", new AutoTwoNoteAmpSidePos(-1));
-    autoChooser.addOption("RED: Two Note Empty Side", new AutoTwoNoteEmptySpacePos(-1));
+    autoChooser.addOption("BLUE: One Note Amp Side ", new AutoOneNoteAmpSidePos(-1));
+    autoChooser.addOption("BLUE: One Note Empty Side", new AutoOneNoteEmptySide(-1));
+    autoChooser.addOption("BLUE: Two Note Amp Side", new AutoTwoNoteAmpSidePos(-1));
+    autoChooser.addOption("BLUE: Two Note Empty Side", new AutoTwoNoteEmptySpacePos(-1));
   }
 
   /**
@@ -105,7 +105,7 @@ public class RobotContainer {
             driveController.getRightX()),
             driveTrain));
 
-    //driveController.a().whileTrue(new ZeroPivotEncodersCmd());
+    driveController.a().whileTrue(new ZeroPivotEncodersCmd());
 
     arm.setDefaultCommand(
         new RunCommand(() -> {
@@ -147,7 +147,7 @@ public class RobotContainer {
     operatorController.y().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.SPEAKER)); // speaker
     operatorController.b().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.HOME)); // home
     operatorController.a().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.AMP)); // amp
-    operatorController.povRight().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.SPEAKER_SIDE_ANGLE)); //side angle
+    operatorController.povRight().onTrue(new ArmToPositionTeleopCmd(0)); //side angle
 
     operatorController.rightTrigger(.1).whileTrue(new ShootInSpeakerCmd());
     operatorController.rightBumper().onTrue(new ShootInAmpCmd());
@@ -194,8 +194,6 @@ public class RobotContainer {
     // Arm.getInstance().leftPivotEncoderPosition());
     // SmartDashboard.putNumber("right Pivot Encoder",
     // Arm.getInstance().rightPivotEncoderPosition());
-
-    SmartDashboard.putNumber("CPR", Arm.getInstance().getAlternateEncoderCPR());
 
     SmartDashboard.putNumber("Pos", Arm.getInstance().getAlternateEncoderPosition());
 

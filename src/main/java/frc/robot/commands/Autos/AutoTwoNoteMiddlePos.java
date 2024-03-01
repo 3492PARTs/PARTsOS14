@@ -43,7 +43,7 @@ public class AutoTwoNoteMiddlePos extends SequentialCommandGroup {
         // moves arm up to speaker position after has note
         new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
         // drives backward 4 inches
-        new DriveDistanceCmd(Units.inchesToMeters(-4)),
+        new DriveDistanceCmd(Units.inchesToMeters(-35)),
         // shoots in speaker
         new ShootInSpeakerCmd(),
         //moves forward as far into the field

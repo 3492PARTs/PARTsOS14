@@ -41,13 +41,13 @@ public class AutoOneNoteEmptySide extends SequentialCommandGroup {
     addCommands(new ParallelRaceGroup(new ZeroDriveMotors(),
 
         new SequentialCommandGroup(
-            new ArmToPositionAutoCmd(Constants.Arm.SPEAKER_SIDE_ANGLE),
+            new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
             new ShootInSpeakerCmd())),
 
         // TODO: fix driving distance to be longer
-        new DriveDistanceCmd(Units.inchesToMeters(145)).withTimeout(2),
+        new DriveDistanceCmd(Units.inchesToMeters(163)).withTimeout(2),
         new DriveAngleCmd(26.5 * red),
         // TODO: fix driving distance to be longer
-        new DriveDistanceCmd(Units.inchesToMeters(100)));
+        new DriveDistanceCmd(Units.inchesToMeters(148)));
   }
 }

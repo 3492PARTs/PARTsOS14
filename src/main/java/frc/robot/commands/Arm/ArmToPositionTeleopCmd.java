@@ -35,9 +35,9 @@ public class ArmToPositionTeleopCmd extends Command {
     direction = arm.getAngle() > angle;
 
     if (direction) {
-      arm.setPivotSpeed(-0.18);
+      arm.setPivotSpeed(-0.25);
     } else {
-      arm.setPivotSpeed(0.18);
+      arm.setPivotSpeed(0.25);
     }
   }
 
@@ -53,6 +53,6 @@ public class ArmToPositionTeleopCmd extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (Math.abs(angle - arm.getAngle()) < .2);
+    return (Math.abs(angle - arm.getAngle()) < .5);
   }
 }

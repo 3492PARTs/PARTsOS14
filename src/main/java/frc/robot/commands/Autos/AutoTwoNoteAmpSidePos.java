@@ -44,7 +44,7 @@ public class AutoTwoNoteAmpSidePos extends SequentialCommandGroup {
     addCommands(new ParallelRaceGroup(new ZeroDriveMotors(),
         new SequentialCommandGroup(
             // moves arm to angle that shoots in speaker from the side
-            new ArmToPositionAutoCmd(Constants.Arm.SPEAKER_SIDE_ANGLE),
+            new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
             // shoots in speaker
             new ShootInSpeakerCmd())),
         // drives FORWARD 10 inches
@@ -52,7 +52,7 @@ public class AutoTwoNoteAmpSidePos extends SequentialCommandGroup {
         // turns LEFT face note
         new DriveAngleCmd(-26.5 * red),
         // moves arm to ground
-        new ArmToPositionAutoCmd(76),
+        new ArmToPositionAutoCmd(Constants.Arm.GROUND),
 
         new ParallelCommandGroup(
             // drives forward while...

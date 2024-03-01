@@ -43,7 +43,7 @@ public class AutoOneNoteAmpSidePos extends SequentialCommandGroup {
     addCommands(new ParallelRaceGroup(new ZeroDriveMotors(),
         new SequentialCommandGroup(
             // moves arm to angle that shoots in speaker from the side
-            new ArmToPositionAutoCmd(Constants.Arm.SPEAKER_SIDE_ANGLE),
+            new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
             // shoots in speaker
             new ShootInSpeakerCmd())),
         // drives FORWARD 10 inches

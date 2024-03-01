@@ -43,7 +43,7 @@ public class AutoTwoNoteEmptySpacePos extends SequentialCommandGroup {
         // addCommands(new FooCommand(), new BarCommand());
         addCommands(new ParallelRaceGroup(new ZeroDriveMotors(),
                 new SequentialCommandGroup(
-                        new ArmToPositionAutoCmd(Constants.Arm.SPEAKER_SIDE_ANGLE),
+                        new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
                         new ShootInSpeakerCmd())),
                 new DriveDistanceCmd(Units.inchesToMeters(8)).withTimeout(2),
                 // TODO: increase angle
@@ -56,7 +56,7 @@ public class AutoTwoNoteEmptySpacePos extends SequentialCommandGroup {
                         // ...running intake
                         new RunIntakePhotoEyeAutoCmd(Constants.Intake.INTAKE_SPEED)),
                 new ParallelCommandGroup(
-                        new ArmToPositionAutoCmd(Constants.Arm.SPEAKER_SIDE_ANGLE),
+                        new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
                         new DriveDistanceCmd(Units.inchesToMeters(-60))),
                 new DriveAngleCmd(-26.5 * red),
                 new ShootInSpeakerCmd());
