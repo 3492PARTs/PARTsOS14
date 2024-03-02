@@ -19,6 +19,7 @@ import frc.robot.commands.Drive.DriveDistanceCmd;
 import frc.robot.commands.Drive.ZeroDriveMotors;
 import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeAutoCmd;
 import frc.robot.commands.IntakeShoot.ShootInSpeakerCmd;
+import frc.robot.commands.IntakeShoot.TimeIntakeCmd;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -55,6 +56,7 @@ public class AutoTwoNoteEmptySpacePos extends SequentialCommandGroup {
                         new DriveDistanceCmd(Units.inchesToMeters(60)),
                         // ...running intake
                         new RunIntakePhotoEyeAutoCmd(Constants.Intake.INTAKE_SPEED)),
+                new TimeIntakeCmd(.2, .2),
                 new ParallelCommandGroup(
                         new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
                         new DriveDistanceCmd(Units.inchesToMeters(-60))),

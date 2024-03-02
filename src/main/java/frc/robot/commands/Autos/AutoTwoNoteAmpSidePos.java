@@ -20,6 +20,7 @@ import frc.robot.commands.Drive.ZeroDriveMotors;
 import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeAutoCmd;
 import frc.robot.commands.IntakeShoot.ShootInAmpCmd;
 import frc.robot.commands.IntakeShoot.ShootInSpeakerCmd;
+import frc.robot.commands.IntakeShoot.TimeIntakeCmd;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -52,13 +53,14 @@ public class AutoTwoNoteAmpSidePos extends SequentialCommandGroup {
         // turns LEFT face note
         new DriveAngleCmd(-41.5 * red),
         // moves arm to ground
-        new ArmToPositionAutoCmd(Constants.Arm.GROUND),
+        new ArmToPositionAutoCmd(Constants.Arm.GROUND + 2),
 
         new ParallelCommandGroup(
             // drives forward while...
             new DriveDistanceCmd(Units.inchesToMeters(60)),
             // ...running intake
             new RunIntakePhotoEyeAutoCmd(Constants.Intake.INTAKE_SPEED)),
+        new TimeIntakeCmd(.2, .2),
         // moves arm to home
         new ArmToPositionAutoCmd(Constants.Arm.HOME),
         // move forward 6.5

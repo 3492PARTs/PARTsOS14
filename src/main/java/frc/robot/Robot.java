@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
     Arm.getInstance().zeroPivotEncoders();
     DriveTrain.getInstance().zeroDriveEncoders();
     DriveTrain.getInstance().zeroGyro();
-    Camera.getInstance();
+    //Camera.getInstance();
 
     // SysID
     // DataLogManager.start();

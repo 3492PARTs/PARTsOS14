@@ -37,7 +37,7 @@ public class ArmToPositionTeleopCmd extends Command {
     double upSpeed = .25;
 
     if (angle == Constants.Arm.GROUND) {
-      downSpeed = -.37;
+      downSpeed = -.35;
     }
 
     if (direction) {

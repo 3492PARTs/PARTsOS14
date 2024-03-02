@@ -18,6 +18,7 @@ import frc.robot.commands.IntakeShoot.RunIntakeCmd;
 import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeAutoCmd;
 import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeTeleopCmd;
 import frc.robot.commands.IntakeShoot.ShootInSpeakerCmd;
+import frc.robot.commands.IntakeShoot.TimeIntakeCmd;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -41,8 +42,8 @@ public class AutoTwoNoteMiddlePos extends SequentialCommandGroup {
             // drives forward while...
             new DriveDistanceCmd(Units.inchesToMeters(36)),
             // ...running intake
-            new RunIntakePhotoEyeAutoCmd(Constants.Intake.INTAKE_SPEED)),
-
+            new RunIntakePhotoEyeAutoCmd(Constants.Intake.INTAKE_SPEED + .2)),
+        new TimeIntakeCmd(.2, .2),
         // moves arm up to speaker position after has note
         new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
         // drives backward 4 inches

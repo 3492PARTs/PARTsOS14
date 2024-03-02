@@ -14,7 +14,7 @@ public class RunIntakePhotoEyeAutoCmd extends Command {
   /** Creates a new RunIntakePhotoEyeCommand. */
   double speed;
   Intake intake;
-  int startTime = 0;
+  long startTime = 0;
 
   public RunIntakePhotoEyeAutoCmd(double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -32,15 +32,15 @@ public class RunIntakePhotoEyeAutoCmd extends Command {
   @Override
   public void execute() {
     intake.runIntake(speed);
+
+    if (!intake.hasNote())
+      this.startTime = System.currentTimeMillis();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     intake.runIntake(0);
-    if (intake.hasNote()) {
-      new TimeIntakeCmd(.2, .2).schedule();
-    }
   }
 
   // Returns true when the command should end.
