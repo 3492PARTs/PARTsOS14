@@ -11,7 +11,7 @@ import frc.robot.commands.Drive.DriveDistanceCmd;
 public class AutoMoveForward extends SequentialCommandGroup {
   /** Creates a new MoveForward.*/
   public AutoMoveForward() {
-    // Add your commands in the addCommands() call, e.g.
+    // Auto move forward 90 inches.
     addCommands(new DriveDistanceCmd(Units.inchesToMeters(90)));
   }
 }

@@ -12,6 +12,10 @@ public class RunIntakeCmd extends Command {
   double direction;
   Intake intake;
 
+  /**
+   * Runs intake in the given direction.
+   * @param direction The direction it should run in.
+   */
   public RunIntakeCmd(double direction) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = Intake.getInstance();

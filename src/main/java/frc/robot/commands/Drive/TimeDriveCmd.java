@@ -45,6 +45,7 @@ public class TimeDriveCmd extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // True if (current time - start time) is greater than or equal to the duration.
     return System.currentTimeMillis() - startTime >= duration * 1000;
   }
 }

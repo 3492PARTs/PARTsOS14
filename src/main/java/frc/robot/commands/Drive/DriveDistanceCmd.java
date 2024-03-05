@@ -35,8 +35,7 @@ public class DriveDistanceCmd extends Command {
   public void execute() {
     direction = ((driveTrain.leftDistance() + driveTrain.rightDistance()) / 2) > distance;
 
-    // if distance is greater than set point, then drive backwards, otherwise drive
-    // forward
+    // If angle is greater than set point, drive backwards, otherwise drive forward.
     if (direction) {
       driveTrain.driveArcade(0.5, 0);
     } else {

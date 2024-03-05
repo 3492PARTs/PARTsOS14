@@ -9,14 +9,10 @@ import frc.robot.Constants;
 import frc.robot.commands.Arm.ArmToPositionTeleopCmd;
 import frc.robot.commands.IntakeShoot.ShootInSpeakerCmd;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutoOneNoteMiddlePos extends SequentialCommandGroup {
   /** Creates a new AutoOneNoteMiddlePos. */
   public AutoOneNoteMiddlePos() {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
+    // Set arm pos then shoot in speaker.
     addCommands(new ArmToPositionTeleopCmd(Constants.Arm.SPEAKER),
         new ShootInSpeakerCmd());
   }

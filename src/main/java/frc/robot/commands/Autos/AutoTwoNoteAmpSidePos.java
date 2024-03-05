@@ -18,9 +18,6 @@ import frc.robot.commands.IntakeShoot.ShootInAmpCmd;
 import frc.robot.commands.IntakeShoot.ShootInSpeakerCmd;
 import frc.robot.commands.IntakeShoot.TimeIntakeCmd;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutoTwoNoteAmpSidePos extends SequentialCommandGroup {
   /** Creates a new AutoTwoNoteRightPos. */
   public AutoTwoNoteAmpSidePos(int red) {

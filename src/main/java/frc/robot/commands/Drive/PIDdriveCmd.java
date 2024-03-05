@@ -31,7 +31,7 @@ public class PIDdriveCmd extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // calculates average distance
+    // Calculates average distance.
     initialPos = (driveTrain.leftDistance() + driveTrain.rightDistance()) / 2;
 
     drivePIDController.setSetpoint(setPoint);
@@ -40,8 +40,7 @@ public class PIDdriveCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // calculating how much distance covered and how much distance needed to cover
-    // to get to setpoint
+    // Calculating how much distance covered and how much is left.
     double volts = drivePIDController
         .calculate(((driveTrain.leftDistance() + driveTrain.rightDistance()) / 2) - initialPos);
 
