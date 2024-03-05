@@ -4,15 +4,10 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkPIDController;
 import java.util.function.DoubleSupplier;
-
-import com.revrobotics.AlternateEncoderType;
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -61,6 +56,9 @@ public class Arm extends SubsystemBase {
 
   RelativeEncoder alternateLeftEncoder;
   RelativeEncoder alternateRightEncoder;
+
+  public static double downSpeed = -.25;
+  public static double upSpeed = .25;
 
   public SysIdRoutine sysIdRoutine = new SysIdRoutine(
       new SysIdRoutine.Config(),

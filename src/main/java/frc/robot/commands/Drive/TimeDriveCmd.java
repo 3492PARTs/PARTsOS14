@@ -14,9 +14,9 @@ public class TimeDriveCmd extends Command {
   long startTime;
 
   /**
-   * Creates a new ExampleCommand.
+   * Creates a new TimeDriveCmd and drives for the specified duration.
    *
-   * @param subsystem The subsystem used by this command.
+   * @param duration The time to drive in seconds.
    */
   public TimeDriveCmd(double duration) {
     driveTrain = DriveTrain.getInstance();

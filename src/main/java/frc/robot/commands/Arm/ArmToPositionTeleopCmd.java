@@ -4,8 +4,6 @@
 
 package frc.robot.commands.Arm;
 
-import java.lang.invoke.ConstantCallSite;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeTeleopCmd;
@@ -32,14 +30,14 @@ public class ArmToPositionTeleopCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // if the arm is LOWER than the wanted angle.
     direction = arm.getAngle() > angle;
-    double downSpeed = -.25;
-    double upSpeed = .25;
 
     if (angle == Constants.Arm.GROUND) {
-      downSpeed = -.35;
+      Arm.downSpeed = -.35;
     }
 
+    // If above is true, go back up to match set pos. Otherwise continue good sir.
     if (direction) {
       arm.setPivotSpeed(-0.25);
     } else {
@@ -51,6 +49,7 @@ public class ArmToPositionTeleopCmd extends Command {
   @Override
   public void end(boolean interrupted) {
     arm.setPivotSpeed(0);
+    // Once arm is on the ground, run the intake to pick up a note.
     if (angle == Constants.Arm.GROUND) {
       new RunIntakePhotoEyeTeleopCmd(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME).schedule();
     }

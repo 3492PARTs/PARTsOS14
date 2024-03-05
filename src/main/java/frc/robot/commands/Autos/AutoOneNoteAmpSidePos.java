@@ -13,23 +13,22 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.commands.Arm.ArmToPositionAutoCmd;
-import frc.robot.commands.Arm.ArmToPositionTeleopCmd;
 import frc.robot.commands.Drive.DriveAngleCmd;
 import frc.robot.commands.Drive.DriveDistanceCmd;
 import frc.robot.commands.Drive.ZeroDriveMotors;
 import frc.robot.commands.IntakeShoot.ShootInSpeakerCmd;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutoOneNoteAmpSidePos extends SequentialCommandGroup {
-  /** Creates a new AutoOneNoteRightPos. */
 
+  int red = 1;
+  /** Creates a new AutoOneNoteRightPos.
+   * @param red ?? - Rewrite later.
+  */
   public AutoOneNoteAmpSidePos(int red) {
-    /*
-    int red = 1;
+    
     Optional<Alliance> ally = DriverStation.getAlliance();
     
+    // Wrapped if statement to avoid the NoSuchElementException throw.
     if (ally.isPresent()) {
       if (ally.get() == Alliance.Red) {
         red = 1;
@@ -38,7 +37,7 @@ public class AutoOneNoteAmpSidePos extends SequentialCommandGroup {
         red = -1;
       }
     }
-    */
+    
 
     addCommands(new ParallelRaceGroup(new ZeroDriveMotors(),
         new SequentialCommandGroup(
