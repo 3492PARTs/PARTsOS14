@@ -18,6 +18,7 @@ package frc.robot;
  */
 public final class Constants {
 
+  /** Drive Constants */
   public static final class Drive {
     public static final int FRONT_RIGHT_MOTOR = 6;
     public static final int BACK_RIGHT_MOTOR = 5;
@@ -28,6 +29,7 @@ public final class Constants {
     public static final double OPEN_LOOP_RATE = 0.8;
   }
 
+  /** Arm Constants */
   public static final class Arm {
     public static final int LEFT_PIVOT_MOTOR = 4;
     public static final int RIGHT_PIVOT_MOTOR = 7;
@@ -51,12 +53,14 @@ public final class Constants {
     public static final boolean SYSID = false;
   }
 
+  /** Intake Constants */
   public static final class Intake {
     public static final int INTAKE_MOTOR = 11;
     public static final double INTAKE_SPEED = -.8;
     public static final int PHOTOEYE = 0;
   }
 
+  /** Intake Constants */
   public static final class Shooter {
     public static final int LEFT_MOTOR = 10;
     public static final int RIGHT_MOTOR = 12;
@@ -64,6 +68,7 @@ public final class Constants {
   }
 
   // THIS IS FOR SHUFFLEBOARD DEBUG PLUS OTHER MISC THINGS //
+  /** Debug Constants<p>For testingg only.<p>Do not use in prod! */
   public static class Debug {
     public static final boolean debugMode = true;
   }

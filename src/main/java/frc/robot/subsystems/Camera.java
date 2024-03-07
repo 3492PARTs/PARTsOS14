@@ -7,6 +7,7 @@ public class Camera extends SubsystemBase {
     static Camera camInstance;
 
     public Camera() {
+        //? Might cause memory leak on the rio, gonna have to look into it later. -R
         //NetworkTableInstance.getDefault().getEntry("/CameraPublisher/FishEyes/streams").setStringArray(new String[] { "mjpg:http://roborio-3492-frc.local:1181/?action=stream" });
         CameraServer.startAutomaticCapture();
     }

@@ -4,7 +4,13 @@
 
 package frc.robot.util;
 
-/** Add your docs here. */
+/** PIDValues
+ * Double array with three spots in order:
+ * @param kP - Proportional gain
+ * @param kI - Integral gain
+ * @param kD - Derivative gain
+ * @return double[] - Array of PID values.
+ */
 public class PIDValues {
     double[] PIDValues = new double[3];
 
