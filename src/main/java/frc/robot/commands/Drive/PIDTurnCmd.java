@@ -38,8 +38,7 @@ public class PIDTurnCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // calculating how much distance covered and how much distance needed to cover
-    // to get to setpoint
+    // Calculating how much distance covered and how much is left.
     double volts = rotPIDController.calculate(driveTrain.getGyroAngle() - initialAngle);
     volts = MathUtil.clamp(volts, -6, 6);
 

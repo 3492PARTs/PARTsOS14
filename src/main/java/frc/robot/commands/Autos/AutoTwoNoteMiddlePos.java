@@ -11,46 +11,38 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.commands.TimerCmd;
 import frc.robot.commands.Arm.ArmToPositionAutoCmd;
-import frc.robot.commands.Arm.ArmToPositionTeleopCmd;
 import frc.robot.commands.Drive.DriveDistanceCmd;
 import frc.robot.commands.Drive.ZeroDriveMotors;
-import frc.robot.commands.IntakeShoot.RunIntakeCmd;
 import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeAutoCmd;
-import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeTeleopCmd;
 import frc.robot.commands.IntakeShoot.ShootInSpeakerCmd;
 import frc.robot.commands.IntakeShoot.TimeIntakeCmd;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutoTwoNoteMiddlePos extends SequentialCommandGroup {
   /** Creates a new AutoTwoNoteMiddlePos. */
   public AutoTwoNoteMiddlePos() {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
     addCommands(
         new ParallelRaceGroup(new ZeroDriveMotors(),
             new SequentialCommandGroup(
-                // moves arm to speaker
+                // Moves arm to speaker.
                 new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
-                // shoots in speaker
+                // Shoots in speaker.
                 new ShootInSpeakerCmd(),
-                // moves arm to ground
+                // Moves arm to ground.
                 new ArmToPositionAutoCmd(Constants.Arm.GROUND + 2))),
         new TimerCmd(.5),
         new ParallelCommandGroup(
-            // drives forward while...
+            // Drives forward while...
             new DriveDistanceCmd(Units.inchesToMeters(36)),
-            // ...running intake
+            // ...running intake.
             new RunIntakePhotoEyeAutoCmd(Constants.Intake.INTAKE_SPEED + .2)),
         new TimeIntakeCmd(.2, .2),
-        // moves arm up to speaker position after has note
+        // Moves arm up to speaker position after has note.
         new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
-        // drives backward 4 inches
+        // Drives backward 4 inches.
         new DriveDistanceCmd(Units.inchesToMeters(-36)),
-        // shoots in speaker
+        // Shoots in speaker.
         new ShootInSpeakerCmd(),
-        //moves forward as far into the field
+        //Moves forward as far into the field.
         new DriveDistanceCmd(Units.inchesToMeters(50)));
   }
 }

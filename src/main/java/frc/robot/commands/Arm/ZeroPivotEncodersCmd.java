@@ -12,7 +12,6 @@ public class ZeroPivotEncodersCmd extends Command {
 
   /** Creates a new ZeroPivotEncoders. */
   public ZeroPivotEncodersCmd() {
-    // Use addRequirements() here to declare subsystem dependencies.
     this.arm = Arm.getInstance();
     addRequirements(arm);
   }

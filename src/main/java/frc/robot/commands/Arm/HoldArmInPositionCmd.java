@@ -11,13 +11,13 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Arm;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class HoldArmInPositionCmd extends ProfiledPIDCommand {
-  /** Creates a new profiledPivotArm. */
   double angle;
 
+  /**
+   * Holds the arm in position with target angle.
+   * @param angle The angle to hold the arm at.
+   */
   public HoldArmInPositionCmd(double angle) {
     super(
         // The ProfiledPIDController used by the command
@@ -34,10 +34,10 @@ public class HoldArmInPositionCmd extends ProfiledPIDCommand {
         new TrapezoidProfile.State(Math.toRadians(angle), 0).position,
         // This uses the output
         (output, setpoint) -> {
-
           double volts = Arm.getInstance().calcOutputVoltage(setpoint.velocity);
           Arm.getInstance().driveMotorVolts(volts + output);
         });
+
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Arm.getInstance());
     // Configure additional PID options by calling `getController` here.
@@ -47,6 +47,7 @@ public class HoldArmInPositionCmd extends ProfiledPIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // End when the operator wants to move the arm or until the driver wants to end it.
     return Math.abs(RobotContainer.operatorController.getRightY()) > .1 ||
         RobotContainer.operatorController.a().getAsBoolean() ||
         RobotContainer.operatorController.b().getAsBoolean() ||

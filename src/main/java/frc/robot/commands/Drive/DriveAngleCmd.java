@@ -7,16 +7,16 @@ package frc.robot.commands.Drive;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
 
-/** An example command that uses an example subsystem. */
+/** DriveAngleCmd */
 public class DriveAngleCmd extends Command {
-  double angle; // meters
+  double angle; // In meters.
   DriveTrain driveTrain;
   boolean direction;
 
   /**
-   * Creates a new ExampleCommand.
+   * Creates a new DriveAngleCmd.
    *
-   * @param subsystem The subsystem used by this command.
+   * @param angle The angle.
    */
   public DriveAngleCmd(double angle) {
     driveTrain = DriveTrain.getInstance();
@@ -35,8 +35,7 @@ public class DriveAngleCmd extends Command {
   public void execute() {
     direction = driveTrain.getGyroAngle() > angle;
 
-    // if angle is greater than set point, then drive backwards, otherwise drive
-    // forward
+    // If angle is greater than set point, drive backwards, otherwise drive forward.
     if (direction) {
       driveTrain.driveArcade(0, -0.5);
     } else {
@@ -54,7 +53,7 @@ public class DriveAngleCmd extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // angle is in meters
+    // Angle is in meters.
     System.out.println(driveTrain.getGyroAngle());
     return Math.abs(angle) - Math.abs(driveTrain.getGyroAngle()) < .3;
   }
