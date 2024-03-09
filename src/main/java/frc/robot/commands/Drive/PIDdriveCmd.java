@@ -35,7 +35,7 @@ public class PIDdriveCmd extends Command {
     // Calculates average distance.
     initialPos = (driveTrain.leftDistance() + driveTrain.rightDistance()) / 2;
 
-    drivePIDController.setTolerance(.01);
+    drivePIDController.setTolerance(.05);
     drivePIDController.setSetpoint(setPoint);
   }
 
@@ -49,7 +49,7 @@ public class PIDdriveCmd extends Command {
     volts = MathUtil.clamp(volts, -10, 10);
 
     driveTrain.moveVolts(volts, volts);
-    System.out.println("running");
+    //System.out.println("running");
 
     SmartDashboard.putNumber("PID Drive", volts);
   }
@@ -63,6 +63,6 @@ public class PIDdriveCmd extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return drivePIDController.atSetpoint() && driveTrain.leftMotorLeader.getEncoder().getVelocity() < .01;
+    return drivePIDController.atSetpoint() && Math.abs(driveTrain.leftMotorLeader.getEncoder().getVelocity()) < .01;
   }
 }

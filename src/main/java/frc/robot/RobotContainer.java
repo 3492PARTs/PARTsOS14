@@ -10,6 +10,7 @@ import frc.robot.commands.Arm.ZeroPivotEncodersCmd;
 import frc.robot.commands.Autos.AutoMoveForward;
 import frc.robot.commands.Autos.AutoOneNoteEmptySide;
 import frc.robot.commands.Autos.AutoOneNoteMiddlePos;
+import frc.robot.commands.Autos.AutoTurn;
 import frc.robot.commands.Autos.AutoOneNoteAmpSidePos;
 import frc.robot.commands.Autos.AutoTwoNoteEmptySpacePos;
 import frc.robot.commands.Autos.AutoTwoNoteMiddlePos;
@@ -64,6 +65,7 @@ public class RobotContainer {
     SmartDashboard.putData("choose auto mode", autoChooser);
     // SIDE INDEPENDENT AUTOS
     autoChooser.addOption("Move Forward", new AutoMoveForward());
+    autoChooser.addOption("Move Turn", new AutoTurn());
     autoChooser.addOption("One Note Middle", new AutoOneNoteMiddlePos());
     autoChooser.addOption("Two Note Middle", new AutoTwoNoteMiddlePos());
 
@@ -182,6 +184,9 @@ public class RobotContainer {
     // Drive
     SmartDashboard.putNumber("left Drive Distance", driveTrain.leftDistance());
     SmartDashboard.putNumber("right Drive Distance", driveTrain.rightDistance());
+
+    SmartDashboard.putNumber("gyro angle", driveTrain.getGyroAngle());
+    SmartDashboard.putNumber("graph angle", driveTrain.getGyroAngle());
     // SmartDashboard.putData("zero Drive Encoder", new ZeroDriveEncodersCmd());
     // SmartDashboard.putNumber("left Drive Encoder",
     // DriveTrain.getInstance().leftEncoderPosition());

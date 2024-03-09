@@ -31,8 +31,13 @@ public class PIDTurnCmd extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    driveTrain.zeroGyro();
+    rotPIDController.reset();
     initialAngle = driveTrain.getGyroAngle();
+
+    rotPIDController.setTolerance(2.2);
     rotPIDController.setSetpoint(setPoint);
+    rotPIDController.setIntegratorRange(-1, 1);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -42,8 +47,9 @@ public class PIDTurnCmd extends Command {
     double volts = rotPIDController.calculate(driveTrain.getGyroAngle() - initialAngle);
     volts = MathUtil.clamp(volts, -6, 6);
 
-    driveTrain.moveVolts(volts, -volts);
+    driveTrain.moveVolts(-volts, volts);
     SmartDashboard.putNumber("PID Turn", volts);
+    System.out.println("running");
 
   }
 
@@ -51,11 +57,12 @@ public class PIDTurnCmd extends Command {
   @Override
   public void end(boolean interrupted) {
     driveTrain.driveTank(0, 0);
+    System.out.println("end");
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return rotPIDController.atSetpoint();
+    return rotPIDController.atSetpoint() && Math.abs(driveTrain.leftMotorLeader.getEncoder().getVelocity()) < .01;
   }
 }
