@@ -31,9 +31,11 @@ public class PIDdriveCmd extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    driveTrain.zeroDriveEncoders();
     // Calculates average distance.
     initialPos = (driveTrain.leftDistance() + driveTrain.rightDistance()) / 2;
 
+    drivePIDController.setTolerance(.01);
     drivePIDController.setSetpoint(setPoint);
   }
 
@@ -41,12 +43,13 @@ public class PIDdriveCmd extends Command {
   @Override
   public void execute() {
     // Calculating how much distance covered and how much is left.
-    double volts = drivePIDController
+    double volts = -drivePIDController
         .calculate(((driveTrain.leftDistance() + driveTrain.rightDistance()) / 2) - initialPos);
 
-    volts = MathUtil.clamp(volts, -6, 6);
+    volts = MathUtil.clamp(volts, -10, 10);
 
     driveTrain.moveVolts(volts, volts);
+    System.out.println("running");
 
     SmartDashboard.putNumber("PID Drive", volts);
   }
@@ -60,6 +63,6 @@ public class PIDdriveCmd extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return drivePIDController.atSetpoint();
+    return drivePIDController.atSetpoint() && driveTrain.leftMotorLeader.getEncoder().getVelocity() < .01;
   }
 }

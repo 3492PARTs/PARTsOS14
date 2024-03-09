@@ -19,8 +19,8 @@ public class DriveTrain extends SubsystemBase {
   public static DriveTrain driveTrain;
 
   /* Setup the motors. */
-  static CANSparkMax leftMotorLeader = new CANSparkMax(Constants.Drive.FRONT_LEFT_MOTOR, MotorType.kBrushless);
-  static CANSparkMax leftMotorFollower = new CANSparkMax(Constants.Drive.BACK_LEFT_MOTOR, MotorType.kBrushless);
+  public static CANSparkMax leftMotorLeader = new CANSparkMax(Constants.Drive.FRONT_LEFT_MOTOR, MotorType.kBrushless);
+  public static CANSparkMax leftMotorFollower = new CANSparkMax(Constants.Drive.BACK_LEFT_MOTOR, MotorType.kBrushless);
 
   static CANSparkMax rightMotorLeader = new CANSparkMax(Constants.Drive.FRONT_RIGHT_MOTOR, MotorType.kBrushless);
   static CANSparkMax rightMotorFollower = new CANSparkMax(Constants.Drive.BACK_RIGHT_MOTOR, MotorType.kBrushless);
@@ -78,7 +78,7 @@ public class DriveTrain extends SubsystemBase {
   // 5.87
 
   public double leftDistance() {
-    return Units.inchesToMeters(-(leftMotorLeader.getEncoder().getPosition() * 3.2 * Math.PI) / 5.87);
+    return -Units.inchesToMeters((leftMotorLeader.getEncoder().getPosition() * 3.2 * Math.PI) / 5.87);
   }
 
   public void moveVolts(double leftVoltage, double rightVoltage) {
