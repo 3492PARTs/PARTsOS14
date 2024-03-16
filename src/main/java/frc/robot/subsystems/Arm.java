@@ -17,7 +17,9 @@ import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.MutableMeasure;
 import edu.wpi.first.units.Velocity;
 import edu.wpi.first.units.Voltage;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
@@ -34,6 +36,7 @@ public class Arm extends SubsystemBase {
 
   static CANSparkMax pivotLeftMotor;
   static CANSparkMax pivotRightMotor;
+  DigitalInput armLimit = new DigitalInput(Constants.Arm.L_SWITCH_PORT);
 
   SparkPIDController pivotLeftController;
   SparkPIDController pivotRightController;
@@ -49,7 +52,7 @@ public class Arm extends SubsystemBase {
 
   double pivotGearRatio = Constants.Arm.PIVOT_GEAR_RATIO;
 
-  // SysID routine
+  // SysID routine  
   private final MutableMeasure<Voltage> m_appliedVoltage = mutable(Volts.of(0));
   private final MutableMeasure<Angle> m_angle = mutable(Rotations.of(0));
   private final MutableMeasure<Velocity<Angle>> m_velocity = mutable(RotationsPerSecond.of(0));
@@ -59,6 +62,8 @@ public class Arm extends SubsystemBase {
 
   public static double downSpeed = -.25;
   public static double upSpeed = .25;
+
+  public boolean armLimitBuffer = false;
 
   public SysIdRoutine sysIdRoutine = new SysIdRoutine(
       new SysIdRoutine.Config(),
@@ -108,6 +113,8 @@ public class Arm extends SubsystemBase {
     pivotRightMotor.setOpenLoopRampRate(Constants.Arm.OPEN_LOOP_RATE);
 
     Shuffleboard.getTab("debug").addNumber("arm angle", getAngleSupplier());
+    SmartDashboard.putBoolean("Arm Switch", getSwitch());
+    SmartDashboard.putBoolean("Arm Switch Buffer", armLimitBuffer);
     // Shuffleboard.getTab("debug").addNumber("arm angular velocity",
     // getAnglularVelocitySupplier());
   }
@@ -207,6 +214,18 @@ public class Arm extends SubsystemBase {
 
   public double getRPS() {
     return ((pivotLeftMotor.getEncoder().getVelocity() / 60) + (pivotLeftMotor.getEncoder().getVelocity() / 60)) / 2;
+  }
+
+  public boolean getSwitch() {
+    if (armLimit.get() == true) {
+      if (armLimitBuffer == false) {
+      setPivotSpeed(0);
+      }
+      return true;
+    } else {
+      armLimitBuffer = false;
+      return false;
+    }
   }
 
   @Override

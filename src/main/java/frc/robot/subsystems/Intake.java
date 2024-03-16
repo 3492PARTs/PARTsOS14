@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 
 public class Intake extends SubsystemBase {
 
@@ -20,10 +21,12 @@ public class Intake extends SubsystemBase {
 
   static TalonSRX intakeMotor;
 
-  DigitalInput photoEye = new DigitalInput(Constants.Intake.PHOTOEYE);
+  DigitalInput photoEye;
 
   /** Creates a new Intake. */
   public Intake() {
+    if (Robot.isReal())
+      photoEye = new DigitalInput(Constants.Intake.PHOTOEYE);
     intakeMotor = new TalonSRX(Constants.Intake.INTAKE_MOTOR);
   }
 

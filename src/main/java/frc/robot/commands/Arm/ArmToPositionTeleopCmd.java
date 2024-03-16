@@ -37,7 +37,7 @@ public class ArmToPositionTeleopCmd extends Command {
       Arm.downSpeed = -.35;
     }
 
-    // If above is true, go back up to match set pos. Otherwise continue good sir.
+    // If above is true, go back up to match set pos. Otherwise continue.
     if (direction) {
       arm.setPivotSpeed(-0.25);
     } else {

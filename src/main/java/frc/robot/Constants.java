@@ -50,6 +50,9 @@ public final class Constants {
 
     public static final double SPEAKER_SIDE_ANGLE = 41.0;
 
+    //TODO: Change later.
+    public static final int L_SWITCH_PORT = 0;
+
     public static final boolean SYSID = false;
   }
 
