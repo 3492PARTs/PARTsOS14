@@ -50,7 +50,6 @@ public final class Constants {
 
     public static final double SPEAKER_SIDE_ANGLE = 41.0;
 
-    //TODO: Change later.
     public static final int L_SWITCH_PORT = 0;
 
     public static final boolean SYSID = false;
@@ -60,7 +59,7 @@ public final class Constants {
   public static final class Intake {
     public static final int INTAKE_MOTOR = 11;
     public static final double INTAKE_SPEED = -.8;
-    public static final int PHOTOEYE = 0;
+    public static final int PHOTOEYE = 9;
   }
 
   /** Intake Constants */
@@ -68,6 +67,12 @@ public final class Constants {
     public static final int LEFT_MOTOR = 10;
     public static final int RIGHT_MOTOR = 12;
 
+  }
+
+  public static final class LED {
+    //TODO: Replace with real stuff later.
+    public static final int LED_PORT = 123;
+    public static final int LED_LENGTH = 100;
   }
 
   // THIS IS FOR SHUFFLEBOARD DEBUG PLUS OTHER MISC THINGS //

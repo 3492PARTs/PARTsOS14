@@ -6,7 +6,6 @@ package frc.robot.commands.Autos;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.Drive.DriveDistanceCmd;
 import frc.robot.commands.Drive.PIDdriveCmd;
 import frc.robot.util.PIDValues;
 
