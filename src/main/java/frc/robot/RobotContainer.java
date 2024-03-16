@@ -207,6 +207,9 @@ public class RobotContainer {
 
     // PhotoEye
     SmartDashboard.putBoolean("HAS NOTE", intake.hasNote());
+
+    SmartDashboard.putBoolean("Arm Switch", Arm.getInstance().getSwitch());
+    //SmartDashboard.putBoolean("Arm Switch Buffer", armLimitBuffer);
   }
 
   /**

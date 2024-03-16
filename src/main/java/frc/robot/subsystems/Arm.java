@@ -113,8 +113,6 @@ public class Arm extends SubsystemBase {
     pivotRightMotor.setOpenLoopRampRate(Constants.Arm.OPEN_LOOP_RATE);
 
     Shuffleboard.getTab("debug").addNumber("arm angle", getAngleSupplier());
-    SmartDashboard.putBoolean("Arm Switch", getSwitch());
-    SmartDashboard.putBoolean("Arm Switch Buffer", armLimitBuffer);
     // Shuffleboard.getTab("debug").addNumber("arm angular velocity",
     // getAnglularVelocitySupplier());
   }
@@ -217,13 +215,14 @@ public class Arm extends SubsystemBase {
   }
 
   public boolean getSwitch() {
-    if (armLimit.get() == true) {
-      if (armLimitBuffer == false) {
-      setPivotSpeed(0);
+    if (!armLimit.get()) {
+      /*if (!armLimitBuffer) {
+        setPivotSpeed(0);
       }
+      */
       return true;
     } else {
-      armLimitBuffer = false;
+      //armLimitBuffer = false;
       return false;
     }
   }
