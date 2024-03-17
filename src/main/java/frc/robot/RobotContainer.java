@@ -111,12 +111,10 @@ public class RobotContainer {
 
     arm.setDefaultCommand(
         new RunCommand(() -> {
-          // manual control
+          // Manual control with a lower hard stop.
           if (Math.abs(operatorController.getRightY()) > .1) {
-            /*
-            TODO: Test before implementation
             
-            if (arm.getAngle() > Constants.Arm.LOWER_BOUND) {
+            if (Arm.getInstance().getSwitch()) {
               if (operatorController.getRightY() > 0)
                 arm.setPivotSpeed(operatorController.getRightY());
               else
@@ -130,7 +128,7 @@ public class RobotContainer {
             }
             else
               arm.setPivotSpeed(operatorController.getRightY());
-            */
+            
 
             arm.setPivotSpeed(operatorController.getRightY());
           }
