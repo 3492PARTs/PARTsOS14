@@ -145,7 +145,9 @@ public class RobotContainer {
           else {
             // TODO: Idea to help the arm get a more consistent stopping point angle. We schedule a command to stop the arm then a wait then the hold in position.
             arm.setPivotSpeed(0);
-            new HoldArmInPositionCmd(arm.getAngle()).schedule();
+            if (arm.getAngle() > 2) {
+              new HoldArmInPositionCmd(arm.getAngle()).schedule();
+            }
           }
         },
             arm));
