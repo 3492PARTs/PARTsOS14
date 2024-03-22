@@ -6,6 +6,8 @@ package frc.robot;
 
 import frc.robot.commands.Arm.ArmToPositionTeleopCmd;
 import frc.robot.commands.Arm.HoldArmInPositionCmd;
+import frc.robot.commands.Arm.ProfiledPivotArmCmd;
+import frc.robot.commands.Arm.RunArmToZeroCmd;
 import frc.robot.commands.Arm.ZeroPivotEncodersCmd;
 import frc.robot.commands.Autos.AutoMoveForward;
 import frc.robot.commands.Autos.AutoOneNoteEmptySide;
@@ -27,6 +29,7 @@ import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -108,45 +111,49 @@ public class RobotContainer {
             driveTrain));
 
     driveController.a().whileTrue(new ZeroPivotEncodersCmd());
+    driveController.x()
+        .onTrue(new RunArmToZeroCmd().andThen(Commands.waitSeconds(.2)).andThen(new ZeroPivotEncodersCmd()));
 
     arm.setDefaultCommand(
         new RunCommand(() -> {
           // Manual control with a lower hard stop.
           if (Math.abs(operatorController.getRightY()) > .1) {
-            
+
+            //at bottom limit
             if (Arm.getInstance().getSwitch()) {
               if (operatorController.getRightY() > 0)
                 arm.setPivotSpeed(operatorController.getRightY());
               else
                 arm.setPivotSpeed(0);
             }
+            // at top limit
             else if (arm.getAngle() < Constants.Arm.UPPER_BOUND) {
               if (operatorController.getRightY() < 0)
                 arm.setPivotSpeed(operatorController.getRightY());
               else
                 arm.setPivotSpeed(0);
             }
+            // full manual, in safe bounds
             else
               arm.setPivotSpeed(operatorController.getRightY());
-            
-
-            arm.setPivotSpeed(operatorController.getRightY());
           }
           // hold arm in current position
           else {
             // TODO: Idea to help the arm get a more consistent stopping point angle. We schedule a command to stop the arm then a wait then the hold in position.
             arm.setPivotSpeed(0);
-            new HoldArmInPositionCmd(arm.getAngle()).schedule();
+            //new HoldArmInPositionCmd(arm.getAngle()).schedule();
           }
         },
             arm));
 
     //* Controller Bindings */
+    if (!Constants.Arm.SYSID) {
+      //operatorController.x().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.GROUND)); // ground
+      operatorController.y().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.SPEAKER)); // speaker
+      operatorController.b().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.HOME)); // home
+      operatorController.a().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.AMP)); // amp
+    }
 
-    operatorController.x().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.GROUND)); // ground
-    operatorController.y().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.SPEAKER)); // speaker
-    operatorController.b().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.HOME)); // home
-    operatorController.a().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.AMP)); // amp
     operatorController.povRight().onTrue(new ArmToPositionTeleopCmd(-2)); //side angle
 
     operatorController.rightTrigger(.1).whileTrue(new ShootInSpeakerCmd());
@@ -159,15 +166,14 @@ public class RobotContainer {
     operatorController.povUp().whileTrue(new ShootCmd());
 
     // Profiled Pivot Buttons
-    /*
-      operatorController.x().onTrue(new ProfiledPivotArmCmd(80, 2.7, 0, 0)); //
-      // ground
-      operatorController.y().onTrue(new ProfiledPivotArmCmd(42.8, 3.0, 0.0, 0.0));
-      // speaker
-      operatorController.b().onTrue(new ProfiledPivotArmCmd(30, 2.7, 0.0, 0.0)); //
-      // home
-      operatorController.a().onTrue(new ProfiledPivotArmCmd(-5.09, 3.0, 0.3, 0.0));
-     */
+
+    operatorController.x().onTrue(new ProfiledPivotArmCmd(45, 1.0, 0, 0)); //
+    // ground
+    //operatorController.y().onTrue(new ProfiledPivotArmCmd(42.8, 3.0, 0.0, 0.0));
+    // speaker
+    //operatorController.b().onTrue(new ProfiledPivotArmCmd(30, 2.7, 0.0, 0.0)); //
+    // home
+    // operatorController.a().onTrue(new ProfiledPivotArmCmd(-5.09, 3.0, 0.3, 0.0));
 
     // SysID
     if (Constants.Arm.SYSID) {

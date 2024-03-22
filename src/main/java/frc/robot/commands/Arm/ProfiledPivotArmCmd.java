@@ -30,7 +30,7 @@ public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
         (output, setpoint) -> {
 
           double volts = Arm.getInstance().calcOutputVoltage(setpoint.velocity);
-          Arm.getInstance().driveMotorVolts(volts + output);
+          Arm.getInstance().driveMotorVolts(-(volts + output));
           // Use the output (and setpoint, if desired) here
         });
     // Use addRequirements() here to declare subsystem dependencies.
@@ -42,7 +42,6 @@ public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-
-    return getController().atGoal() || Arm.getInstance().getSwitch();
+    return getController().atGoal();
   }
 }

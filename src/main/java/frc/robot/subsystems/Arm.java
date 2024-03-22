@@ -45,10 +45,10 @@ public class Arm extends SubsystemBase {
 
   ArmFeedforward armFeedForward;
 
-  double kS = 0.21092; // .38107
-  double kV = 0.11019; // .10239
-  double kG = 0.02501; // .02501
-  double kA = 0.021335;
+  double kS = 0.02204; //0.21092; // .38107
+  double kV = 0.15682;//0.11019; // .10239
+  double kG = 0.65433; //0.02501; // .02501
+  double kA = 0.027191;//0.021335;
 
   double pivotGearRatio = Constants.Arm.PIVOT_GEAR_RATIO;
 
@@ -77,7 +77,7 @@ public class Arm extends SubsystemBase {
                     m_appliedVoltage.mut_replace(
                         getAverageVoltage(), Volts))
                 .angularPosition(m_angle.mut_replace(
-                    ((pivotLeftMotor.getEncoder().getPosition() + pivotRightMotor.getEncoder().getPosition()) / 2),
+                    ((alternateLeftEncoder.getPosition())),
                     Rotations))
                 .angularVelocity(
                     m_velocity.mut_replace(getRPS(), RotationsPerSecond));
@@ -167,7 +167,7 @@ public class Arm extends SubsystemBase {
 
   public double getAlternateEncoderPosition() {
     //return alternateLeftEncoder.getPosition();
-    return alternateLeftEncoder.getPosition() * 360;
+    return (alternateLeftEncoder.getPosition() * 360) * -1;
   }
 
   public double getAlternateEncoderCPR() {
@@ -201,6 +201,9 @@ public class Arm extends SubsystemBase {
   public void zeroPivotEncoders() {
     pivotLeftMotor.getEncoder().setPosition(0);
     pivotRightMotor.getEncoder().setPosition(0);
+
+    alternateLeftEncoder.setPosition(0);
+    alternateRightEncoder.setPosition(0);
   }
 
   // SysID methods

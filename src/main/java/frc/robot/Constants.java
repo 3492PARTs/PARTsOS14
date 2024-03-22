@@ -41,12 +41,12 @@ public final class Constants {
     public static final double kI = 0.0;
     public static final double kD = 0.0;
 
-    public static final double GROUND = 74.6;
+    public static final double GROUND = 0;
     public static final double SPEAKER = 45.3;
-    public static final double HOME = 15;
-    public static final double AMP = -10;
-    public static final double UPPER_BOUND = AMP - 10;
-    public static final double LOWER_BOUND = GROUND + 10;
+    public static final double HOME = 75;
+    public static final double AMP = 100;
+    public static final double UPPER_BOUND = AMP + 10;
+    //public static final double LOWER_BOUND = GROUND + 10;
 
     public static final double SPEAKER_SIDE_ANGLE = 41.0;
 
