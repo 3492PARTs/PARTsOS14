@@ -87,7 +87,7 @@ public class Arm extends SubsystemBase {
   public Arm() {
 
     // TODO: change angdeg higher later (faster the better)
-    ArmConstraints = new TrapezoidProfile.Constraints(Math.toRadians(40), Math.toRadians(27));
+    ArmConstraints = new TrapezoidProfile.Constraints(Math.toRadians(50), Math.toRadians(55));
 
     // ks: overcomes static friction
     // kg: voltage needed to maintain speed
@@ -113,6 +113,7 @@ public class Arm extends SubsystemBase {
     pivotRightMotor.setOpenLoopRampRate(Constants.Arm.OPEN_LOOP_RATE);
 
     Shuffleboard.getTab("debug").addNumber("arm angle", getAngleSupplier());
+    Shuffleboard.getTab("debug").addNumber("arm angle g", getAngleSupplier());
     // Shuffleboard.getTab("debug").addNumber("arm angular velocity",
     // getAnglularVelocitySupplier());
   }

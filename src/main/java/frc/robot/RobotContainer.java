@@ -121,14 +121,14 @@ public class RobotContainer {
 
             //at bottom limit
             if (Arm.getInstance().getSwitch()) {
-              if (operatorController.getRightY() > 0)
+              if (operatorController.getRightY() < 0)
                 arm.setPivotSpeed(operatorController.getRightY());
               else
                 arm.setPivotSpeed(0);
             }
             // at top limit
-            else if (arm.getAngle() < Constants.Arm.UPPER_BOUND) {
-              if (operatorController.getRightY() < 0)
+            else if (arm.getAngle() >= Constants.Arm.UPPER_BOUND) {
+              if (operatorController.getRightY() > 0)
                 arm.setPivotSpeed(operatorController.getRightY());
               else
                 arm.setPivotSpeed(0);
@@ -167,7 +167,7 @@ public class RobotContainer {
 
     // Profiled Pivot Buttons
 
-    operatorController.x().onTrue(new ProfiledPivotArmCmd(45, 1.0, 0, 0)); //
+    operatorController.x().onTrue(new ProfiledPivotArmCmd(120, 30.0, 0, 0));
     // ground
     //operatorController.y().onTrue(new ProfiledPivotArmCmd(42.8, 3.0, 0.0, 0.0));
     // speaker
