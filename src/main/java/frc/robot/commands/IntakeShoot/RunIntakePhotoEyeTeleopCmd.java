@@ -7,6 +7,7 @@ package frc.robot.commands.IntakeShoot;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.commands.Arm.ArmToPositionTeleopCmd;
+import frc.robot.commands.Arm.ProfiledPivotArmCmd;
 import frc.robot.subsystems.Intake;
 
 public class RunIntakePhotoEyeTeleopCmd extends Command {
@@ -44,7 +45,7 @@ public class RunIntakePhotoEyeTeleopCmd extends Command {
     intake.runIntake(0);
     if (intake.hasNote()) {
       new TimeIntakeCmd(.2, .2).schedule();
-      new ArmToPositionTeleopCmd(armPosition).schedule();
+      new ProfiledPivotArmCmd(armPosition).schedule();
     }
   }
 

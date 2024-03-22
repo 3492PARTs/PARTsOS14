@@ -42,7 +42,7 @@ public final class Constants {
     public static final double kD = 0.0;
 
     public static final double GROUND = 0;
-    public static final double SPEAKER = 45.3;
+    public static final double SPEAKER = 28.0;
     public static final double HOME = 75;
     public static final double AMP = 100;
     public static final double UPPER_BOUND = AMP + 10;

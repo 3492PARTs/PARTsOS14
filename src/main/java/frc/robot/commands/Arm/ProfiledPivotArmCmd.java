@@ -8,9 +8,12 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import frc.robot.Constants;
+import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeTeleopCmd;
 import frc.robot.subsystems.Arm;
 
 public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
+
+  double angle;
 
   /** Creates a new profiledPivotArm. */
   public ProfiledPivotArmCmd(double angle) {
@@ -38,6 +41,16 @@ public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
     addRequirements(Arm.getInstance());
     // Configure additional PID options by calling `getController` here.
     getController().setTolerance(1);
+    this.angle = angle;
+  }
+
+  @Override
+  public void end(boolean interrupted) {
+    Arm.getInstance().setPivotSpeed(0);
+    // Once arm is on the ground, run the intake to pick up a note.
+    if (angle == Constants.Arm.GROUND) {
+      new RunIntakePhotoEyeTeleopCmd(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME).schedule();
+    }
   }
 
   // Returns true when the command should end.
