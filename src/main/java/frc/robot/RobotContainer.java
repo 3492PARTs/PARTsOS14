@@ -54,6 +54,8 @@ public class RobotContainer {
   public static final CommandXboxController driveController = new CommandXboxController(0);
   public static final CommandXboxController operatorController = new CommandXboxController(1);
 
+  public final Trigger zeroPivotTrigger = new Trigger(arm.getSwitchSupplier());
+
   // SmartDashboard chooser for auto tasks.
   SendableChooser<Command> autoChooser = new SendableChooser<>();
 
@@ -112,7 +114,9 @@ public class RobotContainer {
 
     driveController.a().whileTrue(new ZeroPivotEncodersCmd());
     driveController.x()
-        .onTrue(new RunArmToZeroCmd().andThen(Commands.waitSeconds(.2)).andThen(new ZeroPivotEncodersCmd()));
+        .onTrue(new RunArmToZeroCmd());
+
+    zeroPivotTrigger.onTrue(Commands.waitSeconds(.2).andThen(new ZeroPivotEncodersCmd()));
 
     arm.setDefaultCommand(
         new RunCommand(() -> {
@@ -141,20 +145,20 @@ public class RobotContainer {
           else {
             // TODO: Idea to help the arm get a more consistent stopping point angle. We schedule a command to stop the arm then a wait then the hold in position.
             arm.setPivotSpeed(0);
-            //new HoldArmInPositionCmd(arm.getAngle()).schedule();
+            new HoldArmInPositionCmd(arm.getAngle()).schedule();
           }
         },
             arm));
 
     //* Controller Bindings */
     if (!Constants.Arm.SYSID) {
-      //operatorController.x().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.GROUND)); // ground
-      operatorController.y().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.SPEAKER)); // speaker
-      operatorController.b().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.HOME)); // home
-      operatorController.a().onTrue(new ArmToPositionTeleopCmd(Constants.Arm.AMP)); // amp
+      operatorController.x().onTrue(new ProfiledPivotArmCmd(Constants.Arm.GROUND)); // ground
+      operatorController.y().onTrue(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER)); // speaker
+      operatorController.b().onTrue(new ProfiledPivotArmCmd(Constants.Arm.HOME)); // home
+      operatorController.a().onTrue(new ProfiledPivotArmCmd(Constants.Arm.AMP)); // amp
     }
 
-    operatorController.povRight().onTrue(new ArmToPositionTeleopCmd(-2)); //side angle
+    operatorController.povRight().onTrue(new ArmToPositionTeleopCmd(-2)); //do not use
 
     operatorController.rightTrigger(.1).whileTrue(new ShootInSpeakerCmd());
     operatorController.rightBumper().onTrue(new ShootInAmpCmd());
@@ -167,7 +171,7 @@ public class RobotContainer {
 
     // Profiled Pivot Buttons
 
-    operatorController.x().onTrue(new ProfiledPivotArmCmd(120, 30.0, 0, 0));
+    //operatorController.x().onTrue(new ProfiledPivotArmCmd(120));
     // ground
     //operatorController.y().onTrue(new ProfiledPivotArmCmd(42.8, 3.0, 0.0, 0.0));
     // speaker

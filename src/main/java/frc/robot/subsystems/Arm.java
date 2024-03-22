@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
@@ -229,6 +231,10 @@ public class Arm extends SubsystemBase {
       //armLimitBuffer = false;
       return false;
     }
+  }
+
+  public BooleanSupplier getSwitchSupplier() {
+    return this::getSwitch;
   }
 
   @Override

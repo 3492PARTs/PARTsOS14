@@ -7,19 +7,20 @@ package frc.robot.commands.Arm;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
+import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
 
 public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
 
   /** Creates a new profiledPivotArm. */
-  public ProfiledPivotArmCmd(double angle, double kP, double kI, double kD) {
+  public ProfiledPivotArmCmd(double angle) {
     super(
         // The ProfiledPIDController used by the command
         new ProfiledPIDController(
             // The PID gains (tune later)
-            kP, // 2,7
-            kI,
-            kD,
+            Constants.Arm.kP, // 2,7
+            Constants.Arm.kI,
+            Constants.Arm.kD,
             // The motion profile constraints
             Arm.getInstance().getConstraints()),
         // This should return the measurement
@@ -42,6 +43,6 @@ public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return getController().atGoal();
+    return getController().atGoal() || Arm.getInstance().getSwitch();
   }
 }

@@ -11,7 +11,7 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Arm;
 
-public class HoldArmInPositionCmd extends ProfiledPIDCommand {
+public class HoldArmInPositionCmd extends ProfiledPivotArmCmd {
   double angle;
 
   /**
@@ -19,29 +19,7 @@ public class HoldArmInPositionCmd extends ProfiledPIDCommand {
    * @param angle The angle to hold the arm at.
    */
   public HoldArmInPositionCmd(double angle) {
-    super(
-        // The ProfiledPIDController used by the command
-        new ProfiledPIDController(
-            Constants.Arm.kP,
-            Constants.Arm.kI,
-            Constants.Arm.kD,
-            // The motion profile constraints
-            Arm.getInstance().getConstraints()),
-
-        // This should return the measurement
-        () -> Arm.getInstance().getCurrentState().position, // getCurrentState() is a trapezoid profile object
-        // This should return the goal (can also be a constant)
-        new TrapezoidProfile.State(Math.toRadians(angle), 0).position,
-        // This uses the output
-        (output, setpoint) -> {
-          double volts = Arm.getInstance().calcOutputVoltage(setpoint.velocity);
-          Arm.getInstance().driveMotorVolts(volts + output);
-        });
-
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Arm.getInstance());
-    // Configure additional PID options by calling `getController` here.
-    getController().setTolerance(2);
+    super(angle);
   }
 
   // Returns true when the command should end.
