@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Arm;
 
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.ErrorHandler.ErrorManager;
+import frc.robot.subsystems.ErrorHandler.ErrorManager.ErrorType;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -33,10 +35,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_robotContainer = new RobotContainer();
-    Arm.getInstance().zeroPivotEncoders();
-    DriveTrain.getInstance().zeroDriveEncoders();
-    DriveTrain.getInstance().zeroGyro();
+    try {
+      m_robotContainer = new RobotContainer();
+      Arm.getInstance().zeroPivotEncoders();
+      DriveTrain.getInstance().zeroDriveEncoders();
+      DriveTrain.getInstance().zeroGyro();
+    } catch (Exception e) {
+      ErrorManager.getInstance().handle("Error! Initialization has failed in Robot.java", ErrorType.INIT_ERROR);
+    }
     //Camera.getInstance();
 
     // SysID

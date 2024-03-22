@@ -24,6 +24,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ErrorHandler.ErrorManager;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -61,6 +62,11 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     // configureBindings();
+
+    if (driveTrain == null || arm == null || intake == null || shooter == null || driveController == null || operatorController == null) {
+      // replace with custom error handling later to avoid robot crash.
+      ErrorManager.getInstance().handle("Module(s) of the robot did not initialize correctly!", frc.robot.subsystems.ErrorHandler.ErrorManager.ErrorType.INIT_ERROR);
+    }
 
     SmartDashboard.putData("choose auto mode", autoChooser);
     // SIDE INDEPENDENT AUTOS
@@ -158,11 +164,12 @@ public class RobotContainer {
 
     operatorController.povUp().whileTrue(new ShootCmd());
 
+    //? Do we even use this now?? Remove if we don't please. -R
     // Profiled Pivot Buttons
     /*
       operatorController.x().onTrue(new ProfiledPivotArmCmd(80, 2.7, 0, 0)); //
       // ground
-      operatorController.y().onTrue(new ProfiledPivotArmCmd(42.8, 3.0, 0.0, 0.0));
+      operatorC ontroller.y().onTrue(new ProfiledPivotArmCmd(42.8, 3.0, 0.0, 0.0));
       // speaker
       operatorController.b().onTrue(new ProfiledPivotArmCmd(30, 2.7, 0.0, 0.0)); //
       // home

@@ -23,6 +23,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
+import frc.robot.subsystems.ErrorHandler.ErrorManager;
+import frc.robot.subsystems.ErrorHandler.ErrorManager.ErrorType;
 
 import static edu.wpi.first.units.MutableMeasure.mutable;
 import static edu.wpi.first.units.Units.Rotations;
@@ -63,8 +65,6 @@ public class Arm extends SubsystemBase {
   public static double downSpeed = -.25;
   public static double upSpeed = .25;
 
-  public boolean armLimitBuffer = false;
-
   public SysIdRoutine sysIdRoutine = new SysIdRoutine(
       new SysIdRoutine.Config(),
       new SysIdRoutine.Mechanism(
@@ -97,6 +97,10 @@ public class Arm extends SubsystemBase {
     pivotLeftMotor = new CANSparkMax(Constants.Arm.LEFT_PIVOT_MOTOR, MotorType.kBrushless);
     pivotRightMotor = new CANSparkMax(Constants.Arm.RIGHT_PIVOT_MOTOR, MotorType.kBrushless);
 
+    // Prevent old faults from triggering the error manager.
+    pivotLeftMotor.clearFaults();
+    pivotRightMotor.clearFaults();
+
     pivotLeftMotor.setInverted(false);
     pivotRightMotor.setInverted(true);
 
@@ -112,9 +116,7 @@ public class Arm extends SubsystemBase {
     pivotLeftMotor.setOpenLoopRampRate(Constants.Arm.OPEN_LOOP_RATE);
     pivotRightMotor.setOpenLoopRampRate(Constants.Arm.OPEN_LOOP_RATE);
 
-    Shuffleboard.getTab("debug").addNumber("arm angle", getAngleSupplier());
-    SmartDashboard.putBoolean("Arm Switch", getSwitch());
-    SmartDashboard.putBoolean("Arm Switch Buffer", armLimitBuffer);
+    Shuffleboard.getTab("Arm").addNumber("Arm Angle", getAngleSupplier());
     // Shuffleboard.getTab("debug").addNumber("arm angular velocity",
     // getAnglularVelocitySupplier());
   }
@@ -218,18 +220,18 @@ public class Arm extends SubsystemBase {
 
   public boolean getSwitch() {
     if (armLimit.get() == true) {
-      if (armLimitBuffer == false) {
-      setPivotSpeed(0);
-      }
       return true;
-    } else {
-      armLimitBuffer = false;
-      return false;
     }
+    return false;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putBoolean("Arm Switch", getSwitch());
+
+    if (pivotLeftMotor.getLastError() != null || pivotRightMotor.getLastError() != null) {
+      ErrorManager.getInstance().handle("Arm motor error!", ErrorType.MOTOR_ERROR);
+    }
   }
 }
