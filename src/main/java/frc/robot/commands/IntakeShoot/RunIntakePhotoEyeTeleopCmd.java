@@ -44,7 +44,7 @@ public class RunIntakePhotoEyeTeleopCmd extends Command {
   public void end(boolean interrupted) {
     intake.runIntake(0);
     if (intake.hasNote()) {
-      new TimeIntakeCmd(.2, .4).schedule();
+      new TimeIntakeCmd(.2, .38).schedule();
       new ProfiledPivotArmCmd(armPosition).schedule();
     }
   }
