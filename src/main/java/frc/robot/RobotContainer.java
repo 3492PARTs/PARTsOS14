@@ -171,11 +171,13 @@ public class RobotContainer {
     //operatorController.rightTrigger(.1).whileTrue(new ShootInSpeakerCmd());
     operatorController.rightTrigger(.1)
         .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(1550), new RunIntakeRPMCmd(1550)));
+
     operatorController.rightBumper()
         .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(300), new RunIntakeRPMCmd(300)));
 
     operatorController.leftTrigger(.1)
         .onTrue(new RunIntakePhotoEyeTeleopCmd(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME));
+
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
 
     operatorController.povUp().whileTrue(new ShootCmd());
