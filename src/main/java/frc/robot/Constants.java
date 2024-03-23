@@ -75,8 +75,10 @@ public final class Constants {
     public static final int LED_LENGTH = 100;
   }
 
-  // THIS IS FOR SHUFFLEBOARD DEBUG PLUS OTHER MISC THINGS //
-  /** Debug Constants<p>For testingg only.<p>Do not use in prod! */
+  /** Debug Constants<p>
+   * For testing only.<p>
+   * Do not use in prod!
+   */
   public static class Debug {
     public static final boolean debugMode = true;
   }

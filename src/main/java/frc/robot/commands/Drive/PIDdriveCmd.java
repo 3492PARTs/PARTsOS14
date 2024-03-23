@@ -63,6 +63,6 @@ public class PIDdriveCmd extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return drivePIDController.atSetpoint() && Math.abs(driveTrain.leftMotorLeader.getEncoder().getVelocity()) < .01;
+    return drivePIDController.atSetpoint() && Math.abs(DriveTrain.leftMotorLeader.getEncoder().getVelocity()) < .01;
   }
 }

@@ -231,7 +231,7 @@ public class Arm extends SubsystemBase {
     SmartDashboard.putBoolean("Arm Switch", getSwitch());
 
     if (pivotLeftMotor.getLastError() != null || pivotRightMotor.getLastError() != null) {
-      ErrorManager.getInstance().handle("Arm motor error!", ErrorType.MOTOR_ERROR);
+      ErrorManager.getInstance().handle("Arm motor error!", ErrorType.MOTOR_ERROR, pivotLeftMotor.getLastError());
     }
   }
 }
