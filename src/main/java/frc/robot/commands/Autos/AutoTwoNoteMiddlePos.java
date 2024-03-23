@@ -8,41 +8,48 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.commands.TimerCmd;
 import frc.robot.commands.Arm.ArmToPositionAutoCmd;
+import frc.robot.commands.Arm.HoldArmInPositionCmd;
+import frc.robot.commands.Arm.ProfiledPivotArmCmd;
+import frc.robot.commands.Arm.RunArmToZeroCmd;
+import frc.robot.commands.Arm.ZeroArmCmd;
+import frc.robot.commands.Arm.ZeroPivotEncodersCmd;
 import frc.robot.commands.Drive.DriveDistanceCmd;
+import frc.robot.commands.Drive.PIDDriveCmd;
+import frc.robot.commands.Drive.ZeroDriveEncodersCmd;
 import frc.robot.commands.Drive.ZeroDriveMotors;
 import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeCmd;
+import frc.robot.commands.IntakeShoot.BangBangShooterCmd;
 import frc.robot.commands.IntakeShoot.RunIntakeAtRPMCmd;
 import frc.robot.commands.IntakeShoot.TimeIntakeCmd;
 
 public class AutoTwoNoteMiddlePos extends SequentialCommandGroup {
   /** Creates a new AutoTwoNoteMiddlePos. */
   public AutoTwoNoteMiddlePos() {
-    addCommands(
-        new ParallelRaceGroup(new ZeroDriveMotors(),
-            new SequentialCommandGroup(
-                // Moves arm to speaker.
-                new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
-                // Shoots in speaker.
+    addCommands(new ParallelRaceGroup(new ZeroDriveMotors(),
+        new SequentialCommandGroup(
+            new ZeroArmCmd(),
+            // Move arm to angle and warm up shooter
+            new ParallelRaceGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
+                new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM)),
+            // Shoot once at speed
+            new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
                 new RunIntakeAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
-                // Moves arm to ground.
-                new ArmToPositionAutoCmd(Constants.Arm.GROUND + 2))),
-        new TimerCmd(.5),
-        new ParallelCommandGroup(
-            // Drives forward while...
-            new DriveDistanceCmd(Units.inchesToMeters(36)),
-            // ...running intake.
-            new RunIntakePhotoEyeCmd(Constants.Intake.INTAKE_SPEED + .2)),
-        new TimeIntakeCmd(.2, .2),
-        // Moves arm up to speaker position after has note.
-        new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
-        // Drives backward 4 inches.
-        new DriveDistanceCmd(Units.inchesToMeters(-36)),
-        // Shoots in speaker.
-        new RunIntakeAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
-        //Moves forward as far into the field.
-        new DriveDistanceCmd(Units.inchesToMeters(50)));
+                new HoldArmInPositionCmd(Constants.Arm.SPEAKER)),
+            // Move arm to ground
+            new ProfiledPivotArmCmd(Constants.Arm.GROUND))),
+        // Turn on intake and move forward
+        new DriveDistanceCmd(Units.inchesToMeters(36)),
+        new RunIntakePhotoEyeCmd(Constants.Intake.INTAKE_SPEED),
+        // Pivot up and speed
+        new ParallelCommandGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
+            new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM)),
+        // Shoot
+        new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
+            new RunIntakeAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
+            new HoldArmInPositionCmd(Constants.Arm.SPEAKER)));
   }
 }

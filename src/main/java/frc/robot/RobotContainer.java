@@ -198,6 +198,7 @@ public class RobotContainer {
 
   public void removeBindings() {
     arm.removeDefaultCommand();
+    driveTrain.removeDefaultCommand();
   }
 
   public void displaySmartDashboard() {

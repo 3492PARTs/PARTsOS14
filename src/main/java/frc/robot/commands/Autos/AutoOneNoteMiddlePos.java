@@ -13,6 +13,7 @@ import frc.robot.commands.Arm.ArmToPositionTeleopCmd;
 import frc.robot.commands.Arm.HoldArmInPositionCmd;
 import frc.robot.commands.Arm.ProfiledPivotArmCmd;
 import frc.robot.commands.Arm.RunArmToZeroCmd;
+import frc.robot.commands.Arm.ZeroArmCmd;
 import frc.robot.commands.Arm.ZeroPivotEncodersCmd;
 import frc.robot.commands.Drive.ZeroDriveEncodersCmd;
 import frc.robot.commands.IntakeShoot.BangBangShooterCmd;
@@ -22,9 +23,7 @@ public class AutoOneNoteMiddlePos extends SequentialCommandGroup {
   /** Creates a new AutoOneNoteMiddlePos. */
   public AutoOneNoteMiddlePos() {
     // Set arm pos then shoot in speaker.
-    addCommands(new RunArmToZeroCmd(),
-        new WaitCommand(.3),
-        new ZeroPivotEncodersCmd(),
+    addCommands(new ZeroArmCmd(),
         new ParallelRaceGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
             new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM)),
         new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),

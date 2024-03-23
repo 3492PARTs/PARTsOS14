@@ -8,6 +8,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.util.PIDValues;
 
@@ -15,15 +16,14 @@ public class PIDTurnCmd extends Command {
   /** Creates a new PIDTurn. */
   double initialAngle;
   double setPoint;
-  double[] pidValues;
   PIDController rotPIDController;
   DriveTrain driveTrain;
 
-  public PIDTurnCmd(PIDValues values, double setPoint) {
+  public PIDTurnCmd(double setPoint) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.driveTrain = DriveTrain.getInstance();
-    this.pidValues = values.getPIDValues();
-    rotPIDController = new PIDController(pidValues[0], pidValues[1], pidValues[2]);
+    rotPIDController = new PIDController(Constants.Drive.turning_kP, Constants.Drive.turning_kI,
+        Constants.Drive.turning_kD);
     this.setPoint = setPoint;
     addRequirements(driveTrain);
   }

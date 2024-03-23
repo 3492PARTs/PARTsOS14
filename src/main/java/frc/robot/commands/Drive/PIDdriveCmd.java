@@ -8,21 +8,20 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.util.PIDValues;
 
-public class PIDdriveCmd extends Command {
+public class PIDDriveCmd extends Command {
   double initialPos;
   double setPoint;
   DriveTrain driveTrain;
-  double[] pidValues;
   PIDController drivePIDController;
 
   /** Creates a new PIDdrive. */
-  public PIDdriveCmd(PIDValues pValues, double setPoint) {
+  public PIDDriveCmd(double setPoint) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.pidValues = pValues.getPIDValues();
-    drivePIDController = new PIDController(pidValues[0], pidValues[1], pidValues[2]);
+    drivePIDController = new PIDController(Constants.Drive.kP, Constants.Drive.kI, Constants.Drive.kD);
     this.setPoint = setPoint;
     this.driveTrain = DriveTrain.getInstance();
     addRequirements(driveTrain);
@@ -49,7 +48,7 @@ public class PIDdriveCmd extends Command {
     volts = MathUtil.clamp(volts, -10, 10);
 
     driveTrain.moveVolts(volts, volts);
-    //System.out.println("running");
+    System.out.println("running");
 
     SmartDashboard.putNumber("PID Drive", volts);
   }
@@ -58,11 +57,13 @@ public class PIDdriveCmd extends Command {
   @Override
   public void end(boolean interrupted) {
     driveTrain.driveTank(0, 0);
+    System.out.println("end " + interrupted);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    System.out.println("is finished" + System.currentTimeMillis());
     return drivePIDController.atSetpoint() && Math.abs(driveTrain.leftMotorLeader.getEncoder().getVelocity()) < .01;
   }
 }
