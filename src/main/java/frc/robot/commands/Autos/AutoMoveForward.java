@@ -6,7 +6,11 @@ package frc.robot.commands.Autos;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants;
+import frc.robot.commands.Arm.ProfiledPivotArmCmd;
+import frc.robot.commands.Arm.ZeroArmCmd;
 import frc.robot.commands.Drive.PIDDriveCmd;
+import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeCmd;
 import frc.robot.util.PIDValues;
 
 public class AutoMoveForward extends SequentialCommandGroup {
@@ -14,6 +18,10 @@ public class AutoMoveForward extends SequentialCommandGroup {
   public AutoMoveForward() {
     // Auto move forward 90 inches.
     //addCommands(new PIDDriveCmd(Units.inchesToMeters(108)));
-    addCommands(new PIDDriveCmd(Units.inchesToMeters(36)));
+    addCommands(new ZeroArmCmd(),
+        new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
+        new ProfiledPivotArmCmd(Constants.Arm.GROUND),
+        new RunIntakePhotoEyeCmd(Constants.Intake.INTAKE_SPEED),
+        new PIDDriveCmd(Units.inchesToMeters(36)));
   }
 }
