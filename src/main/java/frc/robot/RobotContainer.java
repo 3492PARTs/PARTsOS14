@@ -25,9 +25,11 @@ import frc.robot.commands.IntakeShoot.ShootCmd;
 import frc.robot.commands.IntakeShoot.ShootInAmpCmd;
 
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Candle;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Candle.Color;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -53,6 +55,7 @@ public class RobotContainer {
   private final Arm arm = Arm.getInstance();
   private final Intake intake = Intake.getInstance();
   private final Shooter shooter = Shooter.getInstance();
+  private final Candle candle = Candle.getInstance();
 
   // Drive controls drivetrain, operator controls arm, intake, and shooter.
   public static final CommandXboxController driveController = new CommandXboxController(0);
@@ -89,6 +92,8 @@ public class RobotContainer {
     autoChooser.addOption("BLUE: Two Note Amp Side", new AutoTwoNoteAmpSidePos(-1));
     autoChooser.addOption("BLUE: Two Note Empty Side", new AutoTwoNoteEmptySpacePos(-1));
 
+    //candle.runRainbowAnimationCommand();
+    candle.setColor(Color.BLUE);
   }
 
   /**

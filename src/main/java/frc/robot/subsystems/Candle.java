@@ -19,8 +19,9 @@ public class Candle extends SubsystemBase {
     private final CANdle candle;
     private final int LED_LENGTH = Constants.LED.LED_LENGTH;
     private Color color;
+    private static Candle candleInstance;
 
-    enum Color {
+    public enum Color {
 
         RED(254, 0, 0),
         ORANGE(254, 55, 0),
@@ -48,6 +49,14 @@ public class Candle extends SubsystemBase {
         candle.configBrightnessScalar(.5);
         candle.configLEDType(LEDStripType.RGB);
         setColor(Color.OFF);
+    }
+
+    public static Candle getInstance() {
+        // If instance is null, then make a new instance.
+        if (candleInstance == null) {
+            candleInstance = new Candle();
+        }
+        return candleInstance;
     }
 
     public void setColor(Color color) {

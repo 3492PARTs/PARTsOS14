@@ -74,8 +74,7 @@ public final class Constants {
   }
 
   public static final class LED {
-    //TODO: Replace with real stuff later.
-    public static final int LED_PORT = 123;
+    public static final int LED_PORT = 0;
     public static final int LED_LENGTH = 100;
   }
 
