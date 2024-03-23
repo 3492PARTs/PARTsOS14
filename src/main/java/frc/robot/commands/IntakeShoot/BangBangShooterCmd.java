@@ -12,8 +12,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.Shooter;
 
-public class PIDShooterCmd extends Command {
+public class BangBangShooterCmd extends Command {
   Shooter shooter;
+  double setpoint;
   BangBangController bbController = new BangBangController(Constants.Shooter.TOLERANCE);
 
   public void runShooterBB(double setpoint) {
@@ -32,9 +33,10 @@ public class PIDShooterCmd extends Command {
   }
 
   /** Creates a new BangBang. */
-  public PIDShooterCmd() {
+  public BangBangShooterCmd(double setpoint) {
     this.shooter = Shooter.getInstance();
     // Use addRequirements() here to declare subsystem dependencies.
+    this.setpoint = setpoint;
     addRequirements(shooter);
   }
 
@@ -48,7 +50,7 @@ public class PIDShooterCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    runShooterBB(0);
+    runShooterBB(setpoint);
   }
 
   // Called once the command ends or is interrupted.
@@ -57,6 +59,7 @@ public class PIDShooterCmd extends Command {
     // Stop dem motor !!!
     Shooter.shooterLeftMotor.set(ControlMode.PercentOutput, 0);
     Shooter.shooterRightMotor.set(ControlMode.PercentOutput, 0);
+    runShooterBB(0);
   }
 
   // Returns true when the command should end.
@@ -65,4 +68,3 @@ public class PIDShooterCmd extends Command {
     return false;
   }
 }
-

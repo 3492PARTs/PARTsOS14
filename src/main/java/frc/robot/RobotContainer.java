@@ -17,6 +17,7 @@ import frc.robot.commands.Autos.AutoOneNoteAmpSidePos;
 import frc.robot.commands.Autos.AutoTwoNoteEmptySpacePos;
 import frc.robot.commands.Autos.AutoTwoNoteMiddlePos;
 import frc.robot.commands.Autos.AutoTwoNoteAmpSidePos;
+import frc.robot.commands.IntakeShoot.BangBangShooterCmd;
 import frc.robot.commands.IntakeShoot.RunIntakeCmd;
 import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeTeleopCmd;
 import frc.robot.commands.IntakeShoot.ShootCmd;
@@ -162,7 +163,8 @@ public class RobotContainer {
 
     operatorController.povRight().onTrue(new ArmToPositionTeleopCmd(-2)); //do not use
 
-    operatorController.rightTrigger(.1).whileTrue(new ShootInSpeakerCmd());
+    //operatorController.rightTrigger(.1).whileTrue(new ShootInSpeakerCmd());
+    operatorController.rightTrigger(.1).whileTrue(new BangBangShooterCmd(1550));
     operatorController.rightBumper().onTrue(new ShootInAmpCmd());
 
     operatorController.leftTrigger(.1)
@@ -170,6 +172,8 @@ public class RobotContainer {
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
 
     operatorController.povUp().whileTrue(new ShootCmd());
+
+    operatorController.povLeft().whileTrue(new RunIntakeCmd(-1));
 
     // Profiled Pivot Buttons
 
@@ -188,6 +192,7 @@ public class RobotContainer {
       operatorController.x().whileTrue(arm.sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward));
       operatorController.y().whileTrue(arm.sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
     }
+
   }
 
   public void displaySmartDashboard() {
