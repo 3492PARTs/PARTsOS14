@@ -56,6 +56,9 @@ public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return getController().atGoal();
+    if (angle == Constants.Arm.GROUND)
+      return Arm.getInstance().getSwitch();
+    else
+      return getController().atGoal();
   }
 }

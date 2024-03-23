@@ -120,7 +120,7 @@ public class RobotContainer {
             driveController.getRightX()),
             driveTrain));
 
-    zeroPivotTrigger.onTrue(Commands.waitSeconds(.2).andThen(new ZeroPivotEncodersCmd()));
+    //zeroPivotTrigger.onTrue(Commands.waitSeconds(.2).andThen(new ZeroPivotEncodersCmd()));
 
     arm.setDefaultCommand(
         new RunCommand(() -> {
@@ -181,7 +181,7 @@ public class RobotContainer {
       // Profiled Pivot Functions
       operatorController.x().onTrue(new ProfiledPivotArmCmd(Constants.Arm.GROUND)); // ground
       operatorController.y().onTrue(Commands.runOnce(() -> {
-        new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER).schedule();
+        new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM).schedule();
       }).andThen(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER))); //speaker
       operatorController.b().onTrue(new ProfiledPivotArmCmd(Constants.Arm.HOME)); // home
       operatorController.a().onTrue(new ProfiledPivotArmCmd(Constants.Arm.AMP)); // amp
@@ -194,6 +194,10 @@ public class RobotContainer {
       operatorController.x().whileTrue(arm.sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward));
       operatorController.y().whileTrue(arm.sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
     }
+  }
+
+  public void removeBindings() {
+    arm.removeDefaultCommand();
   }
 
   public void displaySmartDashboard() {

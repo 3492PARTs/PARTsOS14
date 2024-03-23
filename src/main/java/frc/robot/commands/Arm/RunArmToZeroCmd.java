@@ -5,6 +5,7 @@
 package frc.robot.commands.Arm;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Arm;
 
 public class RunArmToZeroCmd extends Command {
@@ -33,8 +34,8 @@ public class RunArmToZeroCmd extends Command {
   @Override
   public void end(boolean interrupted) {
     arm.setPivotSpeed(0);
-    //System.out.println("hi");
     //arm.zeroPivotEncoders();
+    //new WaitCommand(.2).andThen(new ZeroPivotEncodersCmd()).schedule();
 
   }
 
