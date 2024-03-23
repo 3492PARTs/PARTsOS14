@@ -48,7 +48,7 @@ public final class Constants {
     public static final double UPPER_BOUND = AMP + 10;
     //public static final double LOWER_BOUND = GROUND + 10;
 
-    public static final double SPEAKER_SIDE_ANGLE = 41.0;
+    //public static final double SPEAKER_SIDE_ANGLE = 41.0;
 
     public static final int L_SWITCH_PORT = 0;
 
@@ -68,7 +68,9 @@ public final class Constants {
     public static final int RIGHT_MOTOR = 12;
     public static final double TOLERANCE = 0;
     public static final double LIMITER = 0.25;
-
+    public static final int SPEAKER_RPM = 1550;
+    public static final int WARMUP_SPEAKER = 500;
+    public static final int AMP_RPM = 300;
   }
 
   public static final class LED {

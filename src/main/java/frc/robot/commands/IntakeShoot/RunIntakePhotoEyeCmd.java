@@ -6,22 +6,18 @@ package frc.robot.commands.IntakeShoot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
-import frc.robot.commands.Arm.ArmToPositionTeleopCmd;
-import frc.robot.commands.Arm.ProfiledPivotArmCmd;
 import frc.robot.subsystems.Intake;
 
-public class RunIntakePhotoEyeTeleopCmd extends Command {
+public class RunIntakePhotoEyeCmd extends Command {
   /** Creates a new RunIntakePhotoEyeCommand. */
   double speed;
   Intake intake;
-  double armPosition;
   long startTime = 0;
 
-  public RunIntakePhotoEyeTeleopCmd(double speed, double armPosition) {
+  public RunIntakePhotoEyeCmd(double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = Intake.getInstance();
     this.speed = speed;
-    this.armPosition = armPosition;
     addRequirements(intake);
   }
 
@@ -43,10 +39,6 @@ public class RunIntakePhotoEyeTeleopCmd extends Command {
   @Override
   public void end(boolean interrupted) {
     intake.runIntake(0);
-    if (intake.hasNote()) {
-      new TimeIntakeCmd(.2, .38).schedule();
-      new ProfiledPivotArmCmd(armPosition).schedule();
-    }
   }
 
   // Returns true when the command should end.
@@ -54,7 +46,7 @@ public class RunIntakePhotoEyeTeleopCmd extends Command {
   public boolean isFinished() {
     return System.currentTimeMillis() - this.startTime >= 200 ||
         RobotContainer.operatorController.leftBumper().getAsBoolean() ||
-        //RobotContainer.operatorController.leftTrigger().getAsBoolean() ||
+        RobotContainer.operatorController.leftTrigger().getAsBoolean() ||
         RobotContainer.operatorController.a().getAsBoolean() ||
         RobotContainer.operatorController.b().getAsBoolean() ||
         RobotContainer.operatorController.y().getAsBoolean();

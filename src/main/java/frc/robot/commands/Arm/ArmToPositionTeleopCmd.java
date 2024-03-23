@@ -6,7 +6,7 @@ package frc.robot.commands.Arm;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeTeleopCmd;
+import frc.robot.commands.IntakeShoot.IntakePhotoEyeArmPosCmd;
 import frc.robot.subsystems.Arm;
 
 public class ArmToPositionTeleopCmd extends Command {
@@ -51,7 +51,7 @@ public class ArmToPositionTeleopCmd extends Command {
     arm.setPivotSpeed(0);
     // Once arm is on the ground, run the intake to pick up a note.
     if (angle == Constants.Arm.GROUND) {
-      new RunIntakePhotoEyeTeleopCmd(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME).schedule();
+      new IntakePhotoEyeArmPosCmd(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME).schedule();
     }
   }
 

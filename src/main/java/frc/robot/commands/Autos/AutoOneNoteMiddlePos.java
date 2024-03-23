@@ -7,13 +7,13 @@ package frc.robot.commands.Autos;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.commands.Arm.ArmToPositionTeleopCmd;
-import frc.robot.commands.IntakeShoot.RunIntakeRPMCmd;
+import frc.robot.commands.IntakeShoot.RunIntakeAtRPMCmd;
 
 public class AutoOneNoteMiddlePos extends SequentialCommandGroup {
   /** Creates a new AutoOneNoteMiddlePos. */
   public AutoOneNoteMiddlePos() {
     // Set arm pos then shoot in speaker.
     addCommands(new ArmToPositionTeleopCmd(Constants.Arm.SPEAKER),
-        new RunIntakeRPMCmd(1550));
+        new RunIntakeAtRPMCmd(Constants.Shooter.SPEAKER_RPM));
   }
 }

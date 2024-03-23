@@ -8,14 +8,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-public class RunIntakeRPMCmd extends Command {
+public class RunIntakeAtRPMCmd extends Command {
   /** Creates a new ShootInAmpCmd. */
   Shooter shooter;
   Intake intake;
   int RPM;
   long startTime;
 
-  public RunIntakeRPMCmd(int RPM) {
+  public RunIntakeAtRPMCmd(int RPM) {
     // Use addRequirements() here to declare subsystem dependencies.
     shooter = Shooter.getInstance();
     intake = Intake.getInstance();

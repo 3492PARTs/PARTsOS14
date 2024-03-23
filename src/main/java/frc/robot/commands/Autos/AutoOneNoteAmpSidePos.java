@@ -16,7 +16,7 @@ import frc.robot.commands.Arm.ArmToPositionAutoCmd;
 import frc.robot.commands.Drive.DriveAngleCmd;
 import frc.robot.commands.Drive.DriveDistanceCmd;
 import frc.robot.commands.Drive.ZeroDriveMotors;
-import frc.robot.commands.IntakeShoot.RunIntakeRPMCmd;
+import frc.robot.commands.IntakeShoot.RunIntakeAtRPMCmd;
 
 public class AutoOneNoteAmpSidePos extends SequentialCommandGroup {
 
@@ -44,7 +44,7 @@ public class AutoOneNoteAmpSidePos extends SequentialCommandGroup {
             // moves arm to angle that shoots in speaker from the side
             new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
             // shoots in speaker
-            new RunIntakeRPMCmd(1550))),
+            new RunIntakeAtRPMCmd(Constants.Shooter.SPEAKER_RPM))),
         // drives FORWARD 10 inches
         new DriveDistanceCmd(Units.inchesToMeters(10)).withTimeout(2),
         // turns LEFT face note

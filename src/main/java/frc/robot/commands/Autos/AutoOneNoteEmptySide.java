@@ -12,7 +12,7 @@ import frc.robot.commands.Arm.ArmToPositionAutoCmd;
 import frc.robot.commands.Drive.DriveAngleCmd;
 import frc.robot.commands.Drive.DriveDistanceCmd;
 import frc.robot.commands.Drive.ZeroDriveMotors;
-import frc.robot.commands.IntakeShoot.RunIntakeRPMCmd;
+import frc.robot.commands.IntakeShoot.RunIntakeAtRPMCmd;
 
 public class AutoOneNoteEmptySide extends SequentialCommandGroup {
   /** Creates a new AutoTwoNoteLeftPos. */
@@ -35,7 +35,7 @@ public class AutoOneNoteEmptySide extends SequentialCommandGroup {
 
         new SequentialCommandGroup(
             new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
-            new RunIntakeRPMCmd(1550))),
+            new RunIntakeAtRPMCmd(Constants.Shooter.SPEAKER_RPM))),
 
         // TODO: fix driving distance to be longer
         new DriveDistanceCmd(Units.inchesToMeters(163)).withTimeout(2),

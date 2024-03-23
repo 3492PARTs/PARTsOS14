@@ -13,9 +13,9 @@ import frc.robot.commands.Arm.ArmToPositionAutoCmd;
 import frc.robot.commands.Drive.DriveAngleCmd;
 import frc.robot.commands.Drive.DriveDistanceCmd;
 import frc.robot.commands.Drive.ZeroDriveMotors;
-import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeAutoCmd;
+import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeCmd;
 import frc.robot.commands.IntakeShoot.ShootInAmpCmd;
-import frc.robot.commands.IntakeShoot.RunIntakeRPMCmd;
+import frc.robot.commands.IntakeShoot.RunIntakeAtRPMCmd;
 import frc.robot.commands.IntakeShoot.TimeIntakeCmd;
 
 public class AutoTwoNoteAmpSidePos extends SequentialCommandGroup {
@@ -40,7 +40,7 @@ public class AutoTwoNoteAmpSidePos extends SequentialCommandGroup {
             // moves arm to angle that shoots in speaker from the side
             new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
             // shoots in speaker
-            new RunIntakeRPMCmd(1550))),
+            new RunIntakeAtRPMCmd(Constants.Shooter.SPEAKER_RPM))),
         // drives FORWARD 10 inches
         new DriveDistanceCmd(Units.inchesToMeters(10)).withTimeout(2),
         // turns LEFT face note
@@ -52,7 +52,7 @@ public class AutoTwoNoteAmpSidePos extends SequentialCommandGroup {
             // drives forward while...
             new DriveDistanceCmd(Units.inchesToMeters(60)),
             // ...running intake
-            new RunIntakePhotoEyeAutoCmd(Constants.Intake.INTAKE_SPEED)),
+            new RunIntakePhotoEyeCmd(Constants.Intake.INTAKE_SPEED)),
         new TimeIntakeCmd(.2, .2),
         // moves arm to home
         new ArmToPositionAutoCmd(Constants.Arm.HOME),

@@ -69,12 +69,13 @@ public class BangBangShooterCmd extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return time - System.currentTimeMillis() > 200 && (RobotContainer.operatorController.leftBumper().getAsBoolean() ||
-        RobotContainer.operatorController.leftTrigger().getAsBoolean() ||
-        RobotContainer.operatorController.a().getAsBoolean() ||
-        RobotContainer.operatorController.b().getAsBoolean() ||
-        RobotContainer.operatorController.x().getAsBoolean() ||
-        RobotContainer.operatorController.y().getAsBoolean() ||
-        RobotContainer.operatorController.povUp().getAsBoolean());
+    return System.currentTimeMillis() - time > 200 &&
+        (RobotContainer.operatorController.leftBumper().getAsBoolean() ||
+            RobotContainer.operatorController.leftTrigger().getAsBoolean() ||
+            RobotContainer.operatorController.a().getAsBoolean() ||
+            RobotContainer.operatorController.b().getAsBoolean() ||
+            RobotContainer.operatorController.x().getAsBoolean() ||
+            RobotContainer.operatorController.y().getAsBoolean() ||
+            RobotContainer.operatorController.povUp().getAsBoolean());
   }
 }

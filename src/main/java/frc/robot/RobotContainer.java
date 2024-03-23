@@ -18,11 +18,12 @@ import frc.robot.commands.Autos.AutoTwoNoteEmptySpacePos;
 import frc.robot.commands.Autos.AutoTwoNoteMiddlePos;
 import frc.robot.commands.Autos.AutoTwoNoteAmpSidePos;
 import frc.robot.commands.IntakeShoot.BangBangShooterCmd;
+import frc.robot.commands.IntakeShoot.RunIntakeAtRPMCmd;
 import frc.robot.commands.IntakeShoot.RunIntakeCmd;
-import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeTeleopCmd;
+import frc.robot.commands.IntakeShoot.IntakePhotoEyeArmPosCmd;
 import frc.robot.commands.IntakeShoot.ShootCmd;
 import frc.robot.commands.IntakeShoot.ShootInAmpCmd;
-import frc.robot.commands.IntakeShoot.RunIntakeRPMCmd;
+
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
@@ -67,10 +68,9 @@ public class RobotContainer {
    */
 
   public RobotContainer() {
-    // Configure the trigger bindings
-    // configureBindings();
 
     SmartDashboard.putData("choose auto mode", autoChooser);
+
     // SIDE INDEPENDENT AUTOS
     autoChooser.addOption("Move Forward", new AutoMoveForward());
     autoChooser.addOption("Move Turn", new AutoTurn());
@@ -115,10 +115,6 @@ public class RobotContainer {
             driveController.getRightX()),
             driveTrain));
 
-    driveController.a().whileTrue(new ZeroPivotEncodersCmd());
-    driveController.x()
-        .onTrue(new RunArmToZeroCmd());
-
     zeroPivotTrigger.onTrue(Commands.waitSeconds(.2).andThen(new ZeroPivotEncodersCmd()));
 
     arm.setDefaultCommand(
@@ -146,7 +142,6 @@ public class RobotContainer {
           }
           // hold arm in current position
           else {
-            // TODO: Idea to help the arm get a more consistent stopping point angle. We schedule a command to stop the arm then a wait then the hold in position.
             arm.setPivotSpeed(0);
             if (arm.getAngle() > 2) {
               new HoldArmInPositionCmd(arm.getAngle()).schedule();
@@ -155,53 +150,45 @@ public class RobotContainer {
         },
             arm));
 
-    //* Controller Bindings */
+    // Shooting Functions
+    operatorController.rightTrigger(.1)
+        .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
+            new RunIntakeAtRPMCmd(Constants.Shooter.SPEAKER_RPM)));
+
+    operatorController.rightBumper()
+        .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.AMP_RPM),
+            new RunIntakeAtRPMCmd(Constants.Shooter.AMP_RPM)));
+
+    // Intake Functions
+    operatorController.leftTrigger(.1)
+        .onTrue(new IntakePhotoEyeArmPosCmd(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME));
+    operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
+
+    // Testing
+    operatorController.povDown().onTrue(new ProfiledPivotArmCmd(45));
+    driveController.x().onTrue(new RunArmToZeroCmd());
+
+    // Manual Functions
+    operatorController.povUp().whileTrue(new ShootCmd());
+    operatorController.povLeft().whileTrue(new RunIntakeCmd(-1));
+
     if (!Constants.Arm.SYSID) {
+      // Profiled Pivot Functions
       operatorController.x().onTrue(new ProfiledPivotArmCmd(Constants.Arm.GROUND)); // ground
       operatorController.y().onTrue(Commands.runOnce(() -> {
-        new BangBangShooterCmd(500).schedule();
-      }).andThen(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER)));
-
+        new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER).schedule();
+      }).andThen(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER))); //speaker
       operatorController.b().onTrue(new ProfiledPivotArmCmd(Constants.Arm.HOME)); // home
       operatorController.a().onTrue(new ProfiledPivotArmCmd(Constants.Arm.AMP)); // amp
     }
 
-    operatorController.povRight().onTrue(new ArmToPositionTeleopCmd(-2)); //do not use
-
-    //operatorController.rightTrigger(.1).whileTrue(new ShootInSpeakerCmd());
-    operatorController.rightTrigger(.1)
-        .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(1550), new RunIntakeRPMCmd(1550)));
-
-    operatorController.rightBumper()
-        .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(300), new RunIntakeRPMCmd(300)));
-
-    operatorController.leftTrigger(.1)
-        .onTrue(new RunIntakePhotoEyeTeleopCmd(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME));
-
-    operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
-
-    operatorController.povUp().whileTrue(new ShootCmd());
-
-    operatorController.povLeft().whileTrue(new RunIntakeCmd(-1));
-
-    // Profiled Pivot Buttons
-
-    //operatorController.x().onTrue(new ProfiledPivotArmCmd(120));
-    // ground
-    //operatorController.y().onTrue(new ProfiledPivotArmCmd(42.8, 3.0, 0.0, 0.0));
-    // speaker
-    //operatorController.b().onTrue(new ProfiledPivotArmCmd(30, 2.7, 0.0, 0.0)); //
-    // home
-    // operatorController.a().onTrue(new ProfiledPivotArmCmd(-5.09, 3.0, 0.3, 0.0));
-
     // SysID
-    if (Constants.Arm.SYSID) {
+    else {
       operatorController.a().whileTrue(arm.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward));
       operatorController.b().whileTrue(arm.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse));
       operatorController.x().whileTrue(arm.sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward));
       operatorController.y().whileTrue(arm.sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
     }
-
   }
 
   public void displaySmartDashboard() {
@@ -211,11 +198,6 @@ public class RobotContainer {
 
     SmartDashboard.putNumber("gyro angle", driveTrain.getGyroAngle());
     SmartDashboard.putNumber("graph angle", driveTrain.getGyroAngle());
-    // SmartDashboard.putData("zero Drive Encoder", new ZeroDriveEncodersCmd());
-    // SmartDashboard.putNumber("left Drive Encoder",
-    // DriveTrain.getInstance().leftEncoderPosition());
-    // SmartDashboard.putNumber("right Drive Encoder",
-    // DriveTrain.getInstance().rightEncoderPosition());
 
     // Pivot
     // SmartDashboard.putData("zero Pivot Encoders", new ZeroPivotEncodersCmd());
@@ -223,7 +205,6 @@ public class RobotContainer {
     // Arm.getInstance().leftPivotEncoderPosition());
     // SmartDashboard.putNumber("right Pivot Encoder",
     // Arm.getInstance().rightPivotEncoderPosition());
-
     SmartDashboard.putNumber("Pos", Arm.getInstance().getAlternateEncoderPosition());
 
     // Shooter
@@ -232,8 +213,8 @@ public class RobotContainer {
     // PhotoEye
     SmartDashboard.putBoolean("HAS NOTE", intake.hasNote());
 
+    // LimitSwitch
     SmartDashboard.putBoolean("Arm Switch", Arm.getInstance().getSwitch());
-    //SmartDashboard.putBoolean("Arm Switch Buffer", armLimitBuffer);
   }
 
   /**
