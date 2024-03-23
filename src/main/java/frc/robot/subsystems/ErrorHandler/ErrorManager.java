@@ -1,11 +1,15 @@
 package frc.robot.subsystems.ErrorHandler;
 
+import java.util.List;
+
 import com.revrobotics.REVLibError;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ErrorManager extends SubsystemBase {
     public static ErrorManager errorManager;
+
+    public List<Integer> motorErrors;
 
     public enum ErrorType {
         MOTOR_ERROR, // Error for motors.
@@ -63,6 +67,13 @@ public class ErrorManager extends SubsystemBase {
     public void handle(String msg, ErrorType errorType, REVLibError motorError) {
         // Motor error handler.
         if (errorType == ErrorType.MOTOR_ERROR) {
+            switch (motorError) {
+                case kSetpointOutOfRange:
+                    break;
+            
+                default:
+                    break;
+            }
             System.out.println(msg + "\nThe error code from motor:\n" + motorError.toString());
         }
     }
