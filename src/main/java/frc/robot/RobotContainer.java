@@ -22,7 +22,7 @@ import frc.robot.commands.IntakeShoot.RunIntakeCmd;
 import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeTeleopCmd;
 import frc.robot.commands.IntakeShoot.ShootCmd;
 import frc.robot.commands.IntakeShoot.ShootInAmpCmd;
-import frc.robot.commands.IntakeShoot.ShootInSpeakerCmd;
+import frc.robot.commands.IntakeShoot.RunIntakeRPMCmd;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
@@ -31,6 +31,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -156,7 +158,10 @@ public class RobotContainer {
     //* Controller Bindings */
     if (!Constants.Arm.SYSID) {
       operatorController.x().onTrue(new ProfiledPivotArmCmd(Constants.Arm.GROUND)); // ground
-      operatorController.y().onTrue(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER)); // speaker
+      operatorController.y().onTrue(Commands.runOnce(() -> {
+        new BangBangShooterCmd(500).schedule();
+      }).andThen(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER)));
+
       operatorController.b().onTrue(new ProfiledPivotArmCmd(Constants.Arm.HOME)); // home
       operatorController.a().onTrue(new ProfiledPivotArmCmd(Constants.Arm.AMP)); // amp
     }
@@ -164,8 +169,10 @@ public class RobotContainer {
     operatorController.povRight().onTrue(new ArmToPositionTeleopCmd(-2)); //do not use
 
     //operatorController.rightTrigger(.1).whileTrue(new ShootInSpeakerCmd());
-    operatorController.rightTrigger(.1).whileTrue(new BangBangShooterCmd(1550));
-    operatorController.rightBumper().onTrue(new ShootInAmpCmd());
+    operatorController.rightTrigger(.1)
+        .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(1550), new RunIntakeRPMCmd(1550)));
+    operatorController.rightBumper()
+        .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(300), new RunIntakeRPMCmd(300)));
 
     operatorController.leftTrigger(.1)
         .onTrue(new RunIntakePhotoEyeTeleopCmd(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME));

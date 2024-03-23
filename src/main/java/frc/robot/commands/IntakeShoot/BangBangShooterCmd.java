@@ -10,12 +10,15 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.math.controller.BangBangController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Shooter;
 
 public class BangBangShooterCmd extends Command {
   Shooter shooter;
   double setpoint;
   BangBangController bbController = new BangBangController(Constants.Shooter.TOLERANCE);
+  long time = 0;
 
   public void runShooterBB(double setpoint) {
     // BB calcs 0...1 speed, limiter caps it at 75% for now. Change in Constants if needed.
@@ -45,6 +48,7 @@ public class BangBangShooterCmd extends Command {
   public void initialize() {
     Shooter.shooterLeftMotor.setNeutralMode(NeutralMode.Coast);
     Shooter.shooterRightMotor.setNeutralMode(NeutralMode.Coast);
+    time = System.currentTimeMillis();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -65,6 +69,12 @@ public class BangBangShooterCmd extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return time - System.currentTimeMillis() > 200 && (RobotContainer.operatorController.leftBumper().getAsBoolean() ||
+        RobotContainer.operatorController.leftTrigger().getAsBoolean() ||
+        RobotContainer.operatorController.a().getAsBoolean() ||
+        RobotContainer.operatorController.b().getAsBoolean() ||
+        RobotContainer.operatorController.x().getAsBoolean() ||
+        RobotContainer.operatorController.y().getAsBoolean() ||
+        RobotContainer.operatorController.povUp().getAsBoolean());
   }
 }

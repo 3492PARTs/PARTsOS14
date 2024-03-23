@@ -14,7 +14,7 @@ import frc.robot.commands.Drive.DriveAngleCmd;
 import frc.robot.commands.Drive.DriveDistanceCmd;
 import frc.robot.commands.Drive.ZeroDriveMotors;
 import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeAutoCmd;
-import frc.robot.commands.IntakeShoot.ShootInSpeakerCmd;
+import frc.robot.commands.IntakeShoot.RunIntakeRPMCmd;
 import frc.robot.commands.IntakeShoot.TimeIntakeCmd;
 
 public class AutoTwoNoteEmptySpacePos extends SequentialCommandGroup {
@@ -37,7 +37,7 @@ public class AutoTwoNoteEmptySpacePos extends SequentialCommandGroup {
         addCommands(new ParallelRaceGroup(new ZeroDriveMotors(),
                 new SequentialCommandGroup(
                         new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
-                        new ShootInSpeakerCmd())),
+                        new RunIntakeRPMCmd(1550))),
                 new DriveDistanceCmd(Units.inchesToMeters(8)).withTimeout(2),
                 // TODO: increase angle
                 new DriveAngleCmd(27.5 * red),
@@ -53,6 +53,6 @@ public class AutoTwoNoteEmptySpacePos extends SequentialCommandGroup {
                         new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
                         new DriveDistanceCmd(Units.inchesToMeters(-60))),
                 new DriveAngleCmd(-26.5 * red),
-                new ShootInSpeakerCmd());
+                new RunIntakeRPMCmd(1550));
     }
 }

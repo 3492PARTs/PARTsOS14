@@ -16,18 +16,19 @@ import frc.robot.commands.Arm.ArmToPositionAutoCmd;
 import frc.robot.commands.Drive.DriveAngleCmd;
 import frc.robot.commands.Drive.DriveDistanceCmd;
 import frc.robot.commands.Drive.ZeroDriveMotors;
-import frc.robot.commands.IntakeShoot.ShootInSpeakerCmd;
+import frc.robot.commands.IntakeShoot.RunIntakeRPMCmd;
 
 public class AutoOneNoteAmpSidePos extends SequentialCommandGroup {
 
   int red = 1;
+
   /** Creates a new AutoOneNoteRightPos.
    * @param red ?? - Rewrite later.
   */
   public AutoOneNoteAmpSidePos(int red) {
-    
+
     Optional<Alliance> ally = DriverStation.getAlliance();
-    
+
     // Wrapped if statement to avoid the NoSuchElementException throw.
     if (ally.isPresent()) {
       if (ally.get() == Alliance.Red) {
@@ -37,14 +38,13 @@ public class AutoOneNoteAmpSidePos extends SequentialCommandGroup {
         red = -1;
       }
     }
-    
 
     addCommands(new ParallelRaceGroup(new ZeroDriveMotors(),
         new SequentialCommandGroup(
             // moves arm to angle that shoots in speaker from the side
             new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
             // shoots in speaker
-            new ShootInSpeakerCmd())),
+            new RunIntakeRPMCmd(1550))),
         // drives FORWARD 10 inches
         new DriveDistanceCmd(Units.inchesToMeters(10)).withTimeout(2),
         // turns LEFT face note
