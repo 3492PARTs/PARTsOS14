@@ -6,7 +6,6 @@ package frc.robot.commands.IntakeShoot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.math.controller.BangBangController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -42,8 +41,8 @@ public class PIDShooterCmd extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //Shooter.shooterLeftMotor.setNeutralMode(NeutralMode.Coast);
-    //Shooter.shooterRightMotor.setNeutralMode(NeutralMode.Coast);
+    Shooter.shooterLeftMotor.setNeutralMode(NeutralMode.Coast);
+    Shooter.shooterRightMotor.setNeutralMode(NeutralMode.Coast);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
