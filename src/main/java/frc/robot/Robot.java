@@ -35,6 +35,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    ErrorManager.getInstance().start();
     try {
       m_robotContainer = new RobotContainer();
       Arm.getInstance().zeroPivotEncoders();
