@@ -21,6 +21,7 @@ public class IntakePhotoEyeArmPosCmd extends RunIntakePhotoEyeCmd {
     // Use addRequirements() here to declare subsystem dependencies.
     super(speed);
     this.speed = speed;
+    this.intake = Intake.getInstance();
     this.armPosition = armPosition;
   }
 
