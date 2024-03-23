@@ -15,7 +15,7 @@ public class Shooter extends SubsystemBase {
 
   /** Creates a new Shooter. */
   public static TalonSRX shooterLeftMotor;
-  static TalonSRX shooterRightMotor;
+  public static TalonSRX shooterRightMotor;
   public final int countsPerRev = 1024;
   final double shooterWheelRadius = 2.0;
 

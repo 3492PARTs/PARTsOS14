@@ -18,7 +18,7 @@ public class AutoOneNoteEmptySide extends SequentialCommandGroup {
   /** Creates a new AutoTwoNoteLeftPos. */
   //? Empty side??
   public AutoOneNoteEmptySide(int red) {
-    /*
+    /*  
     int red = 1;
     Optional<Alliance> ally = DriverStation.getAlliance();
     

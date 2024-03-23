@@ -35,7 +35,7 @@ public class DriveAngleCmd extends Command {
   public void execute() {
     direction = driveTrain.getGyroAngle() > angle;
 
-    // If angle is greater than set point, drive backwards, otherwise drive forward.
+    // If angle is greater than set point, drive counter clock-wise otherwise go clock-wise.
     if (direction) {
       driveTrain.driveArcade(0, -0.5);
     } else {

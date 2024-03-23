@@ -66,6 +66,8 @@ public final class Constants {
   public static final class Shooter {
     public static final int LEFT_MOTOR = 10;
     public static final int RIGHT_MOTOR = 12;
+    public static final double TOLERANCE = 0.2;
+    public static final double LIMITER = 0.25;
 
   }
 

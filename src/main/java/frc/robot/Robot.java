@@ -132,7 +132,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {
-    // Making it update regardless of debug mode.
+    // Update all the time, NOT the best way at all.
     SmartDashboard.updateValues();
   }
 }
