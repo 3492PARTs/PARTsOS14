@@ -8,6 +8,7 @@ import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
+@Deprecated
 public class TimeDriveCmd extends Command {
   double duration;
   DriveTrain driveTrain;

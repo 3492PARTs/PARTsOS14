@@ -8,6 +8,7 @@ import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** DriveAngleCmd */
+@Deprecated
 public class DriveAngleCmd extends Command {
   double angle; // In meters.
   DriveTrain driveTrain;

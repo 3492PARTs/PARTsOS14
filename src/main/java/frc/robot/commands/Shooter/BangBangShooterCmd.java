@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.IntakeShoot;
+package frc.robot.commands.Shooter;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -10,15 +10,14 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.math.controller.BangBangController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Shooter;
 
 public class BangBangShooterCmd extends Command {
-  Shooter shooter;
-  double setpoint;
-  BangBangController bbController = new BangBangController(Constants.Shooter.TOLERANCE);
-  long time = 0;
+  private Shooter shooter;
+  private double setpoint;
+  private BangBangController bbController = new BangBangController(Constants.Shooter.TOLERANCE);
+  private long time = 0;
 
   public void runShooterBB(double setpoint) {
     // BB calcs 0...1 speed, limiter caps it at 75% for now. Change in Constants if needed.

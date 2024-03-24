@@ -17,14 +17,13 @@ import frc.robot.commands.Autos.AutoTurn;
 import frc.robot.commands.Autos.AutoOneNoteAmpSidePos;
 import frc.robot.commands.Autos.AutoTwoNoteEmptySpacePos;
 import frc.robot.commands.Autos.AutoTwoNoteMiddlePos;
+import frc.robot.commands.Intake.IntakePhotoEyeArmPosCmd;
+import frc.robot.commands.Intake.RunIntakeCmd;
+import frc.robot.commands.Intake.RunIntakeWhenAtRPMCmd;
+import frc.robot.commands.Shooter.BangBangShooterCmd;
+import frc.robot.commands.Shooter.ShootCmd;
+import frc.robot.commands.Shooter.ShootInAmpCmd;
 import frc.robot.commands.Autos.AutoTwoNoteAmpSidePos;
-import frc.robot.commands.IntakeShoot.BangBangShooterCmd;
-import frc.robot.commands.IntakeShoot.RunIntakeAtRPMCmd;
-import frc.robot.commands.IntakeShoot.RunIntakeCmd;
-import frc.robot.commands.IntakeShoot.IntakePhotoEyeArmPosCmd;
-import frc.robot.commands.IntakeShoot.ShootCmd;
-import frc.robot.commands.IntakeShoot.ShootInAmpCmd;
-
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Candle;
 import frc.robot.subsystems.DriveTrain;
@@ -159,20 +158,23 @@ public class RobotContainer {
     // Shooting Functions
     operatorController.rightTrigger(.1)
         .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
-            new RunIntakeAtRPMCmd(Constants.Shooter.SPEAKER_RPM)));
+            new RunIntakeWhenAtRPMCmd(Constants.Shooter.SPEAKER_RPM)));
 
     operatorController.rightBumper()
         .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.AMP_RPM),
-            new RunIntakeAtRPMCmd(Constants.Shooter.AMP_RPM)));
+            new RunIntakeWhenAtRPMCmd(Constants.Shooter.AMP_RPM)));
 
     // Intake Functions
     operatorController.leftTrigger(.1)
         .onTrue(new IntakePhotoEyeArmPosCmd(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME));
+
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
 
     // Testing
-    operatorController.povDown().onTrue(new PivotArmCmdSeq(45));
-    driveController.x().onTrue(new RunArmToLimitSwitchCmd());
+    if (Constants.TESTING) {
+      operatorController.povDown().onTrue(new PivotArmCmdSeq(45));
+      driveController.x().onTrue(new RunArmToLimitSwitchCmd());
+    }
 
     // Manual Functions
     operatorController.povUp().whileTrue(new ShootCmd());
@@ -187,7 +189,6 @@ public class RobotContainer {
       operatorController.b().onTrue(new PivotArmCmdSeq(Constants.Arm.HOME)); // home
       operatorController.a().onTrue(new PivotArmCmdSeq(Constants.Arm.AMP)); // amp
     }
-
     // SysID
     else {
       operatorController.a().whileTrue(arm.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward));
@@ -236,5 +237,14 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return autoChooser.getSelected();
+  }
+
+  public static boolean operatorInterrupt() {
+    return operatorController.leftBumper().getAsBoolean() ||
+        operatorController.leftTrigger().getAsBoolean() ||
+        operatorController.a().getAsBoolean() ||
+        operatorController.b().getAsBoolean() ||
+        operatorController.x().getAsBoolean() ||
+        operatorController.y().getAsBoolean();
   }
 }

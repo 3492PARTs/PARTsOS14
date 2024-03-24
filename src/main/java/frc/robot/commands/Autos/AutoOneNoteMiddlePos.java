@@ -16,8 +16,8 @@ import frc.robot.commands.Arm.RunArmToLimitSwitchCmd;
 import frc.robot.commands.Arm.ZeroPivotEncodersCmd;
 import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
 import frc.robot.commands.Drive.ZeroDriveEncodersCmd;
-import frc.robot.commands.IntakeShoot.BangBangShooterCmd;
-import frc.robot.commands.IntakeShoot.RunIntakeAtRPMCmd;
+import frc.robot.commands.Intake.RunIntakeWhenAtRPMCmd;
+import frc.robot.commands.Shooter.BangBangShooterCmd;
 
 public class AutoOneNoteMiddlePos extends SequentialCommandGroup {
   /** Creates a new AutoOneNoteMiddlePos. */
@@ -27,7 +27,7 @@ public class AutoOneNoteMiddlePos extends SequentialCommandGroup {
         new ParallelRaceGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
             new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM)),
         new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
-            new RunIntakeAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
+            new RunIntakeWhenAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
             new HoldArmInPositionCmd(Constants.Arm.SPEAKER)));
   }
 }

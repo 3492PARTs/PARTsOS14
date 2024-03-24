@@ -13,10 +13,10 @@ import frc.robot.commands.Arm.HoldArmInPositionCmd;
 import frc.robot.commands.Arm.ProfiledPivotArmCmd;
 import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
 import frc.robot.commands.Drive.PIDDriveCmd;
-import frc.robot.commands.Drive.ZeroDriveMotors;
-import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeCmd;
-import frc.robot.commands.IntakeShoot.BangBangShooterCmd;
-import frc.robot.commands.IntakeShoot.RunIntakeAtRPMCmd;
+import frc.robot.commands.Drive.StopDriveMotorsCmd;
+import frc.robot.commands.Intake.RunIntakePhotoEyeCmd;
+import frc.robot.commands.Intake.RunIntakeWhenAtRPMCmd;
+import frc.robot.commands.Shooter.BangBangShooterCmd;
 
 public class AutoTwoNoteMiddlePos extends SequentialCommandGroup {
         /** Creates a new AutoTwoNoteMiddlePos. */
@@ -29,7 +29,7 @@ public class AutoTwoNoteMiddlePos extends SequentialCommandGroup {
                                 // Shoot once at speed
                                 new ParallelRaceGroup(
                                                 new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
-                                                new RunIntakeAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
+                                                new RunIntakeWhenAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new HoldArmInPositionCmd(Constants.Arm.SPEAKER)),
                                 // Move arm to ground
                                 new ProfiledPivotArmCmd(Constants.Arm.GROUND),
@@ -41,7 +41,7 @@ public class AutoTwoNoteMiddlePos extends SequentialCommandGroup {
                                                 new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM)),
                                 // Shoot
                                 new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
-                                                new RunIntakeAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
+                                                new RunIntakeWhenAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new HoldArmInPositionCmd(Constants.Arm.SPEAKER)));
         }
 }

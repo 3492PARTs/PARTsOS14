@@ -10,18 +10,20 @@ import frc.robot.Constants;
 import frc.robot.commands.Arm.ProfiledPivotArmCmd;
 import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
 import frc.robot.commands.Drive.PIDDriveCmd;
-import frc.robot.commands.IntakeShoot.RunIntakePhotoEyeCmd;
+import frc.robot.commands.Intake.RunIntakePhotoEyeCmd;
 import frc.robot.util.PIDValues;
 
 public class AutoMoveForward extends SequentialCommandGroup {
   /** Creates a new MoveForward.*/
   public AutoMoveForward() {
     // Auto move forward 90 inches.
-    //addCommands(new PIDDriveCmd(Units.inchesToMeters(108)));
+    addCommands(new PIDDriveCmd(Units.inchesToMeters(108)));
+    /* 
     addCommands(new ZeroArmCmdSeq(),
         new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
         new ProfiledPivotArmCmd(Constants.Arm.GROUND),
         new RunIntakePhotoEyeCmd(Constants.Intake.INTAKE_SPEED),
         new PIDDriveCmd(Units.inchesToMeters(36)));
+        */
   }
 }

@@ -6,11 +6,9 @@ package frc.robot.commands.Drive;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.util.PIDValues;
 
 public class PIDDriveCmd extends Command {
   double initialPos;
@@ -31,6 +29,7 @@ public class PIDDriveCmd extends Command {
   @Override
   public void initialize() {
     driveTrain.zeroDriveEncoders();
+    drivePIDController.reset(); // Remove if this causes errors
     // Calculates average distance.
     initialPos = (driveTrain.leftDistance() + driveTrain.rightDistance()) / 2;
 
@@ -48,22 +47,17 @@ public class PIDDriveCmd extends Command {
     volts = MathUtil.clamp(volts, -10, 10);
 
     driveTrain.moveVolts(volts, volts);
-    System.out.println("running");
-
-    SmartDashboard.putNumber("PID Drive", volts);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     driveTrain.driveTank(0, 0);
-    System.out.println("end " + interrupted);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    System.out.println("is finished" + System.currentTimeMillis());
-    return drivePIDController.atSetpoint() && Math.abs(driveTrain.leftMotorLeader.getEncoder().getVelocity()) < .01;
+    return drivePIDController.atSetpoint() && Math.abs(driveTrain.getMotorVelocity()) < .01;
   }
 }

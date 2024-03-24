@@ -15,7 +15,6 @@ import frc.robot.Constants;
 
 public class DriveTrain extends SubsystemBase {
   /** Creates a new DriveTrain. */
-
   public static DriveTrain driveTrain;
 
   /* Setup the motors. */
@@ -97,6 +96,15 @@ public class DriveTrain extends SubsystemBase {
 
   public double rightEncoderPosition() {
     return rightMotorLeader.getEncoder().getPosition();
+  }
+
+  public double getMotorVelocity() {
+    double left = leftMotorLeader.getEncoder().getVelocity();
+
+    if (left > 0)
+      return left;
+    else
+      return rightMotorLeader.getEncoder().getVelocity();
   }
 
   public double getGyroAngle() {

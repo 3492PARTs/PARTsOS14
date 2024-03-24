@@ -4,22 +4,17 @@
 
 package frc.robot.commands.Arm;
 
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
-import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Arm;
 
 public class HoldArmInPositionCmd extends ProfiledPivotArmCmd {
   double angle;
 
   /**
    * Holds the arm in position with target angle.
-   * @param angle The angle to hold the arm at.
+   * @param angleSetpoint The angle to hold the arm at.
    */
-  public HoldArmInPositionCmd(double angle) {
-    super(angle);
+  public HoldArmInPositionCmd(double angleSetpoint) {
+    super(angleSetpoint);
   }
 
   // Returns true when the command should end.

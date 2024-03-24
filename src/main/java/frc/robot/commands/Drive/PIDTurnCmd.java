@@ -63,6 +63,6 @@ public class PIDTurnCmd extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return rotPIDController.atSetpoint() && Math.abs(driveTrain.leftMotorLeader.getEncoder().getVelocity()) < .01;
+    return rotPIDController.atSetpoint() && Math.abs(driveTrain.getMotorVelocity()) < .01;
   }
 }

@@ -7,11 +7,11 @@ package frc.robot.commands.Drive;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveTrain;
 
-public class ZeroDriveMotors extends Command {
+public class StopDriveMotorsCmd extends Command {
   DriveTrain driveTrain;
 
   /** Creates a new ZeroDriveMotors. */
-  public ZeroDriveMotors() {
+  public StopDriveMotorsCmd() {
     // Use addRequirements() here to declare subsystem dependencies.
     driveTrain = DriveTrain.getInstance();
     addRequirements(driveTrain);
