@@ -27,7 +27,7 @@ public class AutoTwoNoteMiddlePos extends SequentialCommandGroup {
                                 new ParallelRaceGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
                                                 new BangBangShooterCmd(
                                                                 Constants.Shooter.WARMUP_SPEAKER_RPM)),
-                                // Shoot once at speed
+                                // Shoot
                                 new ParallelRaceGroup(
                                                 new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new RunIntakeWhenAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
@@ -71,8 +71,13 @@ public class AutoTwoNoteMiddlePos extends SequentialCommandGroup {
                                 new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM),
                                                 new ParallelCommandGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
                                                                 new PIDTurnCmd(-45 * red))),
-                                // Turn to center
-                                new PIDTurnCmd(45 * red),
+                                // Shoot
+                                new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
+                                                new RunIntakeWhenAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
+                                                new HoldArmInPositionCmd(Constants.Arm.SPEAKER)),
+                                // Turn to center and home arm
+                                new ParallelCommandGroup(new ProfiledPivotArmCmd(Constants.Arm.HOME),
+                                                new PIDTurnCmd(45 * red)),
                                 // Drive to center
                                 new PIDDriveCmd(Units.inchesToMeters(36)));
         }
