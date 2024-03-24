@@ -5,8 +5,10 @@
 package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Candle;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Candle.Color;
 
 public class RunIntakeWhenAtRPMCmd extends Command {
   /** Creates a new ShootInAmpCmd. */
@@ -34,6 +36,10 @@ public class RunIntakeWhenAtRPMCmd extends Command {
 
     if (intake.hasNote())
       this.startTime = System.currentTimeMillis();
+
+    if (shooter.getShooterRPM() >= 0.7 * RPM) {
+      Candle.getInstance().setColor(Color.YELLOW);
+    }
 
     if (shooter.getShooterRPM() >= RPM) {
       intake.runIntake(-.9);

@@ -59,6 +59,9 @@ public class RobotContainer {
   public static final CommandXboxController operatorController = new CommandXboxController(1);
 
   public final Trigger zeroPivotTrigger = new Trigger(arm.getSwitchSupplier());
+  public final Trigger noteTrigger = new Trigger(() -> {
+    return intake.hasNote();
+  });
 
   // SmartDashboard chooser for auto tasks.
   SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -91,6 +94,7 @@ public class RobotContainer {
 
     //candle.runRainbowAnimationCommand();
     candle.setColor(Color.BLUE);
+    configureCandleBindings();
   }
 
   /**
@@ -231,6 +235,15 @@ public class RobotContainer {
     arm.removeDefaultCommand();
     driveTrain.removeDefaultCommand();
     zeroPivotTrigger.onTrue(null);
+  }
+
+  public void configureCandleBindings() {
+    noteTrigger.onTrue(Commands.runOnce(() -> {
+      candle.setColor(Color.GREEN);
+    }, candle));
+    noteTrigger.onFalse(Commands.runOnce(() -> {
+      candle.setColor(Color.BLUE);
+    }, candle));
   }
 
   public void displaySmartDashboard() {
