@@ -7,6 +7,13 @@ package frc.robot.commands.Intake;
 import frc.robot.commands.Arm.ProfiledPivotArmCmd;
 import frc.robot.subsystems.Intake;
 
+/**
+ * IntakePhotoEyeArmPosCmd
+ *
+ * @deprecated  Should not call schedule in a command. Use sequences.
+ * private method.
+ * @see #IntakeArmPositionCmdSeq
+ */
 public class IntakePhotoEyeArmPosCmd extends RunIntakePhotoEyeCmd {
   /** Creates a new RunIntakePhotoEyeCommand. */
   double speed;
