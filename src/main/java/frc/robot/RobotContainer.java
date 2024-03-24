@@ -10,18 +10,18 @@ import frc.robot.commands.Arm.ZeroPivotEncodersCmd;
 import frc.robot.commands.Arm.Sequences.PivotArmCmdSeq;
 import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
 import frc.robot.commands.Autos.AutoMoveForward;
-import frc.robot.commands.Autos.AutoOneNoteEmptySide;
-import frc.robot.commands.Autos.AutoOneNoteMiddlePos;
 import frc.robot.commands.Autos.AutoTurn;
-import frc.robot.commands.Autos.AutoOneNoteAmpSidePos;
-import frc.robot.commands.Autos.AutoTwoNoteEmptySpacePos;
-import frc.robot.commands.Autos.AutoTwoNoteMiddlePos;
+import frc.robot.commands.Autos.AmpSide.AutoOneNoteAmpSide;
+import frc.robot.commands.Autos.AmpSide.AutoTwoNoteAmpSide;
+import frc.robot.commands.Autos.EmptySide.AutoOneNoteEmptySide;
+import frc.robot.commands.Autos.EmptySide.AutoTwoNoteEmptySide;
+import frc.robot.commands.Autos.Middle.AutoOneNoteMiddle;
+import frc.robot.commands.Autos.Middle.AutoTwoNoteMiddle;
 import frc.robot.commands.Intake.IntakePhotoEyeArmPosCmd;
 import frc.robot.commands.Intake.RunIntakeCmd;
 import frc.robot.commands.Intake.RunIntakeWhenAtRPMCmd;
 import frc.robot.commands.Shooter.BangBangShooterCmd;
 import frc.robot.commands.Shooter.ShootCmd;
-import frc.robot.commands.Autos.AutoTwoNoteAmpSidePos;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Candle;
 import frc.robot.subsystems.DriveTrain;
@@ -77,20 +77,20 @@ public class RobotContainer {
     // SIDE INDEPENDENT AUTOS
     autoChooser.addOption("Move Forward", new AutoMoveForward());
     autoChooser.addOption("Move Turn", new AutoTurn());
-    autoChooser.addOption("One Note Middle", new AutoOneNoteMiddlePos());
-    autoChooser.addOption("Two Note Middle", new AutoTwoNoteMiddlePos());
+    autoChooser.addOption("One Note Middle", new AutoOneNoteMiddle());
+    autoChooser.addOption("Two Note Middle", new AutoTwoNoteMiddle());
 
     //RED AUTOS
-    autoChooser.addOption("RED: One Note Amp Side ", new AutoOneNoteAmpSidePos(1));
+    autoChooser.addOption("RED: One Note Amp Side ", new AutoOneNoteAmpSide(1));
     autoChooser.addOption("RED: One Note Empty Side", new AutoOneNoteEmptySide(1));
-    autoChooser.addOption("RED: Two Note Amp Side", new AutoTwoNoteAmpSidePos(1));
-    autoChooser.addOption("RED: Two Note Empty Side", new AutoTwoNoteEmptySpacePos(1));
+    autoChooser.addOption("RED: Two Note Amp Side", new AutoTwoNoteAmpSide(1));
+    autoChooser.addOption("RED: Two Note Empty Side", new AutoTwoNoteEmptySide(1));
 
     //BLUE AUTOS
-    autoChooser.addOption("BLUE: One Note Amp Side ", new AutoOneNoteAmpSidePos(-1));
+    autoChooser.addOption("BLUE: One Note Amp Side ", new AutoOneNoteAmpSide(-1));
     autoChooser.addOption("BLUE: One Note Empty Side", new AutoOneNoteEmptySide(-1));
-    autoChooser.addOption("BLUE: Two Note Amp Side", new AutoTwoNoteAmpSidePos(-1));
-    autoChooser.addOption("BLUE: Two Note Empty Side", new AutoTwoNoteEmptySpacePos(-1));
+    autoChooser.addOption("BLUE: Two Note Amp Side", new AutoTwoNoteAmpSide(-1));
+    autoChooser.addOption("BLUE: Two Note Empty Side", new AutoTwoNoteEmptySide(-1));
 
     //candle.runRainbowAnimationCommand();
     candle.setColor(Color.BLUE);

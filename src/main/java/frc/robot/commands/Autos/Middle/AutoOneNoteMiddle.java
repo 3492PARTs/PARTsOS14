@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Autos;
+package frc.robot.commands.Autos.Middle;
 
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -13,9 +13,9 @@ import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
 import frc.robot.commands.Intake.RunIntakeWhenAtRPMCmd;
 import frc.robot.commands.Shooter.BangBangShooterCmd;
 
-public class AutoOneNoteMiddlePos extends SequentialCommandGroup {
+public class AutoOneNoteMiddle extends SequentialCommandGroup {
   /** Creates a new AutoOneNoteMiddlePos. */
-  public AutoOneNoteMiddlePos() {
+  public AutoOneNoteMiddle() {
     // Set arm pos then shoot in speaker.
     addCommands(new ZeroArmCmdSeq(),
         new ParallelRaceGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),

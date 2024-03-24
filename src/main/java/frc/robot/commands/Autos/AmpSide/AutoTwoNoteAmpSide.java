@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Autos;
+package frc.robot.commands.Autos.AmpSide;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -18,9 +18,9 @@ import frc.robot.commands.Intake.RunIntakeWhenAtRPMCmd;
 import frc.robot.commands.Intake.TimeIntakeCmd;
 import frc.robot.commands.Shooter.ShootInAmpCmd;
 
-public class AutoTwoNoteAmpSidePos extends SequentialCommandGroup {
+public class AutoTwoNoteAmpSide extends SequentialCommandGroup {
   /** Creates a new AutoTwoNoteRightPos. */
-  public AutoTwoNoteAmpSidePos(int red) {
+  public AutoTwoNoteAmpSide(int red) {
     /*
     int red = 1;
     Optional<Alliance> ally = DriverStation.getAlliance();
