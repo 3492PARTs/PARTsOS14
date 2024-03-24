@@ -4,12 +4,11 @@
 
 package frc.robot;
 
-import frc.robot.commands.Arm.ArmToPositionTeleopCmd;
 import frc.robot.commands.Arm.HoldArmInPositionCmd;
-import frc.robot.commands.Arm.ProfiledPivotArmCmd;
 import frc.robot.commands.Arm.RunArmToLimitSwitchCmd;
 import frc.robot.commands.Arm.ZeroPivotEncodersCmd;
 import frc.robot.commands.Arm.Sequences.PivotArmCmdSeq;
+import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
 import frc.robot.commands.Autos.AutoMoveForward;
 import frc.robot.commands.Autos.AutoOneNoteEmptySide;
 import frc.robot.commands.Autos.AutoOneNoteMiddlePos;
@@ -22,7 +21,6 @@ import frc.robot.commands.Intake.RunIntakeCmd;
 import frc.robot.commands.Intake.RunIntakeWhenAtRPMCmd;
 import frc.robot.commands.Shooter.BangBangShooterCmd;
 import frc.robot.commands.Shooter.ShootCmd;
-import frc.robot.commands.Shooter.ShootInAmpCmd;
 import frc.robot.commands.Autos.AutoTwoNoteAmpSidePos;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Candle;
@@ -35,7 +33,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
-import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -120,7 +117,39 @@ public class RobotContainer {
             driveController.getRightX()),
             driveTrain));
 
-    //zeroPivotTrigger.onTrue(Commands.waitSeconds(.2).andThen(new ZeroPivotEncodersCmd()));
+    //TODO: I found a way to remove default below test it
+    zeroPivotTrigger.onTrue(Commands.waitSeconds(.2).andThen(new ZeroPivotEncodersCmd()));
+
+    //TODO: A much better arm default command since calling schedule is bad. 
+    /*
+    arm.setDefaultCommand(new ConditionalCommand(new RunCommand(() -> {
+      //at bottom limit
+      if (Arm.getInstance().getSwitch()) {
+        if (operatorController.getRightY() < 0)
+          arm.setPivotSpeed(operatorController.getRightY());
+        else
+          arm.setPivotSpeed(0);
+      }
+      // at top limit
+      else if (arm.getAngle() >= Constants.Arm.UPPER_BOUND) {
+        if (operatorController.getRightY() > 0)
+          arm.setPivotSpeed(operatorController.getRightY());
+        else
+          arm.setPivotSpeed(0);
+      }
+      // full manual, in safe bounds
+      else
+        arm.setPivotSpeed(operatorController.getRightY());
+    }, arm),
+        Commands.runOnce(() -> {
+          arm.setPivotSpeed(0);
+        }).andThen(new HoldArmInPositionCmd(arm.getAngle()).onlyIf(() -> { // IDK If this will set multiple times or not.
+          return arm.getAngle() > 2;
+        })),
+        () -> {
+          return Math.abs(operatorController.getRightY()) > .1;
+        }));
+    */
 
     arm.setDefaultCommand(
         new RunCommand(() -> {
@@ -177,7 +206,7 @@ public class RobotContainer {
     }
 
     // Manual Functions
-    operatorController.povUp().whileTrue(new ShootCmd());
+    operatorController.povUp().whileTrue(new ShootCmd(1));
     operatorController.povLeft().whileTrue(new RunIntakeCmd(-1));
 
     if (!Constants.Arm.SYSID) {
@@ -201,32 +230,33 @@ public class RobotContainer {
   public void removeBindings() {
     arm.removeDefaultCommand();
     driveTrain.removeDefaultCommand();
+    zeroPivotTrigger.onTrue(null);
   }
 
   public void displaySmartDashboard() {
-    // Drive
-    SmartDashboard.putNumber("left Drive Distance", driveTrain.leftDistance());
-    SmartDashboard.putNumber("right Drive Distance", driveTrain.rightDistance());
-
-    SmartDashboard.putNumber("gyro angle", driveTrain.getGyroAngle());
-    SmartDashboard.putNumber("graph angle", driveTrain.getGyroAngle());
-
-    // Pivot
-    // SmartDashboard.putData("zero Pivot Encoders", new ZeroPivotEncodersCmd());
-    // SmartDashboard.putNumber("left Pivot Encoder",
-    // Arm.getInstance().leftPivotEncoderPosition());
-    // SmartDashboard.putNumber("right Pivot Encoder",
-    // Arm.getInstance().rightPivotEncoderPosition());
-    SmartDashboard.putNumber("Pos", Arm.getInstance().getAlternateEncoderPosition());
-
     // Shooter
-    SmartDashboard.putNumber("shooter RPM", shooter.getShooterRPM());
+    SmartDashboard.putNumber("Shooter RPM", shooter.getShooterRPM());
 
     // PhotoEye
     SmartDashboard.putBoolean("HAS NOTE", intake.hasNote());
 
     // LimitSwitch
-    SmartDashboard.putBoolean("Arm Switch", Arm.getInstance().getSwitch());
+    SmartDashboard.putBoolean("Arm Switch", arm.getSwitch());
+
+    // Arm Angle
+    SmartDashboard.putNumber("Arm Angle", arm.getAngle());
+
+    if (Constants.TESTING) {
+      // Drive
+      SmartDashboard.putNumber("Left Drive Distance", driveTrain.leftDistance());
+      SmartDashboard.putNumber("Right Drive Distance", driveTrain.rightDistance());
+
+      SmartDashboard.putNumber("Gyro Angle", driveTrain.getGyroAngle());
+
+      // Pivot
+      SmartDashboard.putData("Zero Arm Sequence", new ZeroArmCmdSeq());
+    }
+
   }
 
   /**

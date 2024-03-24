@@ -6,12 +6,7 @@ package frc.robot.commands.Autos;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants;
-import frc.robot.commands.Arm.ProfiledPivotArmCmd;
-import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
 import frc.robot.commands.Drive.PIDDriveCmd;
-import frc.robot.commands.Intake.RunIntakePhotoEyeCmd;
-import frc.robot.util.PIDValues;
 
 public class AutoMoveForward extends SequentialCommandGroup {
   /** Creates a new MoveForward.*/

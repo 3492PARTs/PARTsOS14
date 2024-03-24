@@ -10,11 +10,13 @@ public class ShootCmd extends Command {
   /** Creates a new Shoot. */
   Shooter shooter;
 
-  @Deprecated
-  public ShootCmd() {
+  double speed = 0;
+
+  public ShootCmd(double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     // shooterEncoder = new Encoder()
     this.shooter = Shooter.getInstance();
+    this.speed = speed;
 
     addRequirements(shooter);
   }
@@ -28,7 +30,7 @@ public class ShootCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.runShooter(1);
+    shooter.runShooter(speed);
   }
 
   // Called once the command ends or is interrupted.
