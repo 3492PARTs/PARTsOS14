@@ -19,29 +19,29 @@ import frc.robot.commands.IntakeShoot.BangBangShooterCmd;
 import frc.robot.commands.IntakeShoot.RunIntakeAtRPMCmd;
 
 public class AutoTwoNoteMiddlePos extends SequentialCommandGroup {
-    /** Creates a new AutoTwoNoteMiddlePos. */
-    public AutoTwoNoteMiddlePos() {
-        addCommands(new ParallelRaceGroup(new ZeroDriveMotors(),
-                new SequentialCommandGroup(
-                        new ZeroArmCmdSeq(),
-                        // Move arm to angle and warm up shooter
-                        new ParallelRaceGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
-                                new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM)),
-                        // Shoot once at speed
-                        new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
-                                new RunIntakeAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
-                                new HoldArmInPositionCmd(Constants.Arm.SPEAKER)),
-                        // Move arm to ground
-                        new ProfiledPivotArmCmd(Constants.Arm.GROUND))),
-                // Turn on intake and move forward
-                new PIDDriveCmd(Units.inchesToMeters(36)),
-                new RunIntakePhotoEyeCmd(Constants.Intake.INTAKE_SPEED),
-                // Pivot up and speed
-                new ParallelCommandGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
-                        new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM)),
-                // Shoot
-                new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
-                        new RunIntakeAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
-                        new HoldArmInPositionCmd(Constants.Arm.SPEAKER)));
-    }
+        /** Creates a new AutoTwoNoteMiddlePos. */
+        public AutoTwoNoteMiddlePos() {
+                addCommands(new ZeroArmCmdSeq(),
+                                // Move arm to angle and warm up shooter
+                                new ParallelRaceGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
+                                                new BangBangShooterCmd(
+                                                                Constants.Shooter.WARMUP_SPEAKER_RPM)),
+                                // Shoot once at speed
+                                new ParallelRaceGroup(
+                                                new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
+                                                new RunIntakeAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
+                                                new HoldArmInPositionCmd(Constants.Arm.SPEAKER)),
+                                // Move arm to ground
+                                new ProfiledPivotArmCmd(Constants.Arm.GROUND),
+                                // Turn on intake and move forward
+                                new ParallelCommandGroup(new PIDDriveCmd(Units.inchesToMeters(36)),
+                                                new RunIntakePhotoEyeCmd(Constants.Intake.INTAKE_SPEED)),
+                                // Pivot up and speed
+                                new ParallelCommandGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
+                                                new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM)),
+                                // Shoot
+                                new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
+                                                new RunIntakeAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
+                                                new HoldArmInPositionCmd(Constants.Arm.SPEAKER)));
+        }
 }

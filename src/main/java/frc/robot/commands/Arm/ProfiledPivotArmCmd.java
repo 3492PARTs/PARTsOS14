@@ -8,7 +8,6 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import frc.robot.Constants;
-import frc.robot.commands.IntakeShoot.IntakePhotoEyeArmPosCmd;
 import frc.robot.subsystems.Arm;
 
 public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
