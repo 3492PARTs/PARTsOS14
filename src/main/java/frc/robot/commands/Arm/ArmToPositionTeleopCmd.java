@@ -9,6 +9,7 @@ import frc.robot.Constants;
 import frc.robot.commands.IntakeShoot.IntakePhotoEyeArmPosCmd;
 import frc.robot.subsystems.Arm;
 
+@Deprecated
 public class ArmToPositionTeleopCmd extends Command {
   /** Creates a new armToPosition. */
   Arm arm;

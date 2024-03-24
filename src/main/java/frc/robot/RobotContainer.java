@@ -7,8 +7,9 @@ package frc.robot;
 import frc.robot.commands.Arm.ArmToPositionTeleopCmd;
 import frc.robot.commands.Arm.HoldArmInPositionCmd;
 import frc.robot.commands.Arm.ProfiledPivotArmCmd;
-import frc.robot.commands.Arm.RunArmToZeroCmd;
+import frc.robot.commands.Arm.RunArmToLimitSwitchCmd;
 import frc.robot.commands.Arm.ZeroPivotEncodersCmd;
+import frc.robot.commands.Arm.Sequences.PivotArmCmdSeq;
 import frc.robot.commands.Autos.AutoMoveForward;
 import frc.robot.commands.Autos.AutoOneNoteEmptySide;
 import frc.robot.commands.Autos.AutoOneNoteMiddlePos;
@@ -170,8 +171,8 @@ public class RobotContainer {
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
 
     // Testing
-    operatorController.povDown().onTrue(new ProfiledPivotArmCmd(45));
-    driveController.x().onTrue(new RunArmToZeroCmd());
+    operatorController.povDown().onTrue(new PivotArmCmdSeq(45));
+    driveController.x().onTrue(new RunArmToLimitSwitchCmd());
 
     // Manual Functions
     operatorController.povUp().whileTrue(new ShootCmd());
@@ -179,12 +180,12 @@ public class RobotContainer {
 
     if (!Constants.Arm.SYSID) {
       // Profiled Pivot Functions
-      operatorController.x().onTrue(new ProfiledPivotArmCmd(Constants.Arm.GROUND)); // ground
+      operatorController.x().onTrue(new PivotArmCmdSeq(Constants.Arm.GROUND)); // ground
       operatorController.y().onTrue(Commands.runOnce(() -> {
-        new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM).schedule();
-      }).andThen(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER))); //speaker
-      operatorController.b().onTrue(new ProfiledPivotArmCmd(Constants.Arm.HOME)); // home
-      operatorController.a().onTrue(new ProfiledPivotArmCmd(Constants.Arm.AMP)); // amp
+        new PivotArmCmdSeq(Constants.Shooter.WARMUP_SPEAKER_RPM).schedule();
+      }).andThen(new PivotArmCmdSeq(Constants.Arm.SPEAKER))); //speaker
+      operatorController.b().onTrue(new PivotArmCmdSeq(Constants.Arm.HOME)); // home
+      operatorController.a().onTrue(new PivotArmCmdSeq(Constants.Arm.AMP)); // amp
     }
 
     // SysID

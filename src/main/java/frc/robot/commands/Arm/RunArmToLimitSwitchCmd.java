@@ -5,14 +5,13 @@
 package frc.robot.commands.Arm;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Arm;
 
-public class RunArmToZeroCmd extends Command {
+public class RunArmToLimitSwitchCmd extends Command {
   /** Creates a new RunArmToZeroCmd. */
   Arm arm;
 
-  public RunArmToZeroCmd() {
+  public RunArmToLimitSwitchCmd() {
     // Use addRequirements() here to declare subsystem dependencies.
     this.arm = Arm.getInstance();
     addRequirements(arm);

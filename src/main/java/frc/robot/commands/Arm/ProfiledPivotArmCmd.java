@@ -13,10 +13,10 @@ import frc.robot.subsystems.Arm;
 
 public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
 
-  double angle;
+  double angleSetpoint;
 
   /** Creates a new profiledPivotArm. */
-  public ProfiledPivotArmCmd(double angle) {
+  public ProfiledPivotArmCmd(double angleSetpoint) {
     super(
         // The ProfiledPIDController used by the command
         new ProfiledPIDController(
@@ -29,7 +29,7 @@ public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
         // This should return the measurement
         () -> Arm.getInstance().getCurrentState().position, // getCurrentState() is a trapezoid profile object
         // This should return the goal (can also be a constant)
-        new TrapezoidProfile.State(Math.toRadians(angle), 0).position,
+        new TrapezoidProfile.State(Math.toRadians(angleSetpoint), 0).position,
         // This uses the output
         (output, setpoint) -> {
 
@@ -41,22 +41,19 @@ public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
     addRequirements(Arm.getInstance());
     // Configure additional PID options by calling `getController` here.
     getController().setTolerance(1);
-    this.angle = angle;
+    this.angleSetpoint = angleSetpoint;
   }
 
   @Override
   public void end(boolean interrupted) {
     Arm.getInstance().setPivotSpeed(0);
     // Once arm is on the ground, run the intake to pick up a note.
-    if (angle == Constants.Arm.GROUND) {
-      new IntakePhotoEyeArmPosCmd(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME).schedule();
-    }
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (angle == Constants.Arm.GROUND)
+    if (angleSetpoint == Constants.Arm.GROUND)
       return Arm.getInstance().getSwitch();
     else
       return getController().atGoal();
