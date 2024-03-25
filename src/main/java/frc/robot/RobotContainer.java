@@ -251,9 +251,7 @@ public class RobotContainer {
 
     armGroundTrigger.onFalse(Commands.runOnce(() -> {
       candle.setColor(Color.BLUE);
-    }, candle).onlyIf(() -> {
-      return !intake.hasNote();
-    }));
+    }, candle).onlyIf(intake.doesNotHaveNoteSupplier()));
   }
 
   public void removeBindings() {
