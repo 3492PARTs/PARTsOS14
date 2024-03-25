@@ -48,9 +48,17 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getShooterRPM() {
-    double RPM = -(((shooterRightMotor.getSelectedSensorVelocity() + shooterLeftMotor.getSelectedSensorVelocity()) / 2)
-        * (10.0 / 4096) * (2 * Math.PI * shooterWheelRadius));
+    double RPM = -(getVelocity() * (10.0 / 4096) * (2 * Math.PI * shooterWheelRadius));
     return RPM;
+  }
+
+  public double getVelocity() {
+    double left = shooterLeftMotor.getSelectedSensorVelocity();
+
+    if (left > 0) {
+      return left;
+    } else
+      return shooterRightMotor.getSelectedSensorVelocity();
   }
 
   @Override

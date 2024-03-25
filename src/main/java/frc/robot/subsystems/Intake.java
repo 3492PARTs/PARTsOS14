@@ -59,6 +59,11 @@ public class Intake extends SubsystemBase {
     return s;
   }
 
+  public BooleanSupplier doesNotHaveNoteSupplier() {
+    BooleanSupplier s = () -> !hasNote();
+    return s;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
