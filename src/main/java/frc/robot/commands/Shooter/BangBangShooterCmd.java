@@ -68,6 +68,7 @@ public class BangBangShooterCmd extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // the time part is to keep from false stopping when the command starts
     return System.currentTimeMillis() - time > 200 &&
         (RobotContainer.operatorController.leftBumper().getAsBoolean() ||
             RobotContainer.operatorController.leftTrigger().getAsBoolean() ||

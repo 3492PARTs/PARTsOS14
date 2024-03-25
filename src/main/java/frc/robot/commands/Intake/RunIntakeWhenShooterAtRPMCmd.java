@@ -10,19 +10,22 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Candle.Color;
 
-public class RunIntakeWhenAtRPMCmd extends Command {
+public class RunIntakeWhenShooterAtRPMCmd extends Command {
   /** Creates a new ShootInAmpCmd. */
   Shooter shooter;
   Intake intake;
+  Candle candle;
   int RPM;
   long startTime;
 
-  public RunIntakeWhenAtRPMCmd(int RPM) {
+  public RunIntakeWhenShooterAtRPMCmd(int RPM) {
     // Use addRequirements() here to declare subsystem dependencies.
     shooter = Shooter.getInstance();
     intake = Intake.getInstance();
+    candle = Candle.getInstance();
     this.RPM = RPM;
     addRequirements(intake);
+    addRequirements(candle);
   }
 
   // Called when the command is initially scheduled.
@@ -38,7 +41,7 @@ public class RunIntakeWhenAtRPMCmd extends Command {
       this.startTime = System.currentTimeMillis();
 
     if (shooter.getShooterRPM() >= 0.7 * RPM) {
-      Candle.getInstance().setColor(Color.YELLOW);
+      candle.setColor(Color.YELLOW);
     }
 
     if (shooter.getShooterRPM() >= RPM) {

@@ -10,7 +10,7 @@ import frc.robot.Constants;
 import frc.robot.commands.Arm.HoldArmInPositionCmd;
 import frc.robot.commands.Arm.ProfiledPivotArmCmd;
 import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
-import frc.robot.commands.Intake.RunIntakeWhenAtRPMCmd;
+import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
 import frc.robot.commands.Shooter.BangBangShooterCmd;
 
 public class AutoOneNoteMiddle extends SequentialCommandGroup {
@@ -21,7 +21,7 @@ public class AutoOneNoteMiddle extends SequentialCommandGroup {
         new ParallelRaceGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
             new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM)),
         new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
-            new RunIntakeWhenAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
+            new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
             new HoldArmInPositionCmd(Constants.Arm.SPEAKER)));
   }
 }

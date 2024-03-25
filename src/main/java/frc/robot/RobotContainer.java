@@ -19,7 +19,7 @@ import frc.robot.commands.Autos.Middle.AutoOneNoteMiddle;
 import frc.robot.commands.Autos.Middle.AutoTwoNoteMiddle;
 import frc.robot.commands.Intake.IntakePhotoEyeArmPosCmd;
 import frc.robot.commands.Intake.RunIntakeCmd;
-import frc.robot.commands.Intake.RunIntakeWhenAtRPMCmd;
+import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
 import frc.robot.commands.Intake.Sequences.IntakeArmPositionCmdSeq;
 import frc.robot.commands.Shooter.BangBangShooterCmd;
 import frc.robot.commands.Shooter.ShootCmd;
@@ -176,12 +176,12 @@ public class RobotContainer {
     // Speaker
     operatorController.rightTrigger(.1)
         .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
-            new RunIntakeWhenAtRPMCmd(Constants.Shooter.SPEAKER_RPM)));
+            new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM)));
 
     //Amp
     operatorController.rightBumper()
         .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.AMP_RPM),
-            new RunIntakeWhenAtRPMCmd(Constants.Shooter.AMP_RPM)));
+            new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.AMP_RPM)));
 
     // Intake Functions
     // Run intake until note detected, send to home after. 

@@ -14,7 +14,7 @@ import frc.robot.commands.Drive.DriveAngleCmd;
 import frc.robot.commands.Drive.DriveDistanceCmd;
 import frc.robot.commands.Drive.StopDriveMotorsCmd;
 import frc.robot.commands.Intake.RunIntakePhotoEyeCmd;
-import frc.robot.commands.Intake.RunIntakeWhenAtRPMCmd;
+import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
 import frc.robot.commands.Intake.TimeIntakeCmd;
 import frc.robot.commands.Shooter.ShootInAmpCmd;
 
@@ -40,7 +40,7 @@ public class AutoTwoNoteAmpSide extends SequentialCommandGroup {
             // moves arm to angle that shoots in speaker from the side
             new ArmToPositionAutoCmd(Constants.Arm.SPEAKER),
             // shoots in speaker
-            new RunIntakeWhenAtRPMCmd(Constants.Shooter.SPEAKER_RPM))),
+            new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM))),
         // drives FORWARD 10 inches
         new DriveDistanceCmd(Units.inchesToMeters(10)).withTimeout(2),
         // turns LEFT face note

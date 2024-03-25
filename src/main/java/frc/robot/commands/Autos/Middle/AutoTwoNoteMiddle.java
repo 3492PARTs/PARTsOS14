@@ -15,7 +15,7 @@ import frc.robot.commands.Arm.ProfiledPivotArmCmd;
 import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
 import frc.robot.commands.Drive.PIDDriveCmd;
 import frc.robot.commands.Intake.RunIntakePhotoEyeCmd;
-import frc.robot.commands.Intake.RunIntakeWhenAtRPMCmd;
+import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
 import frc.robot.commands.Shooter.BangBangShooterCmd;
 import frc.robot.subsystems.Intake;
 
@@ -31,7 +31,7 @@ public class AutoTwoNoteMiddle extends SequentialCommandGroup {
                                 // Shoot
                                 new ParallelRaceGroup(
                                                 new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
-                                                new RunIntakeWhenAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
+                                                new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new HoldArmInPositionCmd(Constants.Arm.SPEAKER)),
                                 // Move arm to ground, turn on intake, and move forward
                                 new ParallelCommandGroup(new ProfiledPivotArmCmd(Constants.Arm.GROUND),
@@ -51,7 +51,7 @@ public class AutoTwoNoteMiddle extends SequentialCommandGroup {
                                                                 new ParallelRaceGroup(
                                                                                 new BangBangShooterCmd(
                                                                                                 Constants.Shooter.SPEAKER_RPM),
-                                                                                new RunIntakeWhenAtRPMCmd(
+                                                                                new RunIntakeWhenShooterAtRPMCmd(
                                                                                                 Constants.Shooter.SPEAKER_RPM),
                                                                                 new HoldArmInPositionCmd(
                                                                                                 Constants.Arm.SPEAKER))),
