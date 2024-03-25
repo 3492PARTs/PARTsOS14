@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.led.Animation;
 import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.FireAnimation;
 import com.ctre.phoenix.led.RainbowAnimation;
@@ -18,7 +19,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class Candle extends SubsystemBase {
     private final CANdle candle;
     private final int LED_LENGTH = Constants.LED.LED_LENGTH;
-    private Color color;
+    private Animation animation = null;
+
     private static Candle candleInstance;
 
     public enum Color {
@@ -60,9 +62,9 @@ public class Candle extends SubsystemBase {
     }
 
     public void setColor(Color color) {
-        this.color = color;
-        candle.animate(null);
-        candle.setLEDs(this.color.r, this.color.g, this.color.b);
+        animation = null;
+        candle.animate(animation);
+        candle.setLEDs(color.r, color.g, color.b);
     }
 
     public void setNoColor() {
@@ -77,40 +79,43 @@ public class Candle extends SubsystemBase {
         return runOnce(() -> setColor(Color.OFF));
     }
 
-    public FireAnimation burnyBurn() {
+    public FireAnimation getBurnyBurnAnimation() {
         return new FireAnimation(1, .5, LED_LENGTH, .5, .5);
     }
 
-    public RainbowAnimation rainbow() {
+    public RainbowAnimation getRainbowAnimation() {
         return new RainbowAnimation();
     }
 
-    public StrobeAnimation blinkAnimation() {
+    public StrobeAnimation getBlinkAnimation(Color color) {
         return new StrobeAnimation(color.r, color.g, color.b);
     }
 
-    public SingleFadeAnimation fadeAnimation() {
+    public SingleFadeAnimation getFadeAnimation(Color color) {
         return new SingleFadeAnimation(color.r, color.g, color.b);
     }
 
-    public Command runBurnyBurnCommand() {
-        return runOnce(() -> candle.animate(burnyBurn()));
+    public void runBurnyBurnAnimation() {
+        animation = getBurnyBurnAnimation();
     }
 
-    public Command runRainbowAnimationCommand() {
-        return runOnce(() -> candle.animate(rainbow()));
+    public void runRainbowAnimation() {
+        animation = getRainbowAnimation();
     }
 
-    public Command runBlinkCommand() {
-        return runOnce(() -> candle.animate(blinkAnimation()));
+    public void runBlinkAnimation(Color color) {
+        animation = getBlinkAnimation(color);
     }
 
-    public Command runFadeCommand() {
-        return runOnce(() -> candle.animate(fadeAnimation()));
+    public void runFadeAnimation(Color color) {
+        animation = getFadeAnimation(color);
     }
 
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
+        if (animation != null) {
+            candle.animate(animation);
+        }
     }
 }
