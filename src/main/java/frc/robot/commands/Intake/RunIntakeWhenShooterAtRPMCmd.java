@@ -59,6 +59,7 @@ public class RunIntakeWhenShooterAtRPMCmd extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // 200 ms after note is gone stop command
     return System.currentTimeMillis() - this.startTime > 200;
   }
 }
