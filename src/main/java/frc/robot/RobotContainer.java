@@ -190,7 +190,7 @@ public class RobotContainer {
 
     //TODO: Verify this is a better way. operatorController.leftTrigger(.1).onTrue(new IntakeArmPositionCmdSeq(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME));
 
-    // Run intake in
+    // Run intake out
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
 
     // Testing
@@ -203,7 +203,7 @@ public class RobotContainer {
     // Shoot out full speed
     operatorController.povUp().whileTrue(new ShootCmd(1));
 
-    // Run intake out
+    // Run intake in
     operatorController.povLeft().whileTrue(new RunIntakeCmd(-1));
 
     if (!Constants.Arm.SYSID) {
