@@ -59,6 +59,7 @@ public class RobotContainer {
   public static final CommandXboxController operatorController = new CommandXboxController(1);
 
   public final Trigger zeroPivotTrigger = new Trigger(arm.getSwitchSupplier());
+  public final Trigger armGroundTrigger = new Trigger(arm.getSwitchSupplier());
   public final Trigger noteTrigger = new Trigger(() -> {
     return intake.hasNote();
   });
@@ -91,10 +92,6 @@ public class RobotContainer {
     autoChooser.addOption("BLUE: One Note Empty Side", new AutoOneNoteEmptySide(-1));
     autoChooser.addOption("BLUE: Two Note Amp Side", new AutoTwoNoteAmpSide(-1));
     autoChooser.addOption("BLUE: Two Note Empty Side", new AutoTwoNoteEmptySide(-1));
-
-    //candle.runRainbowAnimationCommand();
-    candle.setColor(Color.BLUE);
-    configureCandleBindings();
   }
 
   /**
@@ -231,19 +228,34 @@ public class RobotContainer {
     }
   }
 
+  public void configureCandleBindings() {
+    candle.setColor(Color.BLUE);
+
+    // Note sensor
+    noteTrigger.onTrue(Commands.runOnce(() -> {
+      candle.setColor(Color.GREEN);
+    }, candle));
+
+    noteTrigger.onFalse(Commands.runOnce(() -> {
+      candle.setColor(Color.BLUE);
+    }, candle));
+
+    // Arm Limit Switch
+    armGroundTrigger.onTrue(Commands.runOnce(() -> {
+      candle.setColor(Color.ORANGE);
+    }, candle));
+
+    armGroundTrigger.onFalse(Commands.runOnce(() -> {
+      candle.setColor(Color.BLUE);
+    }, candle).onlyIf(() -> {
+      return !intake.hasNote();
+    }));
+  }
+
   public void removeBindings() {
     arm.removeDefaultCommand();
     driveTrain.removeDefaultCommand();
     zeroPivotTrigger.onTrue(null);
-  }
-
-  public void configureCandleBindings() {
-    noteTrigger.onTrue(Commands.runOnce(() -> {
-      candle.setColor(Color.GREEN);
-    }, candle));
-    noteTrigger.onFalse(Commands.runOnce(() -> {
-      candle.setColor(Color.BLUE);
-    }, candle));
   }
 
   public void displaySmartDashboard() {
