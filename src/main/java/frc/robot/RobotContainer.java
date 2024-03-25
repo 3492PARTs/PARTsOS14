@@ -75,6 +75,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     configureAutonomousCommands();
+    configureSmartDashboardCommands();
   }
 
   /**
@@ -261,6 +262,13 @@ public class RobotContainer {
     zeroPivotTrigger.onTrue(null);
   }
 
+  public void configureSmartDashboardCommands() {
+    if (Constants.TESTING) {
+      // Zero Pivot Command
+      SmartDashboard.putData("Zero Arm Sequence", new ZeroArmCmdSeq());
+    }
+  }
+
   public void updateSmartDashboard() {
     // Shooter
     SmartDashboard.putNumber("Shooter RPM", shooter.getShooterRPM());
@@ -280,9 +288,6 @@ public class RobotContainer {
       SmartDashboard.putNumber("Right Drive Distance", driveTrain.rightDistance());
 
       SmartDashboard.putNumber("Gyro Angle", driveTrain.getGyroAngle());
-
-      // Pivot
-      SmartDashboard.putData("Zero Arm Sequence", new ZeroArmCmdSeq());
     }
 
   }
