@@ -179,6 +179,7 @@ public class RobotContainer {
             new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM)));
 
     //Amp
+    //TODO: Test out setting bang bang to higher value
     operatorController.rightBumper()
         .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.AMP_RPM),
             new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.AMP_RPM)));
