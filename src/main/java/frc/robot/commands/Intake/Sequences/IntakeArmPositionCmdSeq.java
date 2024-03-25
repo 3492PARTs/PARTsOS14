@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Arm.ProfiledPivotArmCmd;
 import frc.robot.commands.Intake.RunIntakePhotoEyeCmd;
 import frc.robot.commands.Intake.TimeIntakeCmd;
+import frc.robot.subsystems.Intake;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -17,6 +18,8 @@ public class IntakeArmPositionCmdSeq extends SequentialCommandGroup {
   public IntakeArmPositionCmdSeq(double speed, double armPosition) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new RunIntakePhotoEyeCmd(speed), new TimeIntakeCmd(.2, .38), new ProfiledPivotArmCmd(armPosition));
+    addCommands(new RunIntakePhotoEyeCmd(speed),
+        new SequentialCommandGroup(new TimeIntakeCmd(.2, .38), new ProfiledPivotArmCmd(armPosition))
+            .onlyIf(Intake.getInstance().hasNoteSupplier()));
   }
 }

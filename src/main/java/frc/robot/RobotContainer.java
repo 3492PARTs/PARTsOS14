@@ -20,6 +20,7 @@ import frc.robot.commands.Autos.Middle.AutoTwoNoteMiddle;
 import frc.robot.commands.Intake.IntakePhotoEyeArmPosCmd;
 import frc.robot.commands.Intake.RunIntakeCmd;
 import frc.robot.commands.Intake.RunIntakeWhenAtRPMCmd;
+import frc.robot.commands.Intake.Sequences.IntakeArmPositionCmdSeq;
 import frc.robot.commands.Shooter.BangBangShooterCmd;
 import frc.robot.commands.Shooter.ShootCmd;
 import frc.robot.subsystems.Arm;
@@ -138,9 +139,9 @@ public class RobotContainer {
         new RunCommand(() -> {
           // Manual control with a lower hard stop.
           if (Math.abs(operatorController.getRightY()) > .1) {
-
             //at bottom limit
             if (arm.getLimitSwitch()) {
+              // Negative controller value is up on arm
               if (operatorController.getRightY() < 0)
                 arm.setSpeed(operatorController.getRightY());
               else
@@ -148,6 +149,7 @@ public class RobotContainer {
             }
             // at top limit
             else if (arm.getAngle() >= Constants.Arm.UPPER_BOUND) {
+              // Positive controller value is down on arm
               if (operatorController.getRightY() > 0)
                 arm.setSpeed(operatorController.getRightY());
               else
@@ -171,18 +173,24 @@ public class RobotContainer {
             arm));
 
     // Shooting Functions
+    // Speaker
     operatorController.rightTrigger(.1)
         .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
             new RunIntakeWhenAtRPMCmd(Constants.Shooter.SPEAKER_RPM)));
 
+    //Amp
     operatorController.rightBumper()
         .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.AMP_RPM),
             new RunIntakeWhenAtRPMCmd(Constants.Shooter.AMP_RPM)));
 
     // Intake Functions
+    // Run intake until note detected, send to home after. 
     operatorController.leftTrigger(.1)
         .onTrue(new IntakePhotoEyeArmPosCmd(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME));
 
+    //TODO: Verify this is a better way. operatorController.leftTrigger(.1).onTrue(new IntakeArmPositionCmdSeq(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME));
+
+    // Run intake in
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
 
     // Testing
@@ -192,17 +200,28 @@ public class RobotContainer {
     }
 
     // Manual Functions
+    // Shoot out full speed
     operatorController.povUp().whileTrue(new ShootCmd(1));
+
+    // Run intake out
     operatorController.povLeft().whileTrue(new RunIntakeCmd(-1));
 
     if (!Constants.Arm.SYSID) {
       // Profiled Pivot Functions
-      operatorController.x().onTrue(new PivotArmCmdSeq(Constants.Arm.GROUND)); // ground
+      // ground
+      operatorController.x().onTrue(new PivotArmCmdSeq(Constants.Arm.GROUND));
+
+      //speaker
       operatorController.y().onTrue(Commands.runOnce(() -> {
-        new PivotArmCmdSeq(Constants.Shooter.WARMUP_SPEAKER_RPM).schedule();
-      }).andThen(new PivotArmCmdSeq(Constants.Arm.SPEAKER))); //speaker
-      operatorController.b().onTrue(new PivotArmCmdSeq(Constants.Arm.HOME)); // home
-      operatorController.a().onTrue(new PivotArmCmdSeq(Constants.Arm.AMP)); // amp
+        //TODO: Verify no issues calling new way new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM).schedule();
+        CommandScheduler.getInstance().schedule(new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM));
+      }).andThen(new PivotArmCmdSeq(Constants.Arm.SPEAKER)));
+
+      // home
+      operatorController.b().onTrue(new PivotArmCmdSeq(Constants.Arm.HOME));
+
+      // amp 
+      operatorController.a().onTrue(new PivotArmCmdSeq(Constants.Arm.AMP));
     }
     // SysID
     else {

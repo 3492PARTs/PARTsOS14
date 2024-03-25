@@ -231,6 +231,7 @@ public class Arm extends SubsystemBase {
     return averageVolts;
   }
 
+  @Deprecated
   public double getRPS() {
     return ((pivotLeftMotor.getEncoder().getVelocity() / 60) + (pivotLeftMotor.getEncoder().getVelocity() / 60)) / 2;
   }
