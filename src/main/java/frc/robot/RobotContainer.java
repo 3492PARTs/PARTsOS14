@@ -31,6 +31,7 @@ import frc.robot.subsystems.Candle.Color;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -58,8 +59,8 @@ public class RobotContainer {
   public static final CommandXboxController driveController = new CommandXboxController(0);
   public static final CommandXboxController operatorController = new CommandXboxController(1);
 
-  public final Trigger zeroPivotTrigger = new Trigger(arm.getSwitchSupplier());
-  public final Trigger armGroundTrigger = new Trigger(arm.getSwitchSupplier());
+  public final Trigger zeroPivotTrigger = new Trigger(arm.getLimitSwitchSupplier());
+  public final Trigger armGroundTrigger = new Trigger(arm.getLimitSwitchSupplier());
   public final Trigger noteTrigger = new Trigger(() -> {
     return intake.hasNote();
   });
@@ -72,26 +73,7 @@ public class RobotContainer {
    */
 
   public RobotContainer() {
-
-    SmartDashboard.putData("choose auto mode", autoChooser);
-
-    // SIDE INDEPENDENT AUTOS
-    autoChooser.addOption("Move Forward", new AutoMoveForward());
-    autoChooser.addOption("Move Turn", new AutoTurn());
-    autoChooser.addOption("One Note Middle", new AutoOneNoteMiddle());
-    autoChooser.addOption("Two Note Middle", new AutoTwoNoteMiddle());
-
-    //RED AUTOS
-    autoChooser.addOption("RED: One Note Amp Side ", new AutoOneNoteAmpSide(1));
-    autoChooser.addOption("RED: One Note Empty Side", new AutoOneNoteEmptySide(1));
-    autoChooser.addOption("RED: Two Note Amp Side", new AutoTwoNoteAmpSide(1));
-    autoChooser.addOption("RED: Two Note Empty Side", new AutoTwoNoteEmptySide(1));
-
-    //BLUE AUTOS
-    autoChooser.addOption("BLUE: One Note Amp Side ", new AutoOneNoteAmpSide(-1));
-    autoChooser.addOption("BLUE: One Note Empty Side", new AutoOneNoteEmptySide(-1));
-    autoChooser.addOption("BLUE: Two Note Amp Side", new AutoTwoNoteAmpSide(-1));
-    autoChooser.addOption("BLUE: Two Note Empty Side", new AutoTwoNoteEmptySide(-1));
+    configureAutonomousCommands();
   }
 
   /**
@@ -125,7 +107,7 @@ public class RobotContainer {
     /*
     arm.setDefaultCommand(new ConditionalCommand(new RunCommand(() -> {
       //at bottom limit
-      if (Arm.getInstance().getSwitch()) {
+      if (arm.getSwitch()) {
         if (operatorController.getRightY() < 0)
           arm.setPivotSpeed(operatorController.getRightY());
         else
@@ -158,28 +140,31 @@ public class RobotContainer {
           if (Math.abs(operatorController.getRightY()) > .1) {
 
             //at bottom limit
-            if (Arm.getInstance().getSwitch()) {
+            if (arm.getLimitSwitch()) {
               if (operatorController.getRightY() < 0)
-                arm.setPivotSpeed(operatorController.getRightY());
+                arm.setSpeed(operatorController.getRightY());
               else
-                arm.setPivotSpeed(0);
+                arm.setSpeed(0);
             }
             // at top limit
             else if (arm.getAngle() >= Constants.Arm.UPPER_BOUND) {
               if (operatorController.getRightY() > 0)
-                arm.setPivotSpeed(operatorController.getRightY());
+                arm.setSpeed(operatorController.getRightY());
               else
-                arm.setPivotSpeed(0);
+                arm.setSpeed(0);
             }
             // full manual, in safe bounds
             else
-              arm.setPivotSpeed(operatorController.getRightY());
+              arm.setSpeed(operatorController.getRightY());
           }
           // hold arm in current position
           else {
-            arm.setPivotSpeed(0);
+            arm.setSpeed(0);
             if (arm.getAngle() > 2) {
-              new HoldArmInPositionCmd(arm.getAngle()).schedule();
+              //TODO: Verify no issues. but i believe this is a better way to schedule commands.
+              //if (Math.abs(arm.getRotationRate()) < 5)
+              CommandScheduler.getInstance().schedule(new HoldArmInPositionCmd(arm.getAngle()));
+
             }
           }
         },
@@ -258,7 +243,7 @@ public class RobotContainer {
     zeroPivotTrigger.onTrue(null);
   }
 
-  public void displaySmartDashboard() {
+  public void updateSmartDashboard() {
     // Shooter
     SmartDashboard.putNumber("Shooter RPM", shooter.getShooterRPM());
 
@@ -266,7 +251,7 @@ public class RobotContainer {
     SmartDashboard.putBoolean("HAS NOTE", intake.hasNote());
 
     // LimitSwitch
-    SmartDashboard.putBoolean("Arm Switch", arm.getSwitch());
+    SmartDashboard.putBoolean("Arm Switch", arm.getLimitSwitch());
 
     // Arm Angle
     SmartDashboard.putNumber("Arm Angle", arm.getAngle());
@@ -282,6 +267,28 @@ public class RobotContainer {
       SmartDashboard.putData("Zero Arm Sequence", new ZeroArmCmdSeq());
     }
 
+  }
+
+  public void configureAutonomousCommands() {
+    SmartDashboard.putData("choose auto mode", autoChooser);
+
+    // SIDE INDEPENDENT AUTOS
+    autoChooser.addOption("Move Forward", new AutoMoveForward());
+    autoChooser.addOption("Move Turn", new AutoTurn());
+    autoChooser.addOption("One Note Middle", new AutoOneNoteMiddle());
+    autoChooser.addOption("Two Note Middle", new AutoTwoNoteMiddle());
+
+    //RED AUTOS
+    autoChooser.addOption("RED: One Note Amp Side ", new AutoOneNoteAmpSide(1));
+    autoChooser.addOption("RED: One Note Empty Side", new AutoOneNoteEmptySide(1));
+    autoChooser.addOption("RED: Two Note Amp Side", new AutoTwoNoteAmpSide(1));
+    autoChooser.addOption("RED: Two Note Empty Side", new AutoTwoNoteEmptySide(1));
+
+    //BLUE AUTOS
+    autoChooser.addOption("BLUE: One Note Amp Side ", new AutoOneNoteAmpSide(-1));
+    autoChooser.addOption("BLUE: One Note Empty Side", new AutoOneNoteEmptySide(-1));
+    autoChooser.addOption("BLUE: Two Note Amp Side", new AutoTwoNoteAmpSide(-1));
+    autoChooser.addOption("BLUE: Two Note Empty Side", new AutoTwoNoteEmptySide(-1));
   }
 
   /**

@@ -32,16 +32,16 @@ public class ArmToPositionAutoCmd extends Command {
     direction = arm.getAngle() > angle;
 
     if (direction) {
-      arm.setPivotSpeed(-0.18);
+      arm.setSpeed(-0.18);
     } else {
-      arm.setPivotSpeed(0.18);
+      arm.setSpeed(0.18);
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    arm.setPivotSpeed(0);
+    arm.setSpeed(0);
   }
 
   // Returns true when the command should end.

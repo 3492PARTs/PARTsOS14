@@ -68,7 +68,7 @@ public class Arm extends SubsystemBase {
   public SysIdRoutine sysIdRoutine = new SysIdRoutine(
       new SysIdRoutine.Config(),
       new SysIdRoutine.Mechanism(
-          (voltage) -> this.driveMotorVolts(voltage.in(Volts)),
+          (voltage) -> this.setVolts(voltage.in(Volts)),
 
           log -> {
             // Record a frame for the shooter motor.
@@ -122,38 +122,23 @@ public class Arm extends SubsystemBase {
   }
 
   // Setting calculations
-  public void setPivotSpeed(double speed) {
+  public void setSpeed(double speed) {
     // speed = Math.abs(speed) > 0.1 ? speed : 0;
     pivotLeftMotor.set(speed);
     pivotRightMotor.set(speed);
   }
 
+  public void setVolts(double volts) {
+    pivotLeftMotor.setVoltage(volts);
+    pivotRightMotor.setVoltage(volts);
+  }
+
+  /* 
   public void setPivotPoint(double position) {
     pivotLeftController.setReference(position, ControlType.kPosition);
     pivotRightController.setReference(position, ControlType.kPosition);
   }
-
-  // Trapezoid Profiling
-  public TrapezoidProfile.Constraints getConstraints() {
-    return ArmConstraints;
-  }
-
-  public TrapezoidProfile.State getCurrentState() {
-    return new TrapezoidProfile.State(Math.toRadians(getAngle()),
-        Math.toRadians(getAnglularVelocitySupplier().getAsDouble()));
-  }
-
-  // voltage calculations
-  public double calcOutputVoltage(double velocity) {
-    double output = (armFeedForward.calculate(Math.toRadians((getAngle())), velocity));
-    // SmartDashboard.putNumber("calcOutputVoltage", output);
-    return output;
-  }
-
-  public void driveMotorVolts(double volts) {
-    pivotLeftMotor.setVoltage(volts);
-    pivotRightMotor.setVoltage(volts);
-  }
+  */
 
   // Angle calculations
   public double getAngle() {
@@ -161,12 +146,12 @@ public class Arm extends SubsystemBase {
     return getAlternateEncoderPosition();
   }
 
-  public double getAlternateEncoderPosition() {
+  private double getAlternateEncoderPosition() {
     //return alternateLeftEncoder.getPosition();
     return (alternateLeftEncoder.getPosition() * 360) * -1;
   }
 
-  public double getAlternateEncoderCPR() {
+  private double getAlternateEncoderCPR() {
     return alternateLeftEncoder.getCountsPerRevolution();
   }
 
@@ -177,19 +162,22 @@ public class Arm extends SubsystemBase {
 
   // Rotation calculations
   public double getRotationRate() {
+    //TODO: return 360 * alternateLeftEncoder.getVelocity() / (60);
     return 360 * pivotLeftMotor.getEncoder().getVelocity() / (60);
   }
 
-  public DoubleSupplier getAnglularVelocitySupplier() {
+  public DoubleSupplier getAngularVelocitySupplier() {
     DoubleSupplier s = () -> getRotationRate();
     return s;
   }
 
   // Encoder calculations
+  @Deprecated
   public double rightPivotEncoderPosition() {
     return pivotRightMotor.getEncoder().getPosition();
   }
 
+  @Deprecated
   public double leftPivotEncoderPosition() {
     return pivotLeftMotor.getEncoder().getPosition();
   }
@@ -202,18 +190,7 @@ public class Arm extends SubsystemBase {
     alternateRightEncoder.setPosition(0);
   }
 
-  // SysID methods
-  public double getAverageVoltage() {
-    double averageVolts = ((pivotLeftMotor.getAppliedOutput() * pivotLeftMotor.getBusVoltage())
-        + (pivotRightMotor.getAppliedOutput() * pivotRightMotor.getBusVoltage())) / 2;
-    return averageVolts;
-  }
-
-  public double getRPS() {
-    return ((pivotLeftMotor.getEncoder().getVelocity() / 60) + (pivotLeftMotor.getEncoder().getVelocity() / 60)) / 2;
-  }
-
-  public boolean getSwitch() {
+  public boolean getLimitSwitch() {
     if (!armLimit.get()) {
       /*if (!armLimitBuffer) {
         setPivotSpeed(0);
@@ -226,8 +203,36 @@ public class Arm extends SubsystemBase {
     }
   }
 
-  public BooleanSupplier getSwitchSupplier() {
-    return this::getSwitch;
+  public BooleanSupplier getLimitSwitchSupplier() {
+    return this::getLimitSwitch;
+  }
+
+  // Trapezoid Profiling
+  public TrapezoidProfile.Constraints getConstraints() {
+    return ArmConstraints;
+  }
+
+  public TrapezoidProfile.State getCurrentState() {
+    return new TrapezoidProfile.State(Math.toRadians(getAngle()),
+        Math.toRadians(getAngularVelocitySupplier().getAsDouble()));
+  }
+
+  // voltage calculations
+  public double calcOutputVoltage(double velocity) {
+    double output = (armFeedForward.calculate(Math.toRadians((getAngle())), velocity));
+    // SmartDashboard.putNumber("calcOutputVoltage", output);
+    return output;
+  }
+
+  // SysID methods
+  public double getAverageVoltage() {
+    double averageVolts = ((pivotLeftMotor.getAppliedOutput() * pivotLeftMotor.getBusVoltage())
+        + (pivotRightMotor.getAppliedOutput() * pivotRightMotor.getBusVoltage())) / 2;
+    return averageVolts;
+  }
+
+  public double getRPS() {
+    return ((pivotLeftMotor.getEncoder().getVelocity() / 60) + (pivotLeftMotor.getEncoder().getVelocity() / 60)) / 2;
   }
 
   @Override

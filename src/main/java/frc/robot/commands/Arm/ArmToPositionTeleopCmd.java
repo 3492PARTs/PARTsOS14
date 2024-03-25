@@ -40,16 +40,16 @@ public class ArmToPositionTeleopCmd extends Command {
 
     // If above is true, go back up to match set pos. Otherwise continue.
     if (direction) {
-      arm.setPivotSpeed(-0.25);
+      arm.setSpeed(-0.25);
     } else {
-      arm.setPivotSpeed(0.25);
+      arm.setSpeed(0.25);
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    arm.setPivotSpeed(0);
+    arm.setSpeed(0);
     // Once arm is on the ground, run the intake to pick up a note.
     if (angle == Constants.Arm.GROUND) {
       new IntakePhotoEyeArmPosCmd(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME).schedule();

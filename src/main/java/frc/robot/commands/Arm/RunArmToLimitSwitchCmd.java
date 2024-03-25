@@ -26,13 +26,13 @@ public class RunArmToLimitSwitchCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    arm.setPivotSpeed(.2);
+    arm.setSpeed(.2);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    arm.setPivotSpeed(0);
+    arm.setSpeed(0);
     //arm.zeroPivotEncoders();
     //new WaitCommand(.2).andThen(new ZeroPivotEncodersCmd()).schedule();
 
@@ -41,6 +41,6 @@ public class RunArmToLimitSwitchCmd extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return arm.getSwitch();
+    return arm.getLimitSwitch();
   }
 }

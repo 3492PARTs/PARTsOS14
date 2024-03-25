@@ -33,7 +33,7 @@ public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
         (output, setpoint) -> {
 
           double volts = Arm.getInstance().calcOutputVoltage(setpoint.velocity);
-          Arm.getInstance().driveMotorVolts(-(volts + output));
+          Arm.getInstance().setVolts(-(volts + output));
           // Use the output (and setpoint, if desired) here
         });
     // Use addRequirements() here to declare subsystem dependencies.
@@ -45,7 +45,7 @@ public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
 
   @Override
   public void end(boolean interrupted) {
-    Arm.getInstance().setPivotSpeed(0);
+    Arm.getInstance().setSpeed(0);
     // Once arm is on the ground, run the intake to pick up a note.
   }
 
@@ -53,7 +53,7 @@ public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
   @Override
   public boolean isFinished() {
     if (angleSetpoint == Constants.Arm.GROUND)
-      return Arm.getInstance().getSwitch();
+      return Arm.getInstance().getLimitSwitch();
     else
       return getController().atGoal();
   }
