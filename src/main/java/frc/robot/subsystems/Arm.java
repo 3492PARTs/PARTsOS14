@@ -19,6 +19,7 @@ import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.MutableMeasure;
 import edu.wpi.first.units.Velocity;
 import edu.wpi.first.units.Voltage;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -240,4 +241,15 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
+  //TODO: Test this works
+  /* 
+  @Override
+  public void initSendable(SendableBuilder builder) {
+    super.initSendable(builder);
+    // Publish the solenoid state to telemetry.
+    builder.addBooleanProperty("On Ground", this.getLimitSwitchSupplier(), null);
+    builder.addDoubleProperty("Current Arm Angle", this.getAngleSupplier(), null);
+  }
+  */
 }

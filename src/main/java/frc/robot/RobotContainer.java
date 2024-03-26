@@ -106,37 +106,6 @@ public class RobotContainer {
     //TODO: I found a way to remove default below test it
     zeroPivotTrigger.onTrue(Commands.waitSeconds(.2).andThen(new ZeroPivotEncodersCmd()));
 
-    //TODO: A much better arm default command since calling schedule is bad. 
-    /*
-    arm.setDefaultCommand(new ConditionalCommand(new RunCommand(() -> {
-      //at bottom limit
-      if (arm.getSwitch()) {
-        if (operatorController.getRightY() < 0)
-          arm.setPivotSpeed(operatorController.getRightY());
-        else
-          arm.setPivotSpeed(0);
-      }
-      // at top limit
-      else if (arm.getAngle() >= Constants.Arm.UPPER_BOUND) {
-        if (operatorController.getRightY() > 0)
-          arm.setPivotSpeed(operatorController.getRightY());
-        else
-          arm.setPivotSpeed(0);
-      }
-      // full manual, in safe bounds
-      else
-        arm.setPivotSpeed(operatorController.getRightY());
-    }, arm),
-        Commands.runOnce(() -> {
-          arm.setPivotSpeed(0);
-        }).andThen(new HoldArmInPositionCmd(arm.getAngle()).onlyIf(() -> { // IDK If this will set multiple times or not.
-          return arm.getAngle() > 2;
-        })),
-        () -> {
-          return Math.abs(operatorController.getRightY()) > .1;
-        }));
-    */
-
     arm.setDefaultCommand(
         new RunCommand(() -> {
           // Manual control with a lower hard stop.
