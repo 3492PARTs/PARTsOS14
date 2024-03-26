@@ -11,6 +11,7 @@ import frc.robot.commands.Arm.Sequences.PivotArmCmdSeq;
 import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
 import frc.robot.commands.Autos.AutoMoveForward;
 import frc.robot.commands.Autos.AutoTurn;
+import frc.robot.commands.Autos.StartAutoCmd;
 import frc.robot.commands.Autos.AmpSide.AutoOneNoteAmpSide;
 import frc.robot.commands.Autos.AmpSide.AutoTwoNoteAmpSide;
 import frc.robot.commands.Autos.EmptySide.AutoOneNoteEmptySide;
@@ -312,6 +313,10 @@ public class RobotContainer {
     autoChooser.addOption("BLUE: One Note Empty Side", new AutoOneNoteEmptySide(-1));
     autoChooser.addOption("BLUE: Two Note Amp Side", new AutoTwoNoteAmpSide(-1));
     autoChooser.addOption("BLUE: Two Note Empty Side", new AutoTwoNoteEmptySide(-1));
+
+    if (Constants.TESTING) {
+      autoChooser.addOption("Test turn with color, red -> right, blue -> left", new StartAutoCmd());
+    }
   }
 
   /**

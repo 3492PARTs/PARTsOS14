@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.Autos.AmpSide.AutoOneNoteAmpSide;
+import frc.robot.commands.Drive.PIDTurnCmd;
 
 public class StartAutoCmd extends Command {
   private int red = 1;
@@ -42,7 +43,7 @@ public class StartAutoCmd extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    CommandScheduler.getInstance().schedule(new AutoOneNoteAmpSide(red));
+    CommandScheduler.getInstance().schedule(new PIDTurnCmd(red * 90));
   }
 
   // Returns true when the command should end.
