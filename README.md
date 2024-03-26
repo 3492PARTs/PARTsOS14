@@ -2,7 +2,7 @@
 Source code for the PARTs 2024 robot.
 
 ## Code
-We are using the [WPILib 2024.2.1 Release](https://github.com/wpilibsuite/allwpilib/releases/tag/v2024.2.1).\
+We are using the [WPILib 2024.3.2 Release](https://github.com/wpilibsuite/allwpilib/releases/tag/v2024.3.2).\
 We are coding in the Java programming language with the OpenJDK that WPILib comes bundled with.
 ## Drivetrain
 The drivetrain uses four CANSparkMaxes in a Leader-Follower configuration like tank drive.
