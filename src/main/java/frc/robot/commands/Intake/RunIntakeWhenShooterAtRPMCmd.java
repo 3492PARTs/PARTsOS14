@@ -25,7 +25,6 @@ public class RunIntakeWhenShooterAtRPMCmd extends Command {
     candle = Candle.getInstance();
     this.RPM = RPM;
     addRequirements(intake);
-    addRequirements(candle);
   }
 
   // Called when the command is initially scheduled.
@@ -47,6 +46,8 @@ public class RunIntakeWhenShooterAtRPMCmd extends Command {
     if (shooter.getShooterRPM() >= RPM) {
       intake.runIntake(-.9);
     }
+
+    System.out.println(startTime);
 
   }
 

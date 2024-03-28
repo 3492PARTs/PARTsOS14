@@ -45,6 +45,7 @@ public class RunIntakePhotoEyeCmd extends Command {
   @Override
   public boolean isFinished() {
     // Must sense note for at least 200ms or operator interrupt
-    return System.currentTimeMillis() - this.startTime >= 200 || RobotContainer.operatorInterrupt();
+    return System.currentTimeMillis() - this.startTime >= 200 ||
+        (System.currentTimeMillis() - this.startTime >= 200 && RobotContainer.operatorInterrupt());
   }
 }

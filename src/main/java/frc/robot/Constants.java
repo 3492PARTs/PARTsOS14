@@ -82,6 +82,11 @@ public final class Constants {
     public static final int AMP_RPM = 300;
   }
 
+  public static final class Climber {
+    public static final int LEFT_MOTOR = 8;
+    public static final int RIGHT_MOTOR = 9;
+  }
+
   public static final class LED {
     public static final int LED_PORT = 0;
     public static final int LED_LENGTH = 100;

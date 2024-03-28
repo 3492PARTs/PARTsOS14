@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.commands.Arm.ProfiledPivotArmCmd;
 import frc.robot.commands.Intake.IntakePhotoEyeArmPosCmd;
+import frc.robot.commands.Intake.Sequences.IntakeArmPositionCmdSeq;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -19,9 +20,8 @@ public class PivotArmCmdSeq extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(new ProfiledPivotArmCmd(angleSetpoint),
-        new ConditionalCommand(new IntakePhotoEyeArmPosCmd(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME), null,
-            () -> {
-              return angleSetpoint == Constants.Arm.GROUND;
-            }));
+        new IntakeArmPositionCmdSeq(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME).onlyIf(() -> {
+          return angleSetpoint == Constants.Arm.GROUND;
+        }));
   }
 }

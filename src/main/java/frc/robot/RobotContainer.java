@@ -18,6 +18,7 @@ import frc.robot.commands.Autos.EmptySide.AutoOneNoteEmptySide;
 import frc.robot.commands.Autos.EmptySide.AutoTwoNoteEmptySide;
 import frc.robot.commands.Autos.Middle.AutoOneNoteMiddle;
 import frc.robot.commands.Autos.Middle.AutoTwoNoteMiddle;
+import frc.robot.commands.Climber.RunClimberCmd;
 import frc.robot.commands.Intake.IntakePhotoEyeArmPosCmd;
 import frc.robot.commands.Intake.RunIntakeCmd;
 import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
@@ -30,6 +31,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Candle.Color;
+import frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -56,6 +58,8 @@ public class RobotContainer {
   private final Intake intake = Intake.getInstance();
   private final Shooter shooter = Shooter.getInstance();
   private final Candle candle = Candle.getInstance();
+  private final Climber climber = Climber.getInstance();
+  private boolean climbMode = false;
 
   // Drive controls drivetrain, operator controls arm, intake, and shooter.
   public static final CommandXboxController driveController = new CommandXboxController(0);
@@ -109,7 +113,7 @@ public class RobotContainer {
     arm.setDefaultCommand(
         new RunCommand(() -> {
           // Manual control with a lower hard stop.
-          if (Math.abs(operatorController.getRightY()) > .1) {
+          if (Math.abs(operatorController.getRightY()) > .1 && !climbMode) {
             //at bottom limit
             if (arm.getLimitSwitch()) {
               // Negative controller value is up on arm
@@ -142,6 +146,31 @@ public class RobotContainer {
           }
         },
             arm));
+
+    climber.setDefaultCommand(
+        new RunCommand(() -> {
+          if (climbMode) {
+            if (Math.abs(operatorController.getLeftY()) > .1) {
+              climber.setLeftSpeed(operatorController.getLeftY());
+            } else {
+              climber.setLeftSpeed(0);
+            }
+            if (Math.abs(operatorController.getRightY()) > .1) {
+              climber.setRightSpeed(operatorController.getRightY());
+            } else {
+              climber.setRightSpeed(0);
+            }
+          } else {
+            climber.setLeftSpeed(0);
+            climber.setRightSpeed(0);
+          }
+        },
+            climber));
+
+    operatorController.povRight().onTrue(Commands.runOnce(() -> {
+      climbMode = !climbMode;
+      System.out.println("climb mode " + climbMode);
+    }));
 
     // Shooting Functions
     // Speaker
@@ -194,6 +223,7 @@ public class RobotContainer {
 
       // amp 
       operatorController.a().onTrue(new PivotArmCmdSeq(Constants.Arm.AMP));
+
     }
     // SysID
     else {
@@ -301,6 +331,8 @@ public class RobotContainer {
   public static boolean operatorInterrupt() {
     return operatorController.leftBumper().getAsBoolean() ||
         operatorController.leftTrigger().getAsBoolean() ||
+        operatorController.rightBumper().getAsBoolean() ||
+        operatorController.rightTrigger().getAsBoolean() ||
         operatorController.a().getAsBoolean() ||
         operatorController.b().getAsBoolean() ||
         operatorController.x().getAsBoolean() ||

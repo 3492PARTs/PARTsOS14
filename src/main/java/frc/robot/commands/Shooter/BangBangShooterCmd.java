@@ -70,12 +70,6 @@ public class BangBangShooterCmd extends Command {
   public boolean isFinished() {
     // the time part is to keep from false stopping when the command starts
     return System.currentTimeMillis() - time > 200 &&
-        (RobotContainer.operatorController.leftBumper().getAsBoolean() ||
-            RobotContainer.operatorController.leftTrigger().getAsBoolean() ||
-            RobotContainer.operatorController.a().getAsBoolean() ||
-            RobotContainer.operatorController.b().getAsBoolean() ||
-            RobotContainer.operatorController.x().getAsBoolean() ||
-            RobotContainer.operatorController.y().getAsBoolean() ||
-            RobotContainer.operatorController.povUp().getAsBoolean());
+        RobotContainer.operatorInterrupt();
   }
 }

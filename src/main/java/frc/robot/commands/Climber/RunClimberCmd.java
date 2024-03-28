@@ -2,18 +2,18 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Arm;
+package frc.robot.commands.Climber;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Climber;
 
-public class ZeroPivotEncodersCmd extends Command {
-  Arm arm;
+public class RunClimberCmd extends Command {
+  /** Creates a new RunClimberCmd. */
+  Climber climber;
 
-  /** Creates a new ZeroPivotEncoders. */
-  public ZeroPivotEncodersCmd() {
-    this.arm = Arm.getInstance();
-    //addRequirements(arm);
+  public RunClimberCmd() {
+    // Use addRequirements() here to declare subsystem dependencies.
+    climber = Climber.getInstance();
   }
 
   // Called when the command is initially scheduled.
@@ -24,17 +24,20 @@ public class ZeroPivotEncodersCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    arm.zeroPivotEncoders();
+    climber.setLeftSpeed(.2);
+    climber.setRightSpeed(.2);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    climber.setLeftSpeed(0);
+    climber.setRightSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }
