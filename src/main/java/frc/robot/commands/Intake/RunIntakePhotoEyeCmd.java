@@ -38,7 +38,7 @@ public class RunIntakePhotoEyeCmd extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.out.println("end");
+    //System.out.println("end");
     intake.runIntake(0);
   }
 
@@ -46,7 +46,7 @@ public class RunIntakePhotoEyeCmd extends Command {
   @Override
   public boolean isFinished() {
     // Must sense note for at least 200ms or operator interrupt
-    System.out.println("is Finsihed" + System.currentTimeMillis());
+    //System.out.println("is Finsihed" + System.currentTimeMillis());
     return System.currentTimeMillis() - this.startTime >= 200 ||
         (System.currentTimeMillis() - this.startTime >= 200 && RobotContainer.operatorInterrupt());
   }

@@ -16,6 +16,7 @@ import frc.robot.commands.Autos.AmpSide.AutoOneNoteAmpSide;
 import frc.robot.commands.Autos.AmpSide.AutoTwoNoteAmpSide;
 import frc.robot.commands.Autos.EmptySide.AutoOneNoteEmptySide;
 import frc.robot.commands.Autos.EmptySide.AutoTwoNoteEmptySide;
+import frc.robot.commands.Autos.Middle.AutoFourNoteMiddle;
 import frc.robot.commands.Autos.Middle.AutoOneNoteMiddle;
 import frc.robot.commands.Autos.Middle.AutoTwoNoteMiddle;
 import frc.robot.commands.Intake.RunIntakeCmd;
@@ -296,6 +297,7 @@ public class RobotContainer {
     autoChooser.addOption("Move Turn", new AutoTurn());
     autoChooser.addOption("One Note Middle", new AutoOneNoteMiddle());
     autoChooser.addOption("Two Note Middle", new AutoTwoNoteMiddle());
+    autoChooser.addOption("Four Note", new AutoFourNoteMiddle());
 
     //RED AUTOS
     autoChooser.addOption("RED: One Note Amp Side ", new AutoOneNoteAmpSide(1));

@@ -45,13 +45,14 @@ public class AutoFourNoteMiddle extends SequentialCommandGroup {
                                                 new IntakeCmdSeq(Constants.Intake.INTAKE_SPEED), //.withTimeout(5),
                                                 new PIDDriveCmd(Units.inchesToMeters(36))),
                                 // Pivot up and speed
-                                new ParallelCommandGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
+                                new ParallelRaceGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER_BACK_30),
                                                 new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM)),
                                 // Shoot
                                 new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
-                                                new HoldArmInPositionCmd(Constants.Arm.SPEAKER)),
+                                                new HoldArmInPositionCmd(Constants.Arm.SPEAKER_BACK_30)),
                                 //TODO Untested below
+                                new PIDDriveCmd(Units.inchesToMeters(5)),
                                 // Turn to empty side note
                                 new PIDTurnCmd(-90 * red),
                                 //Move arm to ground
@@ -64,12 +65,13 @@ public class AutoFourNoteMiddle extends SequentialCommandGroup {
                                 new PIDDriveCmd(-Units.inchesToMeters(36)),
                                 // Turn raise arm and speed up
                                 new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM),
-                                                new ParallelCommandGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
+                                                new ParallelCommandGroup(
+                                                                new ProfiledPivotArmCmd(Constants.Arm.SPEAKER_BACK_30),
                                                                 new PIDTurnCmd(90 * red))),
                                 // Shoot
                                 new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
-                                                new HoldArmInPositionCmd(Constants.Arm.SPEAKER)),
+                                                new HoldArmInPositionCmd(Constants.Arm.SPEAKER_BACK_30)),
 
                                 // Turn to amp side note
                                 new PIDTurnCmd(90 * red),
