@@ -29,7 +29,7 @@ public class PIDDriveCmd extends Command {
   @Override
   public void initialize() {
     driveTrain.zeroDriveEncoders();
-    drivePIDController.reset(); // Remove if this causes errors
+    //drivePIDController.reset(); // Remove if this causes errors
     // Calculates average distance.
     initialPos = (driveTrain.leftDistance() + driveTrain.rightDistance()) / 2;
 

@@ -12,6 +12,8 @@ import frc.robot.Constants;
 import frc.robot.commands.Arm.HoldArmInPositionCmd;
 import frc.robot.commands.Arm.ProfiledPivotArmCmd;
 import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
+import frc.robot.commands.Drive.DriveAngleCmd;
+import frc.robot.commands.Drive.DriveDistanceCmd;
 import frc.robot.commands.Drive.PIDDriveCmd;
 import frc.robot.commands.Drive.PIDTurnCmd;
 import frc.robot.commands.Intake.RunIntakePhotoEyeCmd;
@@ -43,7 +45,7 @@ public class AutoFourNoteMiddle extends SequentialCommandGroup {
                                 //  turn on intake, and move forward
                                 new ParallelCommandGroup(
                                                 new IntakeCmdSeq(Constants.Intake.INTAKE_SPEED), //.withTimeout(5),
-                                                new PIDDriveCmd(Units.inchesToMeters(36))),
+                                                new DriveDistanceCmd(Units.inchesToMeters(36))),
                                 // Pivot up and speed
                                 new ParallelRaceGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER_BACK_30),
                                                 new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM)),
@@ -52,48 +54,51 @@ public class AutoFourNoteMiddle extends SequentialCommandGroup {
                                                 new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new HoldArmInPositionCmd(Constants.Arm.SPEAKER_BACK_30)),
                                 //TODO Untested below
-                                new PIDDriveCmd(Units.inchesToMeters(5)),
+                                new DriveDistanceCmd(Units.inchesToMeters(10)),
                                 // Turn to empty side note
-                                new PIDTurnCmd(-90 * red),
-                                //Move arm to ground
-                                new ProfiledPivotArmCmd(Constants.Arm.GROUND),
-                                //  turn on intake, and move forward
-                                new ParallelCommandGroup(
-                                                new IntakeCmdSeq(Constants.Intake.INTAKE_SPEED), //.withTimeout(5),
-                                                new PIDDriveCmd(Units.inchesToMeters(36))),
-                                // Back up to avoid stage
-                                new PIDDriveCmd(-Units.inchesToMeters(36)),
-                                // Turn raise arm and speed up
-                                new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM),
-                                                new ParallelCommandGroup(
-                                                                new ProfiledPivotArmCmd(Constants.Arm.SPEAKER_BACK_30),
-                                                                new PIDTurnCmd(90 * red))),
-                                // Shoot
-                                new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
-                                                new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
-                                                new HoldArmInPositionCmd(Constants.Arm.SPEAKER_BACK_30)),
 
-                                // Turn to amp side note
-                                new PIDTurnCmd(90 * red),
-                                //Move arm to ground
-                                new ProfiledPivotArmCmd(Constants.Arm.GROUND),
-                                //  turn on intake, and move forward
-                                new ParallelCommandGroup(
-                                                new IntakeCmdSeq(Constants.Intake.INTAKE_SPEED), //.withTimeout(5),
-                                                new PIDDriveCmd(Units.inchesToMeters(36))),
-                                // Turn raise arm and speed up
-                                new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM),
-                                                new ParallelCommandGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
-                                                                new PIDTurnCmd(-45 * red))),
-                                // Shoot
-                                new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
-                                                new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
-                                                new HoldArmInPositionCmd(Constants.Arm.SPEAKER)),
-                                // Turn to center and home arm
-                                new ParallelCommandGroup(new ProfiledPivotArmCmd(Constants.Arm.HOME),
-                                                new PIDTurnCmd(45 * red)),
-                                // Drive to center
-                                new PIDDriveCmd(Units.inchesToMeters(36)));
+                                new DriveAngleCmd(-75 * red)
+                /* 
+                //Move arm to ground
+                new ProfiledPivotArmCmd(Constants.Arm.GROUND),
+                //  turn on intake, and move forward
+                new ParallelCommandGroup(
+                                new IntakeCmdSeq(Constants.Intake.INTAKE_SPEED), //.withTimeout(5),
+                                new PIDDriveCmd(Units.inchesToMeters(10)))
+                
+                // Back up to avoid stage
+                new PIDDriveCmd(-Units.inchesToMeters(36)),
+                // Turn raise arm and speed up
+                new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM),
+                new ParallelCommandGroup(
+                new ProfiledPivotArmCmd(Constants.Arm.SPEAKER_BACK_30),
+                new PIDTurnCmd(90 * red))),
+                // Shoot
+                new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
+                new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
+                new HoldArmInPositionCmd(Constants.Arm.SPEAKER_BACK_30)),
+                
+                // Turn to amp side note
+                new PIDTurnCmd(90 * red),
+                //Move arm to ground
+                new ProfiledPivotArmCmd(Constants.Arm.GROUND),
+                //  turn on intake, and move forward
+                new ParallelCommandGroup(
+                new IntakeCmdSeq(Constants.Intake.INTAKE_SPEED), //.withTimeout(5),
+                new PIDDriveCmd(Units.inchesToMeters(36))),
+                // Turn raise arm and speed up
+                new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM),
+                new ParallelCommandGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
+                new PIDTurnCmd(-45 * red))),
+                // Shoot
+                new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
+                new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
+                new HoldArmInPositionCmd(Constants.Arm.SPEAKER)),
+                // Turn to center and home arm
+                new ParallelCommandGroup(new ProfiledPivotArmCmd(Constants.Arm.HOME),
+                new PIDTurnCmd(45 * red)),
+                // Drive to center
+                new PIDDriveCmd(Units.inchesToMeters(36))*/);
 
         }
 }

@@ -48,6 +48,8 @@ public class DriveDistanceCmd extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    System.out.println("end" + interrupted);
+    System.out.println(Math.abs(distance - ((driveTrain.leftDistance() + driveTrain.rightDistance()) / 2)));
     driveTrain.driveArcade(0, 0);
   }
 
@@ -55,7 +57,8 @@ public class DriveDistanceCmd extends Command {
   @Override
   public boolean isFinished() {
     // distance is in meters
-
-    return Math.abs(distance - ((driveTrain.leftDistance() + driveTrain.rightDistance()) / 2)) < .2;
+    System.out
+        .println("if dinshes" + Math.abs(distance - ((driveTrain.leftDistance() + driveTrain.rightDistance()) / 2)));
+    return Math.abs(distance - ((driveTrain.leftDistance() + driveTrain.rightDistance()) / 2)) < .13;
   }
 }

@@ -81,6 +81,7 @@ public class RobotContainer {
   public RobotContainer() {
     configureAutonomousCommands();
     configureSmartDashboardCommands();
+    SmartDashboard.putData(arm);
   }
 
   /**
@@ -101,9 +102,9 @@ public class RobotContainer {
   public void configureBindings() {
     //* Default commands */
     driveTrain.setDefaultCommand(
-        new RunCommand(() -> driveTrain.driveArcade(
-            driveController.getLeftY(),
-            driveController.getRightX()),
+        new RunCommand(() -> {
+          driveTrain.driveArcade(-driveController.getLeftY(), driveController.getRightX());
+        },
             driveTrain));
 
     arm.setDefaultCommand(

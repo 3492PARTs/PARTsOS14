@@ -68,7 +68,7 @@ public class Arm extends SubsystemBase {
           this));
 
   public Arm() {
-    ArmConstraints = new TrapezoidProfile.Constraints(Math.toRadians(75), Math.toRadians(82));
+    ArmConstraints = new TrapezoidProfile.Constraints(Math.toRadians(100), Math.toRadians(100));
 
     // ks: overcomes static friction
     // kg: voltage needed to maintain speed

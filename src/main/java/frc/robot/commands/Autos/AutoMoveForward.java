@@ -12,7 +12,8 @@ public class AutoMoveForward extends SequentialCommandGroup {
   /** Creates a new MoveForward.*/
   public AutoMoveForward() {
     // Auto move forward 90 inches.
-    addCommands(new PIDDriveCmd(Units.inchesToMeters(108)));
+    //addCommands(new PIDDriveCmd(Units.inchesToMeters(108)));
+    addCommands(new PIDDriveCmd(Units.inchesToMeters(5)));
     /* 
     addCommands(new ZeroArmCmdSeq(),
         new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),

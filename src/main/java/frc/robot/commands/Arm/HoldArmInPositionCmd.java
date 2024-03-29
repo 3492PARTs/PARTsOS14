@@ -22,10 +22,6 @@ public class HoldArmInPositionCmd extends ProfiledPivotArmCmd {
   public boolean isFinished() {
     // End when the operator wants to move the arm or until the driver wants to end it.
     return Math.abs(RobotContainer.operatorController.getRightY()) > .1 ||
-        RobotContainer.operatorController.a().getAsBoolean() ||
-        RobotContainer.operatorController.b().getAsBoolean() ||
-        RobotContainer.operatorController.x().getAsBoolean() ||
-        RobotContainer.operatorController.y().getAsBoolean() ||
-        RobotContainer.driveController.a().getAsBoolean();
+        RobotContainer.operatorInterrupt();
   }
 }
