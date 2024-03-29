@@ -8,13 +8,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Arm;
 
 @Deprecated
-public class ArmToPositionAutoCmd extends Command {
+public class ArmToAngleCmd extends Command {
   /** Creates a new armToPosition. */
   Arm arm;
   double angle;
   boolean direction;
 
-  public ArmToPositionAutoCmd(double angle) {
+  public ArmToAngleCmd(double angle) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.angle = angle;
     this.arm = Arm.getInstance();
