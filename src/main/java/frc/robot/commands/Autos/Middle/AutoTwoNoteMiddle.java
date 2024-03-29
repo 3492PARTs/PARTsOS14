@@ -37,7 +37,7 @@ public class AutoTwoNoteMiddle extends SequentialCommandGroup {
                                 new ProfiledPivotArmCmd(Constants.Arm.GROUND),
                                 //  turn on intake, and move forward
                                 new ParallelCommandGroup(
-                                                new IntakeCmdSeq(Constants.Intake.INTAKE_SPEED), //.withTimeout(5),
+                                                new IntakeCmdSeq(Constants.Intake.INTAKE_SPEED).withTimeout(5),
                                                 new PIDDriveCmd(Units.inchesToMeters(36))),
                                 // Conditional group, for getting the note or not
                                 new ConditionalCommand(
@@ -46,7 +46,7 @@ public class AutoTwoNoteMiddle extends SequentialCommandGroup {
                                                                 // Pivot up and speed
                                                                 new ParallelRaceGroup(
                                                                                 new ProfiledPivotArmCmd(
-                                                                                                Constants.Arm.SPEAKER),
+                                                                                                Constants.Arm.SPEAKER_BACK_30),
                                                                                 new BangBangShooterCmd(
                                                                                                 Constants.Shooter.WARMUP_SPEAKER_RPM)),
                                                                 // Shoot 
@@ -56,10 +56,11 @@ public class AutoTwoNoteMiddle extends SequentialCommandGroup {
                                                                                 new RunIntakeWhenShooterAtRPMCmd(
                                                                                                 Constants.Shooter.SPEAKER_RPM),
                                                                                 new HoldArmInPositionCmd(
-                                                                                                Constants.Arm.SPEAKER))),
+                                                                                                Constants.Arm.SPEAKER_BACK_30))),
                                                 // does not have note, pivot arm to home
                                                 new ProfiledPivotArmCmd(Constants.Arm.HOME),
                                                 Intake.getInstance().hasNoteSupplier()),
+
                                 // drive to center 
                                 new PIDDriveCmd(Units.inchesToMeters(36))
 

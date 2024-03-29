@@ -223,7 +223,7 @@ public class RobotContainer {
 
     //* Debug Mode Bindings */
     if (Constants.Debug.debugMode) {
-      operatorController.povDown().onTrue(new PivotArmCmdSeq(45));
+      operatorController.povDown().onTrue(new PivotArmCmdSeq(37));
       driveController.x().onTrue(new RunArmToLimitSwitchCmd());
     }
   }
