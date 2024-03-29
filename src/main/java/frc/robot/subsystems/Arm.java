@@ -115,7 +115,7 @@ public class Arm extends SubsystemBase {
 
     double left = alternateLeftEncoder.getPosition();
     double right = alternateRightEncoder.getPosition();
-    return ((left > right ? left : right) * 360) * -1; // CPR * 360 to convert to angle * -1 to flip the angle orientation
+    return ((Math.abs(left) > Math.abs(right) ? left : right) * 360) * -1; // CPR * 360 to convert to angle * -1 to flip the angle orientation
   }
 
   public DoubleSupplier getAngleSupplier() {
@@ -129,7 +129,7 @@ public class Arm extends SubsystemBase {
 
     double left = pivotLeftMotor.getEncoder().getVelocity();
     double right = pivotRightMotor.getEncoder().getVelocity();
-    return 360 * (left > right ? left : right) / (60);
+    return 360 * (Math.abs(left) > Math.abs(right) ? left : right) / (60);
   }
 
   public DoubleSupplier getRotationRateSupplier() {
@@ -193,7 +193,7 @@ public class Arm extends SubsystemBase {
     double left = pivotLeftMotor.getEncoder().getVelocity() / 60;
     double right = pivotLeftMotor.getEncoder().getVelocity() / 60;
 
-    return left > right ? left : right;
+    return Math.abs(left) > Math.abs(right) ? left : right;
   }
 
   @Override
