@@ -44,9 +44,16 @@ public final class Constants {
     public static final double PIVOT_GEAR_RATIO = 234;
     public static final double OPEN_LOOP_RATE = 0.34;
 
+    // PID
     public static final double kP = 30.0;
     public static final double kI = 0.0;
     public static final double kD = 0.0;
+
+    //Feedforward
+    public static final double kS = 0.02204; //0.21092; // .38107
+    public static final double kV = 0.15682;//0.11019; // .10239
+    public static final double kG = 0.65433; //0.02501; // .02501
+    public static final double kA = 0.027191;//0.021335;
 
     public static final double GROUND = 0;
     public static final double SPEAKER = 28.0;

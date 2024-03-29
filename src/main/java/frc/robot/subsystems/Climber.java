@@ -13,8 +13,8 @@ import frc.robot.Constants;
 
 public class Climber extends SubsystemBase {
   /** Creates a new Climber. */
-  CANSparkMax leftClimberMotor;
-  CANSparkMax rightClimberMotor;
+  private static CANSparkMax leftClimberMotor;
+  private static CANSparkMax rightClimberMotor;
 
   private static Climber climberInstance;
 

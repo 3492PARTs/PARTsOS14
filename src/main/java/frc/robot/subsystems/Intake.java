@@ -19,9 +19,9 @@ public class Intake extends SubsystemBase {
 
   private static Intake intakeInstance;
 
-  static TalonSRX intakeMotor;
+  private static TalonSRX intakeMotor;
 
-  DigitalInput photoEye;
+  private static DigitalInput photoEye;
 
   /** Creates a new Intake. */
   public Intake() {

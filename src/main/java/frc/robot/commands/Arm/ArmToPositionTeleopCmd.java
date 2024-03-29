@@ -35,7 +35,7 @@ public class ArmToPositionTeleopCmd extends Command {
     direction = arm.getAngle() > angle;
 
     if (angle == Constants.Arm.GROUND) {
-      Arm.downSpeed = -.35;
+      //Arm.DOWN_SPEED = -.35;
     }
 
     // If above is true, go back up to match set pos. Otherwise continue.

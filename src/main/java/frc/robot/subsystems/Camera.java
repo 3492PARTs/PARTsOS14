@@ -4,7 +4,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Camera extends SubsystemBase {
-    static Camera camInstance;
+    private static Camera camInstance;
 
     public Camera() {
         //? Might cause memory leak on the rio, gonna have to look into it later. -R

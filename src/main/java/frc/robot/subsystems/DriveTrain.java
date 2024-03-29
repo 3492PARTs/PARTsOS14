@@ -15,18 +15,20 @@ import frc.robot.Constants;
 
 public class DriveTrain extends SubsystemBase {
   /** Creates a new DriveTrain. */
-  public static DriveTrain driveTrain;
+  private static DriveTrain driveTrain;
 
   /* Setup the motors. */
-  public static CANSparkMax leftMotorLeader = new CANSparkMax(Constants.Drive.FRONT_LEFT_MOTOR, MotorType.kBrushless);
-  public static CANSparkMax leftMotorFollower = new CANSparkMax(Constants.Drive.BACK_LEFT_MOTOR, MotorType.kBrushless);
+  private static CANSparkMax leftMotorLeader = new CANSparkMax(Constants.Drive.FRONT_LEFT_MOTOR, MotorType.kBrushless);
+  private static CANSparkMax leftMotorFollower = new CANSparkMax(Constants.Drive.BACK_LEFT_MOTOR, MotorType.kBrushless);
 
-  static CANSparkMax rightMotorLeader = new CANSparkMax(Constants.Drive.FRONT_RIGHT_MOTOR, MotorType.kBrushless);
-  static CANSparkMax rightMotorFollower = new CANSparkMax(Constants.Drive.BACK_RIGHT_MOTOR, MotorType.kBrushless);
+  private static CANSparkMax rightMotorLeader = new CANSparkMax(Constants.Drive.FRONT_RIGHT_MOTOR,
+      MotorType.kBrushless);
+  private static CANSparkMax rightMotorFollower = new CANSparkMax(Constants.Drive.BACK_RIGHT_MOTOR,
+      MotorType.kBrushless);
 
-  DifferentialDrive differentialDrive = new DifferentialDrive(leftMotorLeader, rightMotorLeader);
+  private static DifferentialDrive differentialDrive = new DifferentialDrive(leftMotorLeader, rightMotorLeader);
 
-  AHRS gyro;
+  private static AHRS gyro;
 
   public DriveTrain() {
 
@@ -69,15 +71,18 @@ public class DriveTrain extends SubsystemBase {
     differentialDrive.tankDrive(leftMotorSpeed, rightMotorSpeed);
   }
 
-  // (position * wheel diameter * pi) / gear ratio
-  // gear ratio = driven gears / driving gears
   public double rightDistance() {
-    return -Units.inchesToMeters((rightMotorLeader.getEncoder().getPosition() * 3.2 * Math.PI) / 5.87);
+    return computeDistance(rightMotorLeader.getEncoder().getPosition());
   }
-  // 5.87
 
   public double leftDistance() {
-    return -Units.inchesToMeters((leftMotorLeader.getEncoder().getPosition() * 3.2 * Math.PI) / 5.87);
+    return computeDistance(leftMotorLeader.getEncoder().getPosition());
+  }
+
+  private double computeDistance(double encoderPosition) {
+    // (position * wheel diameter * pi) / gear ratio
+    // gear ratio = driven gears / driving gears
+    return -Units.inchesToMeters((encoderPosition * 3.2 * Math.PI) / 5.87);
   }
 
   public void moveVolts(double leftVoltage, double rightVoltage) {
@@ -100,11 +105,9 @@ public class DriveTrain extends SubsystemBase {
 
   public double getMotorVelocity() {
     double left = leftMotorLeader.getEncoder().getVelocity();
+    double right = rightMotorLeader.getEncoder().getVelocity();
 
-    if (left > 0)
-      return left;
-    else
-      return rightMotorLeader.getEncoder().getVelocity();
+    return left > right ? left : right;
   }
 
   public double getGyroAngle() {

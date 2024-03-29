@@ -17,11 +17,10 @@ import frc.robot.Constants;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class Candle extends SubsystemBase {
-    private final CANdle candle;
+    private static Candle candleInstance;
+    private static CANdle candle;
     private final int LED_LENGTH = Constants.LED.LED_LENGTH;
     private Animation animation = null;
-
-    private static Candle candleInstance;
 
     public enum Color {
 

@@ -188,21 +188,16 @@ public class RobotContainer {
     // Run intake out
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
 
-    // Testing
-    if (Constants.Debug.debugMode) {
-      operatorController.povDown().onTrue(new PivotArmCmdSeq(45));
-      driveController.x().onTrue(new RunArmToLimitSwitchCmd());
-    }
-
-    // Manual Functions
+    //* Manual Functions */
     // Shoot out full speed
     operatorController.povUp().whileTrue(new ShootCmd(1));
 
     // Run intake in
     operatorController.povLeft().whileTrue(new RunIntakeCmd(-1));
 
-    //*  Profiled Pivot Functions */
+    //* Arm Controls */
     if (!Constants.Arm.SYSID) {
+      //*  Profiled Pivot Functions */
       // ground
       operatorController.x().onTrue(new PivotArmCmdSeq(Constants.Arm.GROUND));
 
@@ -217,13 +212,18 @@ public class RobotContainer {
       // amp 
       operatorController.a().onTrue(new PivotArmCmdSeq(Constants.Arm.AMP));
 
-    }
-    // SysID
-    else {
+    } else {
+      //* SysID Functions */
       operatorController.a().whileTrue(arm.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kForward));
       operatorController.b().whileTrue(arm.sysIdRoutine.quasistatic(SysIdRoutine.Direction.kReverse));
       operatorController.x().whileTrue(arm.sysIdRoutine.dynamic(SysIdRoutine.Direction.kForward));
       operatorController.y().whileTrue(arm.sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
+    }
+
+    //* Debug Mode Bindings */
+    if (Constants.Debug.debugMode) {
+      operatorController.povDown().onTrue(new PivotArmCmdSeq(45));
+      driveController.x().onTrue(new RunArmToLimitSwitchCmd());
     }
   }
 

@@ -16,8 +16,8 @@ public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   public static TalonSRX shooterLeftMotor;
   public static TalonSRX shooterRightMotor;
-  public final int countsPerRev = 1024;
-  final double shooterWheelRadius = 2.0;
+
+  private final double SHOOTER_WHEEL_RADIUS = 2.0;
 
   public Shooter() {
     // Initialize the motors.
@@ -48,7 +48,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getShooterRPM() {
-    double RPM = -(getVelocity() * (10.0 / 4096) * (2 * Math.PI * shooterWheelRadius));
+    double RPM = -(getVelocity() * (10.0 / 4096) * (2 * Math.PI * SHOOTER_WHEEL_RADIUS));
     return RPM;
   }
 

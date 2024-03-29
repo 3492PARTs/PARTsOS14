@@ -29,40 +29,24 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 
 public class Arm extends SubsystemBase {
-
-  private static Arm armInstance;
   /** Creates a new ArmSubsystem. */
+  private static Arm armInstance;
 
-  static CANSparkMax pivotLeftMotor;
-  static CANSparkMax pivotRightMotor;
-  DigitalInput armLimit = new DigitalInput(Constants.Arm.L_SWITCH_PORT);
+  private static CANSparkMax pivotLeftMotor;
+  private static CANSparkMax pivotRightMotor;
+  private static DigitalInput armLimit = new DigitalInput(Constants.Arm.L_SWITCH_PORT);
 
-  SparkPIDController pivotLeftController;
-  SparkPIDController pivotRightController;
+  public TrapezoidProfile.Constraints ArmConstraints;
 
-  TrapezoidProfile.Constraints ArmConstraints;
-
-  ArmFeedforward armFeedForward;
-
-  double kS = 0.02204; //0.21092; // .38107
-  double kV = 0.15682;//0.11019; // .10239
-  double kG = 0.65433; //0.02501; // .02501
-  double kA = 0.027191;//0.021335;
-
-  double pivotGearRatio = Constants.Arm.PIVOT_GEAR_RATIO;
+  public ArmFeedforward armFeedForward;
 
   // SysID routine  
   private final MutableMeasure<Voltage> m_appliedVoltage = mutable(Volts.of(0));
   private final MutableMeasure<Angle> m_angle = mutable(Rotations.of(0));
   private final MutableMeasure<Velocity<Angle>> m_velocity = mutable(RotationsPerSecond.of(0));
 
-  RelativeEncoder alternateLeftEncoder;
-  RelativeEncoder alternateRightEncoder;
-
-  public static double downSpeed = -.25;
-  public static double upSpeed = .25;
-
-  public boolean armLimitBuffer = false;
+  private static RelativeEncoder alternateLeftEncoder;
+  private static RelativeEncoder alternateRightEncoder;
 
   public SysIdRoutine sysIdRoutine = new SysIdRoutine(
       new SysIdRoutine.Config(),
@@ -89,16 +73,13 @@ public class Arm extends SubsystemBase {
     // ks: overcomes static friction
     // kg: voltage needed to maintain speed
     // kv: voltage needed to accelerate
-    armFeedForward = new ArmFeedforward(kS, kG, kV, kA);
+    armFeedForward = new ArmFeedforward(Constants.Arm.kS, Constants.Arm.kG, Constants.Arm.kV, Constants.Arm.kA);
 
     pivotLeftMotor = new CANSparkMax(Constants.Arm.LEFT_PIVOT_MOTOR, MotorType.kBrushless);
     pivotRightMotor = new CANSparkMax(Constants.Arm.RIGHT_PIVOT_MOTOR, MotorType.kBrushless);
 
     pivotLeftMotor.setInverted(false);
     pivotRightMotor.setInverted(true);
-
-    pivotLeftController = pivotLeftMotor.getPIDController();
-    pivotRightController = pivotRightMotor.getPIDController();
 
     pivotLeftMotor.setIdleMode(IdleMode.kBrake);
     pivotRightMotor.setIdleMode(IdleMode.kBrake);
@@ -131,11 +112,10 @@ public class Arm extends SubsystemBase {
   // Angle calculations
   public double getAngle() {
     // old way using motor encoder return 360 * pivotLeftMotor.getEncoder().getPosition() / pivotGearRatio;
-    return getAlternateEncoderPosition();
-  }
 
-  private double getAlternateEncoderPosition() {
-    return (alternateLeftEncoder.getPosition() * 360) * -1; // CPR * 360 to convert to angle * -1 to flip the angle orientation
+    double left = alternateLeftEncoder.getPosition();
+    double right = alternateRightEncoder.getPosition();
+    return ((left > right ? left : right) * 360) * -1; // CPR * 360 to convert to angle * -1 to flip the angle orientation
   }
 
   public DoubleSupplier getAngleSupplier() {
@@ -145,24 +125,16 @@ public class Arm extends SubsystemBase {
 
   // Rotation calculations
   public double getRotationRate() {
-    //TODO: need to change to this -> return 360 * alternateLeftEncoder.getVelocity() / (60);
-    return 360 * pivotLeftMotor.getEncoder().getVelocity() / (60);
+    //TODO: need to change to alernate encoders
+
+    double left = pivotLeftMotor.getEncoder().getVelocity();
+    double right = pivotRightMotor.getEncoder().getVelocity();
+    return 360 * (left > right ? left : right) / (60);
   }
 
-  public DoubleSupplier getAngularVelocitySupplier() {
+  public DoubleSupplier getRotationRateSupplier() {
     DoubleSupplier s = () -> getRotationRate();
     return s;
-  }
-
-  // Encoder calculations
-  @Deprecated
-  public double rightPivotEncoderPosition() {
-    return pivotRightMotor.getEncoder().getPosition();
-  }
-
-  @Deprecated
-  public double leftPivotEncoderPosition() {
-    return pivotLeftMotor.getEncoder().getPosition();
   }
 
   public void zeroPivotEncoders() {
@@ -197,7 +169,7 @@ public class Arm extends SubsystemBase {
 
   public TrapezoidProfile.State getCurrentState() {
     return new TrapezoidProfile.State(Math.toRadians(getAngle()),
-        Math.toRadians(getAngularVelocitySupplier().getAsDouble()));
+        Math.toRadians(getRotationRateSupplier().getAsDouble()));
   }
 
   // voltage calculations
@@ -216,7 +188,12 @@ public class Arm extends SubsystemBase {
 
   @Deprecated
   public double getRPS() {
-    return ((pivotLeftMotor.getEncoder().getVelocity() / 60) + (pivotLeftMotor.getEncoder().getVelocity() / 60)) / 2;
+    //TODO: Replace with alternate encoder
+
+    double left = pivotLeftMotor.getEncoder().getVelocity() / 60;
+    double right = pivotLeftMotor.getEncoder().getVelocity() / 60;
+
+    return left > right ? left : right;
   }
 
   @Override

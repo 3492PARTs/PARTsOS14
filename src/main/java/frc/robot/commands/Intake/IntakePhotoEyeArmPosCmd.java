@@ -14,6 +14,7 @@ import frc.robot.subsystems.Intake;
  * private method.
  * @see #IntakeArmPositionCmdSeq
  */
+@Deprecated
 public class IntakePhotoEyeArmPosCmd extends RunIntakePhotoEyeCmd {
   /** Creates a new RunIntakePhotoEyeCommand. */
   double speed;
