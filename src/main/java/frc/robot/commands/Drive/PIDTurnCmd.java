@@ -34,7 +34,7 @@ public class PIDTurnCmd extends Command {
     rotPIDController.reset();
     initialAngle = driveTrain.getGyroAngle();
 
-    rotPIDController.setTolerance(2.2);
+    rotPIDController.setTolerance(4);
     rotPIDController.setSetpoint(setPoint);
     rotPIDController.setIntegratorRange(-1, 1);
   }
@@ -63,6 +63,9 @@ public class PIDTurnCmd extends Command {
   @Override
   public boolean isFinished() {
     System.out.println("turn finsihes" + System.currentTimeMillis());
-    return rotPIDController.atSetpoint() && Math.abs(driveTrain.getMotorVelocity()) < .01;
+    SmartDashboard.putBoolean("setpoint", rotPIDController.atSetpoint());
+    SmartDashboard.putNumber("motor velocity", Math.abs(driveTrain.getMotorVelocity()));
+
+    return rotPIDController.atSetpoint() && Math.abs(driveTrain.getMotorVelocity()) < .02;
   }
 }

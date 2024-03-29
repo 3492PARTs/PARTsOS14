@@ -59,6 +59,6 @@ public class DriveDistanceCmd extends Command {
     // distance is in meters
     System.out
         .println("if dinshes" + Math.abs(distance - ((driveTrain.leftDistance() + driveTrain.rightDistance()) / 2)));
-    return Math.abs(distance - ((driveTrain.leftDistance() + driveTrain.rightDistance()) / 2)) < .13;
+    return Math.abs(distance - ((driveTrain.leftDistance() + driveTrain.rightDistance()) / 2)) < .025; //.13;
   }
 }

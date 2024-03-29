@@ -13,6 +13,7 @@ import frc.robot.Constants;
 import frc.robot.commands.Arm.HoldArmInPositionCmd;
 import frc.robot.commands.Arm.ProfiledPivotArmCmd;
 import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
+import frc.robot.commands.Drive.DriveDistanceCmd;
 import frc.robot.commands.Drive.PIDDriveCmd;
 import frc.robot.commands.Intake.RunIntakePhotoEyeCmd;
 import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
@@ -38,7 +39,7 @@ public class AutoTwoNoteMiddle extends SequentialCommandGroup {
                                 //  turn on intake, and move forward
                                 new ParallelCommandGroup(
                                                 new IntakeCmdSeq(Constants.Intake.INTAKE_SPEED).withTimeout(5),
-                                                new PIDDriveCmd(Units.inchesToMeters(36))),
+                                                new DriveDistanceCmd(Units.inchesToMeters(36))),
                                 // Conditional group, for getting the note or not
                                 new ConditionalCommand(
                                                 // has note
@@ -60,9 +61,8 @@ public class AutoTwoNoteMiddle extends SequentialCommandGroup {
                                                 // does not have note, pivot arm to home
                                                 new ProfiledPivotArmCmd(Constants.Arm.HOME),
                                                 Intake.getInstance().hasNoteSupplier()),
-
                                 // drive to center 
-                                new PIDDriveCmd(Units.inchesToMeters(36))
+                                new DriveDistanceCmd(Units.inchesToMeters(36))
 
                 );
         }
