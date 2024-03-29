@@ -16,6 +16,7 @@ import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
 import frc.robot.commands.Drive.PIDDriveCmd;
 import frc.robot.commands.Intake.RunIntakePhotoEyeCmd;
 import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
+import frc.robot.commands.Intake.Sequences.IntakeCmdSeq;
 import frc.robot.commands.Shooter.BangBangShooterCmd;
 import frc.robot.subsystems.Intake;
 
@@ -32,16 +33,18 @@ public class AutoTwoNoteMiddle extends SequentialCommandGroup {
                                                 new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new HoldArmInPositionCmd(Constants.Arm.SPEAKER)),
-                                // Move arm to ground, turn on intake, and move forward
-                                new ParallelCommandGroup(new ProfiledPivotArmCmd(Constants.Arm.GROUND),
-                                                new RunIntakePhotoEyeCmd(Constants.Intake.INTAKE_SPEED).withTimeout(5),
+                                //Move arm to ground
+                                new ProfiledPivotArmCmd(Constants.Arm.GROUND),
+                                //  turn on intake, and move forward
+                                new ParallelCommandGroup(
+                                                new IntakeCmdSeq(Constants.Intake.INTAKE_SPEED), //.withTimeout(5),
                                                 new PIDDriveCmd(Units.inchesToMeters(36))),
                                 // Conditional group, for getting the note or not
                                 new ConditionalCommand(
                                                 // has note
                                                 new SequentialCommandGroup(
                                                                 // Pivot up and speed
-                                                                new ParallelCommandGroup(
+                                                                new ParallelRaceGroup(
                                                                                 new ProfiledPivotArmCmd(
                                                                                                 Constants.Arm.SPEAKER),
                                                                                 new BangBangShooterCmd(
@@ -56,9 +59,7 @@ public class AutoTwoNoteMiddle extends SequentialCommandGroup {
                                                                                                 Constants.Arm.SPEAKER))),
                                                 // does not have note, pivot arm to home
                                                 new ProfiledPivotArmCmd(Constants.Arm.HOME),
-                                                () -> {
-                                                        return Intake.getInstance().hasNote();
-                                                }),
+                                                Intake.getInstance().hasNoteSupplier()),
                                 // drive to center 
                                 new PIDDriveCmd(Units.inchesToMeters(36))
 

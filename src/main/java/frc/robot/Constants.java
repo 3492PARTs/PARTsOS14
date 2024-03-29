@@ -82,7 +82,7 @@ public final class Constants {
     public static final int RIGHT_MOTOR = 12;
     public static final double TOLERANCE = 0;
     public static final double LIMITER = 0.25;
-    public static final int SPEAKER_RPM = 1550;
+    public static final int SPEAKER_RPM = 800; //1550;
     public static final int WARMUP_SPEAKER_RPM = 700;
     public static final int AMP_RPM = 300;
   }

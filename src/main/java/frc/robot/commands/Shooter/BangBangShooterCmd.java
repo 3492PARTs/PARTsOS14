@@ -52,6 +52,9 @@ public class BangBangShooterCmd extends Command {
   public void end(boolean interrupted) {
     // Stop dem motor !!!
     shooter.runShooter(0);
+    Shooter.shooterLeftMotor.setNeutralMode(NeutralMode.Brake);
+    Shooter.shooterRightMotor.setNeutralMode(NeutralMode.Brake);
+
   }
 
   // Returns true when the command should end.

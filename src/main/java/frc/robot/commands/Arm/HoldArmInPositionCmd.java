@@ -20,6 +20,7 @@ public class HoldArmInPositionCmd extends ProfiledPivotArmCmd {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    System.out.println("Holding arm in pos " + System.currentTimeMillis());
     // End when the operator wants to move the arm or until the driver wants to end it.
     return Math.abs(RobotContainer.operatorController.getRightY()) > .1 ||
         RobotContainer.operatorController.a().getAsBoolean() ||

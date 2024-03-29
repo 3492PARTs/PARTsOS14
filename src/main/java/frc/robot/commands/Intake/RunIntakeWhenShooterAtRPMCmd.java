@@ -46,9 +46,6 @@ public class RunIntakeWhenShooterAtRPMCmd extends Command {
     if (shooter.getShooterRPM() >= RPM) {
       intake.runIntake(-.9);
     }
-
-    System.out.println(startTime);
-
   }
 
   // Called once the command ends or is interrupted.

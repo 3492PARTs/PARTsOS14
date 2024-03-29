@@ -48,7 +48,7 @@ public class PIDTurnCmd extends Command {
 
     driveTrain.moveVolts(-volts, volts);
     SmartDashboard.putNumber("PID Turn", volts);
-    System.out.println("running");
+    //System.out.println("running");
 
   }
 
@@ -56,7 +56,7 @@ public class PIDTurnCmd extends Command {
   @Override
   public void end(boolean interrupted) {
     driveTrain.driveTank(0, 0);
-    System.out.println("end");
+    //System.out.println("end");
   }
 
   // Returns true when the command should end.

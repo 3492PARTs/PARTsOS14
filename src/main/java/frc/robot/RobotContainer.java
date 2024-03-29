@@ -21,6 +21,7 @@ import frc.robot.commands.Autos.Middle.AutoTwoNoteMiddle;
 import frc.robot.commands.Intake.RunIntakeCmd;
 import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
 import frc.robot.commands.Intake.Sequences.IntakeArmPositionCmdSeq;
+import frc.robot.commands.Intake.Sequences.IntakeCmdSeq;
 import frc.robot.commands.Shooter.BangBangShooterCmd;
 import frc.robot.commands.Shooter.ShootCmd;
 import frc.robot.subsystems.Arm;
@@ -252,7 +253,7 @@ public class RobotContainer {
   public void removeBindings() {
     arm.removeDefaultCommand();
     driveTrain.removeDefaultCommand();
-    zeroPivotTrigger.onTrue(null);
+    //zeroPivotTrigger.onTrue(null);
   }
 
   public void configureSmartDashboardCommands() {
@@ -265,6 +266,8 @@ public class RobotContainer {
   public void updateSmartDashboard() {
     // Shooter
     SmartDashboard.putNumber("Shooter RPM", shooter.getShooterRPM());
+    SmartDashboard.putNumber("Shooter Left Velocity", shooter.getLeftVelocity());
+    SmartDashboard.putNumber("Shooter Right Velocity", shooter.getRightVelocity());
 
     // PhotoEye
     SmartDashboard.putBoolean("HAS NOTE", intake.hasNote());

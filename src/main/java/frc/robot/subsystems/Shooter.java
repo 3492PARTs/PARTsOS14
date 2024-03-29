@@ -58,6 +58,16 @@ public class Shooter extends SubsystemBase {
     return Math.abs(left) > Math.abs(right) ? left : right;
   }
 
+  public double getLeftVelocity() {
+    double left = shooterLeftMotor.getSelectedSensorVelocity();
+    return left;
+  }
+
+  public double getRightVelocity() {
+    double right = shooterRightMotor.getSelectedSensorVelocity();
+    return right;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

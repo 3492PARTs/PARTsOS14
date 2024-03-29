@@ -107,7 +107,7 @@ public class DriveTrain extends SubsystemBase {
     double left = leftMotorLeader.getEncoder().getVelocity();
     double right = rightMotorLeader.getEncoder().getVelocity();
 
-    return left > right ? left : right;
+    return Math.abs(left) > Math.abs(right) ? left : right;
   }
 
   public double getGyroAngle() {
