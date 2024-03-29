@@ -22,7 +22,6 @@ import frc.robot.subsystems.Intake;
 public class AutoTwoNoteMiddle extends SequentialCommandGroup {
         /** Creates a new AutoTwoNoteMiddlePos. */
         public AutoTwoNoteMiddle() {
-                int red = 1;
                 addCommands(new ZeroArmCmdSeq(),
                                 // Move arm to angle and warm up shooter
                                 new ParallelRaceGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),

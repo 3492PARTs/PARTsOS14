@@ -18,8 +18,6 @@ package frc.robot;
  */
 public final class Constants {
 
-  public static boolean TESTING = true;
-
   /** Drive Constants */
   public static final class Drive {
     public static final int FRONT_RIGHT_MOTOR = 6;

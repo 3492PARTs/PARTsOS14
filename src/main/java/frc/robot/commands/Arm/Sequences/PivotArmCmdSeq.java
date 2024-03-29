@@ -4,11 +4,9 @@
 
 package frc.robot.commands.Arm.Sequences;
 
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.commands.Arm.ProfiledPivotArmCmd;
-import frc.robot.commands.Intake.IntakePhotoEyeArmPosCmd;
 import frc.robot.commands.Intake.Sequences.IntakeArmPositionCmdSeq;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more

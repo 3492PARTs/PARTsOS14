@@ -18,8 +18,6 @@ import frc.robot.commands.Autos.EmptySide.AutoOneNoteEmptySide;
 import frc.robot.commands.Autos.EmptySide.AutoTwoNoteEmptySide;
 import frc.robot.commands.Autos.Middle.AutoOneNoteMiddle;
 import frc.robot.commands.Autos.Middle.AutoTwoNoteMiddle;
-import frc.robot.commands.Climber.RunClimberCmd;
-import frc.robot.commands.Intake.IntakePhotoEyeArmPosCmd;
 import frc.robot.commands.Intake.RunIntakeCmd;
 import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
 import frc.robot.commands.Intake.Sequences.IntakeArmPositionCmdSeq;
@@ -99,16 +97,12 @@ public class RobotContainer {
    */
 
   public void configureBindings() {
-
     //* Default commands */
     driveTrain.setDefaultCommand(
         new RunCommand(() -> driveTrain.driveArcade(
             driveController.getLeftY(),
             driveController.getRightX()),
             driveTrain));
-
-    //TODO: I found a way to remove default below test it
-    zeroPivotTrigger.onTrue(Commands.waitSeconds(.2).andThen(new ZeroPivotEncodersCmd()));
 
     arm.setDefaultCommand(
         new RunCommand(() -> {
@@ -138,7 +132,6 @@ public class RobotContainer {
           else {
             arm.setSpeed(0);
             if (arm.getAngle() > 2) {
-              //TODO: Verify no issues. but i believe this is a better way to schedule commands.
               //if (Math.abs(arm.getRotationRate()) < 5)
               CommandScheduler.getInstance().schedule(new HoldArmInPositionCmd(arm.getAngle()));
 
@@ -167,12 +160,15 @@ public class RobotContainer {
         },
             climber));
 
+    zeroPivotTrigger.onTrue(Commands.waitSeconds(.2).andThen(new ZeroPivotEncodersCmd()));
+
+    //* Button Binding commands */
     operatorController.povRight().onTrue(Commands.runOnce(() -> {
       climbMode = !climbMode;
       System.out.println("climb mode " + climbMode);
     }));
 
-    // Shooting Functions
+    //* Shooting Functions */
     // Speaker
     operatorController.rightTrigger(.1)
         .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
@@ -184,18 +180,16 @@ public class RobotContainer {
         .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.AMP_RPM),
             new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.AMP_RPM)));
 
-    // Intake Functions
-    // Run intake until note detected, send to home after. 
+    //* Intake Functions */
+    // Run intake in until note detected, send to home after. 
     operatorController.leftTrigger(.1)
-        .onTrue(new IntakePhotoEyeArmPosCmd(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME));
-
-    //TODO: Verify this is a better way. operatorController.leftTrigger(.1).onTrue(new IntakeArmPositionCmdSeq(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME));
+        .onTrue(new IntakeArmPositionCmdSeq(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME));
 
     // Run intake out
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
 
     // Testing
-    if (Constants.TESTING) {
+    if (Constants.Debug.debugMode) {
       operatorController.povDown().onTrue(new PivotArmCmdSeq(45));
       driveController.x().onTrue(new RunArmToLimitSwitchCmd());
     }
@@ -262,7 +256,7 @@ public class RobotContainer {
   }
 
   public void configureSmartDashboardCommands() {
-    if (Constants.TESTING) {
+    if (Constants.Debug.debugMode) {
       // Zero Pivot Command
       SmartDashboard.putData("Zero Arm Sequence", new ZeroArmCmdSeq());
     }
@@ -281,7 +275,7 @@ public class RobotContainer {
     // Arm Angle
     SmartDashboard.putNumber("Arm Angle", arm.getAngle());
 
-    if (Constants.TESTING) {
+    if (Constants.Debug.debugMode) {
       // Drive
       SmartDashboard.putNumber("Left Drive Distance", driveTrain.leftDistance());
       SmartDashboard.putNumber("Right Drive Distance", driveTrain.rightDistance());
@@ -312,7 +306,7 @@ public class RobotContainer {
     autoChooser.addOption("BLUE: Two Note Amp Side", new AutoTwoNoteAmpSide(-1));
     autoChooser.addOption("BLUE: Two Note Empty Side", new AutoTwoNoteEmptySide(-1));
 
-    if (Constants.TESTING) {
+    if (Constants.Debug.debugMode) {
       autoChooser.addOption("Test turn with color, red -> right, blue -> left", new StartAutoCmd());
     }
   }

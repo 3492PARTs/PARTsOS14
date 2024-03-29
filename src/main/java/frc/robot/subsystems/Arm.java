@@ -10,7 +10,6 @@ import com.revrobotics.SparkPIDController;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
-import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.controller.ArmFeedforward;
@@ -19,7 +18,6 @@ import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.MutableMeasure;
 import edu.wpi.first.units.Velocity;
 import edu.wpi.first.units.Voltage;
-import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -86,8 +84,6 @@ public class Arm extends SubsystemBase {
           this));
 
   public Arm() {
-
-    // TODO: change angdeg higher later (faster the better)
     ArmConstraints = new TrapezoidProfile.Constraints(Math.toRadians(75), Math.toRadians(82));
 
     // ks: overcomes static friction
@@ -122,9 +118,7 @@ public class Arm extends SubsystemBase {
     return armInstance;
   }
 
-  // Setting calculations
   public void setSpeed(double speed) {
-    // speed = Math.abs(speed) > 0.1 ? speed : 0;
     pivotLeftMotor.set(speed);
     pivotRightMotor.set(speed);
   }
@@ -134,26 +128,14 @@ public class Arm extends SubsystemBase {
     pivotRightMotor.setVoltage(volts);
   }
 
-  /* 
-  public void setPivotPoint(double position) {
-    pivotLeftController.setReference(position, ControlType.kPosition);
-    pivotRightController.setReference(position, ControlType.kPosition);
-  }
-  */
-
   // Angle calculations
   public double getAngle() {
-    //return 360 * pivotLeftMotor.getEncoder().getPosition() / pivotGearRatio;
+    // old way using motor encoder return 360 * pivotLeftMotor.getEncoder().getPosition() / pivotGearRatio;
     return getAlternateEncoderPosition();
   }
 
   private double getAlternateEncoderPosition() {
-    //return alternateLeftEncoder.getPosition();
-    return (alternateLeftEncoder.getPosition() * 360) * -1;
-  }
-
-  private double getAlternateEncoderCPR() {
-    return alternateLeftEncoder.getCountsPerRevolution();
+    return (alternateLeftEncoder.getPosition() * 360) * -1; // CPR * 360 to convert to angle * -1 to flip the angle orientation
   }
 
   public DoubleSupplier getAngleSupplier() {
@@ -163,7 +145,7 @@ public class Arm extends SubsystemBase {
 
   // Rotation calculations
   public double getRotationRate() {
-    //TODO: return 360 * alternateLeftEncoder.getVelocity() / (60);
+    //TODO: need to change to this -> return 360 * alternateLeftEncoder.getVelocity() / (60);
     return 360 * pivotLeftMotor.getEncoder().getVelocity() / (60);
   }
 

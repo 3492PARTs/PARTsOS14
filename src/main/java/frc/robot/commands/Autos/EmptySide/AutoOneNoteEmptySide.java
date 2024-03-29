@@ -8,15 +8,11 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
-import frc.robot.commands.Arm.ArmToPositionAutoCmd;
 import frc.robot.commands.Arm.HoldArmInPositionCmd;
 import frc.robot.commands.Arm.ProfiledPivotArmCmd;
 import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
-import frc.robot.commands.Drive.DriveAngleCmd;
-import frc.robot.commands.Drive.DriveDistanceCmd;
 import frc.robot.commands.Drive.PIDDriveCmd;
 import frc.robot.commands.Drive.PIDTurnCmd;
-import frc.robot.commands.Drive.StopDriveMotorsCmd;
 import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
 import frc.robot.commands.Shooter.BangBangShooterCmd;
 
@@ -38,14 +34,14 @@ public class AutoOneNoteEmptySide extends SequentialCommandGroup {
     }
     */
     addCommands(new ZeroArmCmdSeq(),
-            //Move arm to angle and warm up shooter
-            new ParallelRaceGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
-                            new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM)),
-            // Shoot
-            new ParallelRaceGroup(
-                            new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
-                            new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
-                            new HoldArmInPositionCmd(Constants.Arm.SPEAKER)),
+        //Move arm to angle and warm up shooter
+        new ParallelRaceGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
+            new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM)),
+        // Shoot
+        new ParallelRaceGroup(
+            new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
+            new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
+            new HoldArmInPositionCmd(Constants.Arm.SPEAKER)),
         //drive at an angle
         new PIDDriveCmd(Units.inchesToMeters(163)).withTimeout(2),
         //turn to face forward

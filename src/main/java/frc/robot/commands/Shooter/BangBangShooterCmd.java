@@ -4,7 +4,6 @@
 
 package frc.robot.commands.Shooter;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.math.controller.BangBangController;
