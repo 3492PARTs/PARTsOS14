@@ -85,21 +85,21 @@ public class AutoFourNoteMiddle extends SequentialCommandGroup {
                                 //  turn on intake, and move forward
                                 new ParallelCommandGroup(
                                                 new IntakeCmdSeq(Constants.Intake.INTAKE_SPEED), //.withTimeout(5),
-                                                new DriveDistanceCmd(Units.inchesToMeters(36)))
-                /* 
-                // Turn raise arm and speed up
-                new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM),
-                new ParallelCommandGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
-                new PIDTurnCmd(-45 * red))),
-                // Shoot
-                new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
-                new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
-                new HoldArmInPositionCmd(Constants.Arm.SPEAKER)),
-                // Turn to center and home arm
-                new ParallelCommandGroup(new ProfiledPivotArmCmd(Constants.Arm.HOME),
-                new PIDTurnCmd(45 * red)),
-                // Drive to center
-                new PIDDriveCmd(Units.inchesToMeters(36))*/);
+                                                new DriveDistanceCmd(Units.inchesToMeters(36))),
+
+                                // Turn raise arm and speed up
+                                new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM),
+                                                new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
+                                                new PIDTurnCmd(-70 * red)),
+                                // Shoot
+                                new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
+                                                new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
+                                                new HoldArmInPositionCmd(Constants.Arm.SPEAKER)),
+                                // Turn to center and home arm
+                                new ParallelCommandGroup(new ProfiledPivotArmCmd(Constants.Arm.HOME),
+                                                new PIDTurnCmd(-30 * red)),
+                                // Drive to center
+                                new DriveDistanceCmd(Units.inchesToMeters(156)));
 
         }
 }

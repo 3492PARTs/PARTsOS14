@@ -62,9 +62,12 @@ public class PIDTurnCmd extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    //
+
     System.out.println("turn finsihes" + System.currentTimeMillis());
     SmartDashboard.putBoolean("setpoint", rotPIDController.atSetpoint());
     SmartDashboard.putNumber("motor velocity", Math.abs(driveTrain.getMotorVelocity()));
+    SmartDashboard.putBoolean("motor velocity thres", Math.abs(driveTrain.getMotorVelocity()) < .02);
 
     return rotPIDController.atSetpoint() && Math.abs(driveTrain.getMotorVelocity()) < .02;
   }

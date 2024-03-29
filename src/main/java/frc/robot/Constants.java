@@ -26,14 +26,14 @@ public final class Constants {
     public static final int FRONT_LEFT_MOTOR = 3;
     public static final int BACK_LEFT_MOTOR = 2;
 
-    public static final double OPEN_LOOP_RATE = 0.8;
+    public static final double OPEN_LOOP_RATE = 0.7;
     public static final double kP = 8.2;
     public static final double kI = 0.1;
     public static final double kD = 0.6;
 
-    public static final double turning_kP = 0.07;
-    public static final double turning_kI = 0.013;
-    public static final double turning_kD = 0.01;
+    public static final double turning_kP = .073;//0.07;
+    public static final double turning_kI = 0.0;//0.013;
+    public static final double turning_kD = 0.0;//0.01;
   }
 
   /** Arm Constants */

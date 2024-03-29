@@ -15,6 +15,6 @@ public class AutoTurn extends SequentialCommandGroup {
   public AutoTurn() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new PIDTurnCmd(45));
+    addCommands(new PIDTurnCmd(90));
   }
 }
