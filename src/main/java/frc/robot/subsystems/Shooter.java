@@ -54,11 +54,9 @@ public class Shooter extends SubsystemBase {
 
   public double getVelocity() {
     double left = shooterLeftMotor.getSelectedSensorVelocity();
+    double right = shooterLeftMotor.getSelectedSensorVelocity();
 
-    if (left > 0) {
-      return left;
-    } else
-      return shooterRightMotor.getSelectedSensorVelocity();
+    return left > right ? left : right;
   }
 
   @Override

@@ -207,14 +207,13 @@ public class RobotContainer {
     // Run intake in
     operatorController.povLeft().whileTrue(new RunIntakeCmd(-1));
 
+    //*  Profiled Pivot Functions */
     if (!Constants.Arm.SYSID) {
-      // Profiled Pivot Functions
       // ground
       operatorController.x().onTrue(new PivotArmCmdSeq(Constants.Arm.GROUND));
 
       //speaker
       operatorController.y().onTrue(Commands.runOnce(() -> {
-        //TODO: Verify no issues calling new way new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM).schedule();
         CommandScheduler.getInstance().schedule(new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM));
       }).andThen(new PivotArmCmdSeq(Constants.Arm.SPEAKER)));
 

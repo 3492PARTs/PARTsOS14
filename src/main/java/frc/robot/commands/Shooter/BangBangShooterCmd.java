@@ -19,21 +19,6 @@ public class BangBangShooterCmd extends Command {
   private BangBangController bbController = new BangBangController(Constants.Shooter.TOLERANCE);
   private long time = 0;
 
-  public void runShooterBB(double setpoint) {
-    // BB calcs 0...1 speed, limiter caps it at 75% for now. Change in Constants if needed.
-    Shooter.shooterLeftMotor.set(ControlMode.PercentOutput, calcBB(setpoint));
-    Shooter.shooterRightMotor.set(ControlMode.PercentOutput, calcBB(setpoint));
-  }
-
-  double calcBB(double setpoint) {
-    if (bbController.calculate(Shooter.getInstance().getShooterRPM(), setpoint) != 0) {
-      return bbController.calculate(Shooter.getInstance().getShooterRPM(), setpoint) - Constants.Shooter.LIMITER;
-    } else {
-      // Would be zero anyways, so save the cycle.
-      return 0.0;
-    }
-  }
-
   /** Creates a new BangBang. */
   public BangBangShooterCmd(double setpoint) {
     this.shooter = Shooter.getInstance();
@@ -53,16 +38,21 @@ public class BangBangShooterCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    runShooterBB(setpoint);
+    double speed = calcBB(setpoint);
+    shooter.runShooter(speed);
+  }
+
+  double calcBB(double setpoint) {
+    // BB calcs 0...1 speed, limiter caps it at 75% for now. Change in Constants if needed.
+    double speed = bbController.calculate(shooter.getShooterRPM(), setpoint);
+    return speed;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     // Stop dem motor !!!
-    Shooter.shooterLeftMotor.set(ControlMode.PercentOutput, 0);
-    Shooter.shooterRightMotor.set(ControlMode.PercentOutput, 0);
-    runShooterBB(0);
+    shooter.runShooter(0);
   }
 
   // Returns true when the command should end.
