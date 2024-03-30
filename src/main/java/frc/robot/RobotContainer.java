@@ -23,7 +23,7 @@ import frc.robot.commands.Autos.Middle.AutoOneNoteMiddle;
 import frc.robot.commands.Autos.Middle.AutoTwoNoteMiddle;
 import frc.robot.commands.Intake.RunIntakeCmd;
 import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
-import frc.robot.commands.Intake.Sequences.IntakeArmPositionCmdSeq;
+import frc.robot.commands.Intake.Sequences.IntakeArmToPositionCmdSeq;
 import frc.robot.commands.Intake.Sequences.IntakeCmdSeq;
 import frc.robot.commands.Shooter.BangBangShooterCmd;
 import frc.robot.commands.Shooter.ShootCmd;
@@ -198,7 +198,7 @@ public class RobotContainer {
     //* ----------------------------------------------------------------------------------- */
     // Run intake in until note detected, send to home after. 
     operatorController.leftTrigger(.1)
-        .onTrue(new IntakeArmPositionCmdSeq(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME));
+        .onTrue(new IntakeArmToPositionCmdSeq(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME));
 
     // Run intake out
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
