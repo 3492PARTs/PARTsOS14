@@ -5,18 +5,18 @@
 package frc.robot.commands.Arm.Sequences;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.Arm.RunArmToLimitSwitchCmd;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Arm.ZeroPivotEncodersCmd;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ZeroArmCmdSeq extends SequentialCommandGroup {
-  /** Creates a new ZeroArmCmd. */
-  public ZeroArmCmdSeq() {
+public class ZeroPivotEncodersCmdSeq extends SequentialCommandGroup {
+  /** Creates a new ZeroPivotEncodersCmdSeq. */
+  public ZeroPivotEncodersCmdSeq() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new RunArmToLimitSwitchCmd(),
-        new ZeroPivotEncodersCmdSeq());
+    addCommands(new WaitCommand(.3),
+        new ZeroPivotEncodersCmd());
   }
 }

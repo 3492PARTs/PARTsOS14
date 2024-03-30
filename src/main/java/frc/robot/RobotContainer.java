@@ -9,6 +9,7 @@ import frc.robot.commands.Arm.RunArmToLimitSwitchCmd;
 import frc.robot.commands.Arm.ZeroPivotEncodersCmd;
 import frc.robot.commands.Arm.Sequences.PivotArmCmdSeq;
 import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
+import frc.robot.commands.Arm.Sequences.ZeroPivotEncodersCmdSeq;
 import frc.robot.commands.Autos.AutoMoveForward;
 import frc.robot.commands.Autos.AutoTurn;
 import frc.robot.commands.Autos.StartAutoCmd;
@@ -163,7 +164,7 @@ public class RobotContainer {
         },
             climber));
 
-    zeroPivotTrigger.onTrue(Commands.waitSeconds(.2).andThen(new ZeroPivotEncodersCmd()));
+    zeroPivotTrigger.onTrue(new ZeroPivotEncodersCmdSeq());
 
     //* Button Binding commands */
     operatorController.povRight().onTrue(Commands.runOnce(() -> {
