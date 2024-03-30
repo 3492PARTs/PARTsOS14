@@ -54,7 +54,9 @@ public class Candle extends SubsystemBase {
         CANdleConfiguration configAll = new CANdleConfiguration();
         configAll.statusLedOffWhenActive = true;
         configAll.disableWhenLOS = false;
-        configAll.stripType = LEDStripType.RGB;
+        //TODo: See if this fixes the red and green being swapped
+        //configAll.stripType = LEDStripType.RGB;
+        configAll.stripType = LEDStripType.GRB;
         configAll.brightnessScalar = 0.5;
         configAll.vBatOutputMode = VBatOutputMode.Modulated; //TODO: does this do anything?
         candle.configAllSettings(configAll, 100);
