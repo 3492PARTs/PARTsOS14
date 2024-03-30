@@ -362,7 +362,7 @@ public class RobotContainer {
     return autoChooser.getSelected();
   }
 
-  public static boolean operatorInterrupt() {
+  public static boolean operatorButtonInterrupt() {
     return operatorController.leftBumper().getAsBoolean() ||
         operatorController.leftTrigger().getAsBoolean() ||
         operatorController.rightBumper().getAsBoolean() ||
@@ -371,5 +371,9 @@ public class RobotContainer {
         operatorController.b().getAsBoolean() ||
         operatorController.x().getAsBoolean() ||
         operatorController.y().getAsBoolean();
+  }
+
+  public static boolean operatorJoystickInterrupt() {
+    return Math.abs(RobotContainer.operatorController.getRightY()) > .1;
   }
 }

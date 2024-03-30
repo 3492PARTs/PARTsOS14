@@ -54,6 +54,6 @@ public class PIDShootCmd extends PIDCommand {
   @Override
   public boolean isFinished() {
     // stopwatch stops interrupt from happening immediately.
-    return stopWatch.getMilliseconds() > 200 && RobotContainer.operatorInterrupt();
+    return stopWatch.getMilliseconds() > 200 && RobotContainer.operatorButtonInterrupt();
   }
 }
