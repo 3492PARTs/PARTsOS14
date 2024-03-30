@@ -33,6 +33,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Candle.Color;
+import frc.robot.util.Logger;
 import frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -255,25 +256,31 @@ public class RobotContainer {
     //* Note sensor */
     // Has a note turn green
     noteTrigger.onTrue(Commands.runOnce(() -> {
+      Logger.getInstance().logBoolean("Note Trigger", true);
       candle.setColor(Color.GREEN);
     }, candle));
 
     // No note turn blue
     noteTrigger.onFalse(Commands.runOnce(() -> {
+      Logger.getInstance().logBoolean("Note Trigger", false);
       candle.setColor(Color.BLUE);
     }, candle));
 
     //* Arm Limit Switch */
     // Arm on ground, turn orange
     armGroundTrigger.onTrue(Commands.runOnce(() -> {
+      Logger.getInstance().logBoolean("Arm Trigger", true);
       candle.setColor(Color.ORANGE);
     }, candle));
 
     // Arm not on ground, turn default blue,
     // unless we have a note, so it stays the note triggered color
     armGroundTrigger.onFalse(Commands.runOnce(() -> {
-      candle.setColor(Color.BLUE);
-    }, candle).onlyIf(intake.doesNotHaveNoteSupplier()));
+      Logger.getInstance().logBoolean("Arm Trigger", false);
+    }).andThen(
+        Commands.runOnce(() -> {
+          candle.setColor(Color.BLUE);
+        }, candle).onlyIf(intake.doesNotHaveNoteSupplier())));
   }
 
   public void initializeCandleState() {
