@@ -17,10 +17,18 @@ public class StopDriveMotorsCmd extends Command {
     addRequirements(driveTrain);
   }
 
+  @Override
+  public void initialize() {
+  }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     driveTrain.driveArcade(0, 0);
+  }
+
+  @Override
+  public void end(boolean interrupted) {
   }
 
   // Returns true when the command should end.

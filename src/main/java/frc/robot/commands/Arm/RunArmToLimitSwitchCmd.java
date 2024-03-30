@@ -33,8 +33,6 @@ public class RunArmToLimitSwitchCmd extends Command {
   @Override
   public void end(boolean interrupted) {
     arm.setSpeed(0);
-    //arm.zeroPivotEncoders();
-    //new WaitCommand(.2).andThen(new ZeroPivotEncodersCmd()).schedule();
 
   }
 

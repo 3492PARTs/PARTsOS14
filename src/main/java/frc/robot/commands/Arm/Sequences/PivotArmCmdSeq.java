@@ -7,7 +7,7 @@ package frc.robot.commands.Arm.Sequences;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.commands.Arm.ProfiledPivotArmCmd;
-import frc.robot.commands.Intake.Sequences.IntakeArmPositionCmdSeq;
+import frc.robot.commands.Intake.Sequences.IntakeArmToPositionCmdSeq;
 import frc.robot.commands.Intake.Sequences.IntakeCmdSeq;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -19,7 +19,7 @@ public class PivotArmCmdSeq extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(new ProfiledPivotArmCmd(angleSetpoint),
-        new IntakeArmPositionCmdSeq(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME).onlyIf(() -> {
+        new IntakeArmToPositionCmdSeq(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME).onlyIf(() -> {
           return angleSetpoint == Constants.Arm.GROUND;
         }));
   }

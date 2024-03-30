@@ -44,17 +44,21 @@ public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
   }
 
   @Override
+  public void initialize() {
+    super.initialize();
+  }
+
+  @Override
   public void execute() {
     super.execute();
     if (angleSetpoint == Constants.Arm.GROUND && getController().atGoal()) {
-      Arm.getInstance().setSpeed(0.2);
+      Arm.getInstance().setSpeed(0.1);
     }
   }
 
   @Override
   public void end(boolean interrupted) {
     Arm.getInstance().setSpeed(0);
-    // Once arm is on the ground, run the intake to pick up a note.
   }
 
   // Returns true when the command should end.

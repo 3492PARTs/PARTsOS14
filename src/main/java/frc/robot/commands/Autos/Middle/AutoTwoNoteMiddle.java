@@ -44,10 +44,12 @@ public class AutoTwoNoteMiddle extends SequentialCommandGroup {
                                 new ConditionalCommand(
                                                 // has note
                                                 new SequentialCommandGroup(
+                                                                // Drive back to speaker
+                                                                new DriveDistanceCmd(-Units.inchesToMeters(36)),
                                                                 // Pivot up and speed
                                                                 new ParallelRaceGroup(
                                                                                 new ProfiledPivotArmCmd(
-                                                                                                Constants.Arm.SPEAKER_BACK_30),
+                                                                                                Constants.Arm.SPEAKER),
                                                                                 new BangBangShooterCmd(
                                                                                                 Constants.Shooter.WARMUP_SPEAKER_RPM)),
                                                                 // Shoot 
@@ -57,7 +59,9 @@ public class AutoTwoNoteMiddle extends SequentialCommandGroup {
                                                                                 new RunIntakeWhenShooterAtRPMCmd(
                                                                                                 Constants.Shooter.SPEAKER_RPM),
                                                                                 new HoldArmInPositionCmd(
-                                                                                                Constants.Arm.SPEAKER_BACK_30))),
+                                                                                                Constants.Arm.SPEAKER)),
+                                                                // Drive back to where note was
+                                                                new DriveDistanceCmd(Units.inchesToMeters(36))),
                                                 // does not have note, pivot arm to home
                                                 new ProfiledPivotArmCmd(Constants.Arm.HOME),
                                                 Intake.getInstance().hasNoteSupplier()),

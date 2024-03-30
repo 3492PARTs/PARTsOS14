@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -27,6 +29,9 @@ public class Shooter extends SubsystemBase {
     shooterRightMotor.setInverted(true);
     shooterLeftMotor.setInverted(true);
 
+    shooterLeftMotor.setNeutralMode(NeutralMode.Brake);
+    shooterRightMotor.setNeutralMode(NeutralMode.Brake);
+
     shooterRightMotor.configOpenloopRamp(1, 0);
     shooterLeftMotor.configOpenloopRamp(1, 0);
 
@@ -42,9 +47,14 @@ public class Shooter extends SubsystemBase {
     return shooterInstance;
   }
 
-  public void runShooter(double speed) {
+  public void setSpeed(double speed) {
     shooterLeftMotor.set(ControlMode.PercentOutput, speed);
     shooterRightMotor.set(ControlMode.PercentOutput, speed);
+  }
+
+  public void setVelocity(double velocity) {
+    shooterLeftMotor.set(ControlMode.Velocity, velocity);
+    shooterRightMotor.set(ControlMode.Velocity, velocity);
   }
 
   public double getShooterRPM() {

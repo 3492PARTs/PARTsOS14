@@ -11,6 +11,9 @@ import com.ctre.phoenix.led.RainbowAnimation;
 import com.ctre.phoenix.led.SingleFadeAnimation;
 import com.ctre.phoenix.led.StrobeAnimation;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
+import com.ctre.phoenix.led.CANdle.VBatOutputMode;
+import com.ctre.phoenix.led.CANdleConfiguration;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -47,8 +50,17 @@ public class Candle extends SubsystemBase {
     /** Creates a new light. */
     private Candle() {
         candle = new CANdle(Constants.LED.LED_PORT, "rio");
-        candle.configBrightnessScalar(.5);
-        candle.configLEDType(LEDStripType.RGB);
+
+        CANdleConfiguration configAll = new CANdleConfiguration();
+        configAll.statusLedOffWhenActive = true;
+        configAll.disableWhenLOS = false;
+        //TODo: See if this fixes the red and green being swapped
+        //configAll.stripType = LEDStripType.RGB;
+        configAll.stripType = LEDStripType.GRB;
+        configAll.brightnessScalar = 0.5;
+        configAll.vBatOutputMode = VBatOutputMode.Modulated; //TODO: does this do anything?
+        candle.configAllSettings(configAll, 100);
+
         setColor(Color.OFF);
     }
 
@@ -108,6 +120,39 @@ public class Candle extends SubsystemBase {
 
     public void runFadeAnimation(Color color) {
         animation = getFadeAnimation(color);
+    }
+
+    /* Wrappers so we can access the CANdle from the subsystem */
+    public double getVbat() {
+        return candle.getBusVoltage();
+    }
+
+    public double get5V() {
+        return candle.get5VRailVoltage();
+    }
+
+    public double getCurrent() {
+        return candle.getCurrent();
+    }
+
+    public double getTemperature() {
+        return candle.getTemperature();
+    }
+
+    public void configBrightness(double percent) {
+        candle.configBrightnessScalar(percent, 0);
+    }
+
+    public void configLos(boolean disableWhenLos) {
+        candle.configLOSBehavior(disableWhenLos, 0);
+    }
+
+    public void configLedType(LEDStripType type) {
+        candle.configLEDType(type, 0);
+    }
+
+    public void configStatusLedBehavior(boolean offWhenActive) {
+        candle.configStatusLedState(offWhenActive, 0);
     }
 
     @Override

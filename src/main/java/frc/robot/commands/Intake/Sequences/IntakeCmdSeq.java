@@ -18,6 +18,6 @@ public class IntakeCmdSeq extends SequentialCommandGroup {
   public IntakeCmdSeq(double speed) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new RunIntakePhotoEyeCmd(speed), new TimeIntakeCmd(.2, .38));
+    addCommands(new RunIntakePhotoEyeCmd(speed), new OnIntakeExtakeCmdSeq());
   }
 }

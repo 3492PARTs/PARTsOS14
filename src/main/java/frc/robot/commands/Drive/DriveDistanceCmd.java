@@ -8,17 +8,11 @@ import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-@Deprecated
 public class DriveDistanceCmd extends Command {
   double distance; // meters
   DriveTrain driveTrain;
   boolean direction;
 
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
   public DriveDistanceCmd(double distance) {
     driveTrain = DriveTrain.getInstance();
     this.distance = distance;
@@ -48,8 +42,6 @@ public class DriveDistanceCmd extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.out.println("end" + interrupted);
-    System.out.println(Math.abs(distance - ((driveTrain.leftDistance() + driveTrain.rightDistance()) / 2)));
     driveTrain.driveArcade(0, 0);
   }
 
@@ -57,8 +49,8 @@ public class DriveDistanceCmd extends Command {
   @Override
   public boolean isFinished() {
     // distance is in meters
-    System.out
-        .println("if dinshes" + Math.abs(distance - ((driveTrain.leftDistance() + driveTrain.rightDistance()) / 2)));
+    // .025 m -> 1 in
+    // .13 m -> 5 in
     return Math.abs(distance - ((driveTrain.leftDistance() + driveTrain.rightDistance()) / 2)) < .025; //.13;
   }
 }

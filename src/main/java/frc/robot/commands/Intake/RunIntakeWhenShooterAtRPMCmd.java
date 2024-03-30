@@ -39,7 +39,7 @@ public class RunIntakeWhenShooterAtRPMCmd extends Command {
     if (intake.hasNote())
       this.startTime = System.currentTimeMillis();
 
-    if (shooter.getShooterRPM() >= 0.8 * RPM) {
+    if (shooter.getShooterRPM() >= 0.9 * RPM) {
       candle.setColor(Color.YELLOW);
     }
 

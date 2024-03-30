@@ -55,7 +55,6 @@ public class DriveAngleCmd extends Command {
   @Override
   public boolean isFinished() {
     // Angle is in meters.
-    //System.out.println(driveTrain.getGyroAngle());
-    return Math.abs(angle) - Math.abs(driveTrain.getGyroAngle()) < .3;
+    return Math.abs(angle - driveTrain.getGyroAngle()) < .3;
   }
 }

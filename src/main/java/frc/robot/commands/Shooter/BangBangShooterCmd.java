@@ -38,7 +38,7 @@ public class BangBangShooterCmd extends Command {
   @Override
   public void execute() {
     double speed = calcBB(setpoint);
-    shooter.runShooter(speed);
+    shooter.setSpeed(speed);
   }
 
   double calcBB(double setpoint) {
@@ -51,7 +51,7 @@ public class BangBangShooterCmd extends Command {
   @Override
   public void end(boolean interrupted) {
     // Stop dem motor !!!
-    shooter.runShooter(0);
+    shooter.setSpeed(0);
     Shooter.shooterLeftMotor.setNeutralMode(NeutralMode.Brake);
     Shooter.shooterRightMotor.setNeutralMode(NeutralMode.Brake);
 
@@ -62,6 +62,6 @@ public class BangBangShooterCmd extends Command {
   public boolean isFinished() {
     // the time part is to keep from false stopping when the command starts
     return System.currentTimeMillis() - time > 300 &&
-        RobotContainer.operatorInterrupt();
+        RobotContainer.operatorButtonInterrupt();
   }
 }

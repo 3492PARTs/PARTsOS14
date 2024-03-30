@@ -4,11 +4,13 @@
 
 package frc.robot;
 
+import frc.robot.commands.NullCmd;
 import frc.robot.commands.Arm.HoldArmInPositionCmd;
 import frc.robot.commands.Arm.RunArmToLimitSwitchCmd;
 import frc.robot.commands.Arm.ZeroPivotEncodersCmd;
 import frc.robot.commands.Arm.Sequences.PivotArmCmdSeq;
 import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
+import frc.robot.commands.Arm.Sequences.ZeroPivotEncodersCmdSeq;
 import frc.robot.commands.Autos.AutoMoveForward;
 import frc.robot.commands.Autos.AutoTurn;
 import frc.robot.commands.Autos.StartAutoCmd;
@@ -21,7 +23,7 @@ import frc.robot.commands.Autos.Middle.AutoOneNoteMiddle;
 import frc.robot.commands.Autos.Middle.AutoTwoNoteMiddle;
 import frc.robot.commands.Intake.RunIntakeCmd;
 import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
-import frc.robot.commands.Intake.Sequences.IntakeArmPositionCmdSeq;
+import frc.robot.commands.Intake.Sequences.IntakeArmToPositionCmdSeq;
 import frc.robot.commands.Intake.Sequences.IntakeCmdSeq;
 import frc.robot.commands.Shooter.BangBangShooterCmd;
 import frc.robot.commands.Shooter.ShootCmd;
@@ -31,6 +33,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Candle.Color;
+import frc.robot.util.Logger;
 import frc.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -100,7 +103,9 @@ public class RobotContainer {
    */
 
   public void configureBindings() {
+    //* ----------------------------------------------------------------------------------- */
     //* Default commands */
+    //* ----------------------------------------------------------------------------------- */
     driveTrain.setDefaultCommand(
         new RunCommand(() -> {
           driveTrain.driveArcade(-driveController.getLeftY(), driveController.getRightX());
@@ -163,15 +168,21 @@ public class RobotContainer {
         },
             climber));
 
-    zeroPivotTrigger.onTrue(Commands.waitSeconds(.2).andThen(new ZeroPivotEncodersCmd()));
+    zeroPivotTrigger.onTrue(new ZeroPivotEncodersCmdSeq());
 
+    //* ----------------------------------------------------------------------------------- */
     //* Button Binding commands */
+    //* ----------------------------------------------------------------------------------- */
+
+    //* Change arm controls to climber controls */
     operatorController.povRight().onTrue(Commands.runOnce(() -> {
       climbMode = !climbMode;
       System.out.println("climb mode " + climbMode);
     }));
 
-    //* Shooting Functions */
+    //* ----------------------------------------------------------------------------------- */
+    //* Shooting commands */
+    //* ----------------------------------------------------------------------------------- */
     // Speaker
     operatorController.rightTrigger(.1)
         .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
@@ -183,22 +194,28 @@ public class RobotContainer {
         .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.AMP_RPM),
             new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.AMP_RPM)));
 
-    //* Intake Functions */
+    //* ----------------------------------------------------------------------------------- */
+    //* Intake commands */
+    //* ----------------------------------------------------------------------------------- */
     // Run intake in until note detected, send to home after. 
     operatorController.leftTrigger(.1)
-        .onTrue(new IntakeArmPositionCmdSeq(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME));
+        .onTrue(new IntakeArmToPositionCmdSeq(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME));
 
     // Run intake out
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
 
-    //* Manual Functions */
+    //* ----------------------------------------------------------------------------------- */
+    //* Manual commands */
+    //* ----------------------------------------------------------------------------------- */
     // Shoot out full speed
     operatorController.povUp().whileTrue(new ShootCmd(1));
 
     // Run intake in
     operatorController.povLeft().whileTrue(new RunIntakeCmd(-1));
 
-    //* Arm Controls */
+    //* ----------------------------------------------------------------------------------- */
+    //* Arm commands */
+    //* ----------------------------------------------------------------------------------- */
     if (!Constants.Arm.SYSID) {
       //*  Profiled Pivot Functions */
       // ground
@@ -206,6 +223,7 @@ public class RobotContainer {
 
       //speaker
       operatorController.y().onTrue(Commands.runOnce(() -> {
+        //Schedule this outside of the command sequence so it stays running after the arm moves.
         CommandScheduler.getInstance().schedule(new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM));
       }).andThen(new PivotArmCmdSeq(Constants.Arm.SPEAKER)));
 
@@ -223,7 +241,9 @@ public class RobotContainer {
       operatorController.y().whileTrue(arm.sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
     }
 
-    //* Debug Mode Bindings */
+    //* ----------------------------------------------------------------------------------- */
+    //* Debug commands */
+    //* ----------------------------------------------------------------------------------- */
     if (Constants.Debug.debugMode) {
       operatorController.povDown().onTrue(new PivotArmCmdSeq(37));
       driveController.x().onTrue(new RunArmToLimitSwitchCmd());
@@ -231,31 +251,51 @@ public class RobotContainer {
   }
 
   public void configureCandleBindings() {
-    candle.setColor(Color.BLUE);
+    candle.runRainbowAnimation();
 
-    // Note sensor
+    //* Note sensor */
+    // Has a note turn green
     noteTrigger.onTrue(Commands.runOnce(() -> {
+      Logger.getInstance().logBoolean("Note Trigger", true);
       candle.setColor(Color.GREEN);
     }, candle));
 
+    // No note turn blue
     noteTrigger.onFalse(Commands.runOnce(() -> {
+      Logger.getInstance().logBoolean("Note Trigger", false);
       candle.setColor(Color.BLUE);
     }, candle));
 
-    // Arm Limit Switch
+    //* Arm Limit Switch */
+    // Arm on ground, turn orange
     armGroundTrigger.onTrue(Commands.runOnce(() -> {
+      Logger.getInstance().logBoolean("Arm Trigger", true);
       candle.setColor(Color.ORANGE);
     }, candle));
 
+    // Arm not on ground, turn default blue,
+    // unless we have a note, so it stays the note triggered color
     armGroundTrigger.onFalse(Commands.runOnce(() -> {
-      candle.setColor(Color.BLUE);
-    }, candle).onlyIf(intake.doesNotHaveNoteSupplier()));
+      Logger.getInstance().logBoolean("Arm Trigger", false);
+    }).andThen(
+        Commands.runOnce(() -> {
+          candle.setColor(Color.BLUE);
+        }, candle).onlyIf(intake.doesNotHaveNoteSupplier())));
+  }
+
+  public void initializeCandleState() {
+    if (intake.hasNote())
+      candle.setColor(Color.GREEN);
+    else if (arm.getLimitSwitch())
+      candle.setColor(Color.ORANGE);
+    else
+      candle.runRainbowAnimation();
   }
 
   public void removeBindings() {
     arm.removeDefaultCommand();
     driveTrain.removeDefaultCommand();
-    //zeroPivotTrigger.onTrue(null);
+    //zeroPivotTrigger.onTrue(new NullCmd()); //idk if this is causing pause in autos or not?
   }
 
   public void configureSmartDashboardCommands() {
@@ -279,6 +319,9 @@ public class RobotContainer {
 
     // Arm Angle
     SmartDashboard.putNumber("Arm Angle", arm.getAngle());
+
+    // Climber or Arm Controls
+    SmartDashboard.putBoolean("Climber control", climbMode);
 
     if (Constants.Debug.debugMode) {
       // Drive
@@ -327,7 +370,7 @@ public class RobotContainer {
     return autoChooser.getSelected();
   }
 
-  public static boolean operatorInterrupt() {
+  public static boolean operatorButtonInterrupt() {
     return operatorController.leftBumper().getAsBoolean() ||
         operatorController.leftTrigger().getAsBoolean() ||
         operatorController.rightBumper().getAsBoolean() ||
@@ -336,5 +379,9 @@ public class RobotContainer {
         operatorController.b().getAsBoolean() ||
         operatorController.x().getAsBoolean() ||
         operatorController.y().getAsBoolean();
+  }
+
+  public static boolean operatorJoystickInterrupt() {
+    return Math.abs(RobotContainer.operatorController.getRightY()) > .1;
   }
 }

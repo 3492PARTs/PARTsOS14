@@ -4,13 +4,18 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.util.Logger;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -41,10 +46,30 @@ public class Robot extends TimedRobot {
     DriveTrain.getInstance().zeroDriveEncoders();
     DriveTrain.getInstance().zeroGyro();
     Camera.getInstance();
+    Logger.getInstance();
 
-    // SysID
-    // DataLogManager.start();
-    // URCL.start();
+    // Set the scheduler to log Shuffleboard events for command initialize, interrupt, finish
+    CommandScheduler.getInstance()
+        .onCommandInitialize(
+            command -> {
+              Logger.getInstance().logString(command.getName(), "Command initialized");
+              Shuffleboard.addEventMarker(
+                  "Command initialized", command.getName(), EventImportance.kNormal);
+            });
+    CommandScheduler.getInstance()
+        .onCommandInterrupt(
+            command -> {
+              Logger.getInstance().logString(command.getName(), "Command interrupted");
+              Shuffleboard.addEventMarker(
+                  "Command interrupted", command.getName(), EventImportance.kNormal);
+            });
+    CommandScheduler.getInstance()
+        .onCommandFinish(
+            command -> {
+              Logger.getInstance().logString(command.getName(), "Command finished");
+              Shuffleboard.addEventMarker(
+                  "Command finished", command.getName(), EventImportance.kNormal);
+            });
   }
 
   /**
@@ -86,6 +111,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_robotContainer.removeBindings();
+    m_robotContainer.initializeCandleState();
 
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
@@ -111,6 +137,7 @@ public class Robot extends TimedRobot {
     }
 
     m_robotContainer.configureBindings();
+    m_robotContainer.initializeCandleState();
   }
 
   /** This function is called periodically during operator control. */
