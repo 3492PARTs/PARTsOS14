@@ -17,6 +17,7 @@ public class RunIntakeWhenShooterAtRPMCmd extends Command {
   Candle candle;
   int RPM;
   long startTime;
+  boolean setCandleBlink = true;
 
   public RunIntakeWhenShooterAtRPMCmd(int RPM) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -39,8 +40,9 @@ public class RunIntakeWhenShooterAtRPMCmd extends Command {
     if (intake.hasNote())
       this.startTime = System.currentTimeMillis();
 
-    if (shooter.getShooterRPM() >= 0.9 * RPM) {
-      candle.setColor(Color.YELLOW);
+    if (setCandleBlink && shooter.getShooterRPM() >= 0.9 * RPM) {
+      candle.runBlinkAnimation(Color.YELLOW);
+      setCandleBlink = false;
     }
 
     if (shooter.getShooterRPM() >= RPM) {
