@@ -9,7 +9,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.util.Logger;
 
 public class PIDDriveCmd extends Command {
   double initialPos;
@@ -29,7 +28,6 @@ public class PIDDriveCmd extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Logger.getInstance().logString(this.getName(), "start");
     driveTrain.zeroDriveEncoders();
     //drivePIDController.reset(); // Remove if this causes errors
     // Calculates average distance.
@@ -54,7 +52,6 @@ public class PIDDriveCmd extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Logger.getInstance().logString(this.getName(), String.format("end, interrupted: %s", interrupted));
     driveTrain.driveTank(0, 0);
   }
 

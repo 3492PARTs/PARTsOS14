@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Shooter;
-import frc.robot.util.Logger;
 
 public class BangBangShooterCmd extends Command {
   private Shooter shooter;
@@ -30,7 +29,6 @@ public class BangBangShooterCmd extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Logger.getInstance().logString(this.getName(), "start");
     Shooter.shooterLeftMotor.setNeutralMode(NeutralMode.Coast);
     Shooter.shooterRightMotor.setNeutralMode(NeutralMode.Coast);
     time = System.currentTimeMillis();
@@ -52,7 +50,6 @@ public class BangBangShooterCmd extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Logger.getInstance().logString(this.getName(), String.format("end, interrupted: %s", interrupted));
     // Stop dem motor !!!
     shooter.setSpeed(0);
     Shooter.shooterLeftMotor.setNeutralMode(NeutralMode.Brake);

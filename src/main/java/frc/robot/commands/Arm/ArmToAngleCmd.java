@@ -6,7 +6,6 @@ package frc.robot.commands.Arm;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Arm;
-import frc.robot.util.Logger;
 
 @Deprecated
 public class ArmToAngleCmd extends Command {
@@ -25,7 +24,6 @@ public class ArmToAngleCmd extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Logger.getInstance().logString(this.getName(), "start");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -43,7 +41,6 @@ public class ArmToAngleCmd extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Logger.getInstance().logString(this.getName(), String.format("end, interrupted: %s", interrupted));
     arm.setSpeed(0);
   }
 

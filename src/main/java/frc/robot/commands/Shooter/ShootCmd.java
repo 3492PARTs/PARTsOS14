@@ -5,7 +5,6 @@ package frc.robot.commands.Shooter;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Shooter;
-import frc.robot.util.Logger;
 
 public class ShootCmd extends Command {
   /** Creates a new Shoot. */
@@ -25,7 +24,6 @@ public class ShootCmd extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Logger.getInstance().logString(this.getName(), "start");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -37,7 +35,6 @@ public class ShootCmd extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Logger.getInstance().logString(this.getName(), String.format("end, interrupted: %s", interrupted));
     shooter.setSpeed(0);
   }
 

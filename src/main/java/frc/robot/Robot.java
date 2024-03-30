@@ -7,6 +7,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -45,6 +47,36 @@ public class Robot extends TimedRobot {
     DriveTrain.getInstance().zeroGyro();
     Camera.getInstance();
     Logger.getInstance();
+
+    // Set the scheduler to log Shuffleboard events for command initialize, interrupt, finish
+    CommandScheduler.getInstance()
+        .onCommandInitialize(
+            command -> {
+              Logger.getInstance().logString(command.getName(), "Command initialized");
+              Shuffleboard.addEventMarker(
+                  "Command initialized", command.getName(), EventImportance.kNormal);
+            });
+    CommandScheduler.getInstance()
+        .onCommandInterrupt(
+            command -> {
+              Logger.getInstance().logString(command.getName(), "Command interrupted");
+              Shuffleboard.addEventMarker(
+                  "Command interrupted", command.getName(), EventImportance.kNormal);
+            });
+    CommandScheduler.getInstance()
+        .onCommandFinish(
+            command -> {
+              Logger.getInstance().logString(command.getName(), "Command finished");
+              Shuffleboard.addEventMarker(
+                  "Command finished", command.getName(), EventImportance.kNormal);
+            });
+    CommandScheduler.getInstance()
+        .onCommandFinish(
+            command -> {
+              Logger.getInstance().logString(command.getName(), "Command finished");
+              Shuffleboard.addEventMarker(
+                  "Command finished", command.getName(), EventImportance.kNormal);
+            });
   }
 
   /**

@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.util.Logger;
 
 public class PIDTurnCmd extends Command {
   /** Creates a new PIDTurn. */
@@ -31,7 +30,6 @@ public class PIDTurnCmd extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Logger.getInstance().logString(this.getName(), "start");
     driveTrain.zeroGyro();
     rotPIDController.reset();
     initialAngle = driveTrain.getGyroAngle();
@@ -55,7 +53,6 @@ public class PIDTurnCmd extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Logger.getInstance().logString(this.getName(), String.format("end, interrupted: %s", interrupted));
     driveTrain.driveTank(0, 0);
   }
 

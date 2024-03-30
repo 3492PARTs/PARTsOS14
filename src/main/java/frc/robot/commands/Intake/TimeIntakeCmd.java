@@ -6,7 +6,6 @@ package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
-import frc.robot.util.Logger;
 
 public class TimeIntakeCmd extends Command {
   /** Creates a new Intake. */
@@ -27,7 +26,6 @@ public class TimeIntakeCmd extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Logger.getInstance().logString(this.getName(), "start");
     startTime = System.currentTimeMillis();
   }
 
@@ -40,7 +38,6 @@ public class TimeIntakeCmd extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Logger.getInstance().logString(this.getName(), String.format("end, interrupted: %s", interrupted));
     intake.runIntake(0);
   }
 

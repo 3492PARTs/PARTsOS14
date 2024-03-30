@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Candle;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-import frc.robot.util.Logger;
 import frc.robot.subsystems.Candle.Color;
 
 public class RunIntakeWhenShooterAtRPMCmd extends Command {
@@ -31,7 +30,6 @@ public class RunIntakeWhenShooterAtRPMCmd extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Logger.getInstance().logString(this.getName(), "start");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -53,7 +51,6 @@ public class RunIntakeWhenShooterAtRPMCmd extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Logger.getInstance().logString(this.getName(), String.format("end, interrupted: %s", interrupted));
     intake.runIntake(0);
   }
 

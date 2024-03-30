@@ -9,7 +9,6 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
-import frc.robot.util.Logger;
 
 public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
 
@@ -47,7 +46,6 @@ public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
   @Override
   public void initialize() {
     super.initialize();
-    Logger.getInstance().logString(this.getName(), "start");
   }
 
   @Override
@@ -60,7 +58,6 @@ public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
 
   @Override
   public void end(boolean interrupted) {
-    Logger.getInstance().logString(this.getName(), String.format("end, interrupted: %s", interrupted));
     Arm.getInstance().setSpeed(0);
   }
 
