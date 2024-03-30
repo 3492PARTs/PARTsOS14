@@ -21,25 +21,7 @@ import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
 import frc.robot.commands.Shooter.BangBangShooterCmd;
 
 public class AutoOneNoteAmpSide extends SequentialCommandGroup {
-
-  int red = 1;
-
-  /** Creates a new AutoOneNoteRightPos.
-   * @param red ?? - Rewrite later.
-  */
   public AutoOneNoteAmpSide(int red) {
-
-    Optional<Alliance> ally = DriverStation.getAlliance();
-
-    // Wrapped if statement to avoid the NoSuchElementException throw.
-    if (ally.isPresent()) {
-      if (ally.get() == Alliance.Red) {
-        red = 1;
-      }
-      if (ally.get() == Alliance.Blue) {
-        red = -1;
-      }
-    }
 
     addCommands(new ZeroArmCmdSeq(),
         // Move arm to angle and warm up shooter

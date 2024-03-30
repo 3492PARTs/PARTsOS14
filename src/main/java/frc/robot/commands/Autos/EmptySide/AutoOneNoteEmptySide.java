@@ -20,19 +20,6 @@ public class AutoOneNoteEmptySide extends SequentialCommandGroup {
   /** Creates a new AutoTwoNoteLeftPos. */
   //? Empty side??
   public AutoOneNoteEmptySide(int red) {
-    /*  
-    int red = 1;
-    Optional<Alliance> ally = DriverStation.getAlliance();
-    
-    if (ally.isPresent()) {
-      if (ally.get() == Alliance.Red) {
-        red = 1;
-      }
-      if (ally.get() == Alliance.Blue) {
-        red = -1;
-      }
-    }
-    */
     addCommands(new ZeroArmCmdSeq(),
         //Move arm to angle and warm up shooter
         new ParallelRaceGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),

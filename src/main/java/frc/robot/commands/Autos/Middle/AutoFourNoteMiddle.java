@@ -14,9 +14,7 @@ import frc.robot.commands.Arm.ProfiledPivotArmCmd;
 import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
 import frc.robot.commands.Drive.DriveAngleCmd;
 import frc.robot.commands.Drive.DriveDistanceCmd;
-import frc.robot.commands.Drive.PIDDriveCmd;
 import frc.robot.commands.Drive.PIDTurnCmd;
-import frc.robot.commands.Intake.RunIntakePhotoEyeCmd;
 import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
 import frc.robot.commands.Intake.Sequences.IntakeCmdSeq;
 import frc.robot.commands.Shooter.BangBangShooterCmd;
@@ -26,10 +24,9 @@ import frc.robot.commands.Shooter.BangBangShooterCmd;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutoFourNoteMiddle extends SequentialCommandGroup {
         /** Creates a new AutoFourNoteMiddlePosition. */
-        public AutoFourNoteMiddle() {
+        public AutoFourNoteMiddle(int red) {
                 // Add your commands in the addCommands() call, e.g.
                 // addCommands(new FooCommand(), new BarCommand());
-                int red = 1;
                 addCommands(new ZeroArmCmdSeq(),
                                 // Move arm to angle and warm up shooter
                                 new ParallelRaceGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
