@@ -102,7 +102,9 @@ public class RobotContainer {
    */
 
   public void configureBindings() {
+    //* ----------------------------------------------------------------------------------- */
     //* Default commands */
+    //* ----------------------------------------------------------------------------------- */
     driveTrain.setDefaultCommand(
         new RunCommand(() -> {
           driveTrain.driveArcade(-driveController.getLeftY(), driveController.getRightX());
@@ -167,13 +169,19 @@ public class RobotContainer {
 
     zeroPivotTrigger.onTrue(new ZeroPivotEncodersCmdSeq());
 
+    //* ----------------------------------------------------------------------------------- */
     //* Button Binding commands */
+    //* ----------------------------------------------------------------------------------- */
+
+    //* Change arm controls to climber controls */
     operatorController.povRight().onTrue(Commands.runOnce(() -> {
       climbMode = !climbMode;
       System.out.println("climb mode " + climbMode);
     }));
 
-    //* Shooting Functions */
+    //* ----------------------------------------------------------------------------------- */
+    //* Shooting commands */
+    //* ----------------------------------------------------------------------------------- */
     // Speaker
     operatorController.rightTrigger(.1)
         .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
@@ -185,7 +193,9 @@ public class RobotContainer {
         .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.AMP_RPM),
             new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.AMP_RPM)));
 
-    //* Intake Functions */
+    //* ----------------------------------------------------------------------------------- */
+    //* Intake commands */
+    //* ----------------------------------------------------------------------------------- */
     // Run intake in until note detected, send to home after. 
     operatorController.leftTrigger(.1)
         .onTrue(new IntakeArmPositionCmdSeq(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME));
@@ -193,14 +203,18 @@ public class RobotContainer {
     // Run intake out
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
 
-    //* Manual Functions */
+    //* ----------------------------------------------------------------------------------- */
+    //* Manual commands */
+    //* ----------------------------------------------------------------------------------- */
     // Shoot out full speed
     operatorController.povUp().whileTrue(new ShootCmd(1));
 
     // Run intake in
     operatorController.povLeft().whileTrue(new RunIntakeCmd(-1));
 
-    //* Arm Controls */
+    //* ----------------------------------------------------------------------------------- */
+    //* Arm commands */
+    //* ----------------------------------------------------------------------------------- */
     if (!Constants.Arm.SYSID) {
       //*  Profiled Pivot Functions */
       // ground
@@ -225,7 +239,9 @@ public class RobotContainer {
       operatorController.y().whileTrue(arm.sysIdRoutine.dynamic(SysIdRoutine.Direction.kReverse));
     }
 
-    //* Debug Mode Bindings */
+    //* ----------------------------------------------------------------------------------- */
+    //* Debug commands */
+    //* ----------------------------------------------------------------------------------- */
     if (Constants.Debug.debugMode) {
       operatorController.povDown().onTrue(new PivotArmCmdSeq(37));
       driveController.x().onTrue(new RunArmToLimitSwitchCmd());
@@ -295,6 +311,9 @@ public class RobotContainer {
 
     // Arm Angle
     SmartDashboard.putNumber("Arm Angle", arm.getAngle());
+
+    // Climber or Arm Controls
+    SmartDashboard.putBoolean("Climber control", climbMode);
 
     if (Constants.Debug.debugMode) {
       // Drive
