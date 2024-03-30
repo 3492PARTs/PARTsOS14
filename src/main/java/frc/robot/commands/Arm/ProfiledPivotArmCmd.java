@@ -6,9 +6,11 @@ package frc.robot.commands.Arm;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Arm;
+import frc.robot.util.Logger;
 
 public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
 
@@ -33,7 +35,12 @@ public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
         (output, setpoint) -> {
 
           double volts = Arm.getInstance().calcOutputVoltage(setpoint.velocity);
-          Arm.getInstance().setVolts(-(volts + output));
+          double finalOutput = -(volts + output);
+
+          if (Arm.getInstance().getLimitSwitch() && finalOutput > 0)
+            Arm.getInstance().setVolts(0);
+          else
+            Arm.getInstance().setVolts(finalOutput);
           // Use the output (and setpoint, if desired) here
         });
     // Use addRequirements() here to declare subsystem dependencies.
@@ -46,13 +53,15 @@ public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
   @Override
   public void initialize() {
     super.initialize();
+    System.out.println("angle setpoint " + angleSetpoint);
   }
 
   @Override
   public void execute() {
     super.execute();
     if (angleSetpoint == Constants.Arm.GROUND && getController().atGoal() && !Arm.getInstance().getLimitSwitch()) {
-      Arm.getInstance().setSpeed(0.1);
+      //Arm.getInstance().setSpeed(0.1);
+      System.out.println("ARM EXTRA BOTTOM");
     }
   }
 
@@ -64,6 +73,8 @@ public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    System.out.println("at goal " + getController().atGoal());
+    System.out.println("arm " + Arm.getInstance().getLimitSwitch());
     if (angleSetpoint == Constants.Arm.GROUND) {
       return Arm.getInstance().getLimitSwitch();
     } else {

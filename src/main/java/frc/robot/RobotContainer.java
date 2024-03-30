@@ -164,7 +164,7 @@ public class RobotContainer {
         },
             climber));
 
-    zeroPivotTrigger.onTrue(new ZeroPivotEncodersCmdSeq());
+    //zeroPivotTrigger.onTrue(new ZeroPivotEncodersCmdSeq());
 
     //* ----------------------------------------------------------------------------------- */
     //* Button Binding commands */

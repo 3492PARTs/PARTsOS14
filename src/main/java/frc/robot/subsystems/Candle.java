@@ -103,6 +103,7 @@ public class Candle extends SubsystemBase {
     }
 
     public SingleFadeAnimation getFadeAnimation(Color color) {
+        //TODO: double fade?
         return new SingleFadeAnimation(color.r, color.g, color.b);
     }
 
