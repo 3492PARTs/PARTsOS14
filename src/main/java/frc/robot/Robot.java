@@ -70,13 +70,6 @@ public class Robot extends TimedRobot {
               Shuffleboard.addEventMarker(
                   "Command finished", command.getName(), EventImportance.kNormal);
             });
-    CommandScheduler.getInstance()
-        .onCommandFinish(
-            command -> {
-              Logger.getInstance().logString(command.getName(), "Command finished");
-              Shuffleboard.addEventMarker(
-                  "Command finished", command.getName(), EventImportance.kNormal);
-            });
   }
 
   /**
