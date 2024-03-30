@@ -9,7 +9,6 @@ import frc.robot.util.Logger;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-@Deprecated
 public class DriveDistanceCmd extends Command {
   double distance; // meters
   DriveTrain driveTrain;
