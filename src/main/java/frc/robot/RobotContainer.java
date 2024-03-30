@@ -247,8 +247,6 @@ public class RobotContainer {
   }
 
   public void configureCandleBindings() {
-    candle.runRainbowAnimation();
-
     //* Note sensor */
     // Has a note turn green
     noteTrigger.onTrue(Commands.runOnce(() -> {
@@ -285,7 +283,7 @@ public class RobotContainer {
     else if (arm.getLimitSwitch())
       candle.setColor(Color.ORANGE);
     else
-      candle.runRainbowAnimation();
+      candle.setColor(Color.BLUE);
   }
 
   public void removeBindings() {

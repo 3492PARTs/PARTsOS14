@@ -12,7 +12,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Camera;
+import frc.robot.subsystems.Candle;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Candle.Color;
 import frc.robot.util.Logger;
 
 /**
@@ -96,6 +98,7 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
+    Candle.getInstance().runFadeAnimation(Color.BLUE);
   }
 
   @Override
