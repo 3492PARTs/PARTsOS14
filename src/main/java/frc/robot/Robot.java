@@ -86,6 +86,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_robotContainer.removeBindings();
+    m_robotContainer.initializeCandleState();
 
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
@@ -111,6 +112,7 @@ public class Robot extends TimedRobot {
     }
 
     m_robotContainer.configureBindings();
+    m_robotContainer.initializeCandleState();
   }
 
   /** This function is called periodically during operator control. */

@@ -24,12 +24,20 @@ public class StopWatch {
     }
 
     /**
+     * Get the time in milliseconds since start, either as of the current time or as of the stop time if set
+     * @return time in milliseconds
+     */
+    public long getMilliseconds() {
+        long time = stopTime > 0 ? time = stopTime : System.currentTimeMillis();
+        return time - startTime;
+    }
+
+    /**
      * Get the time in seconds since start, either as of the current time or as of the stop time if set
      * @return time in seconds
      */
     public double getSeconds() {
-        long time = stopTime > 0 ? time = stopTime : System.currentTimeMillis();
-        return (time - startTime) / 1000.0;
+        return getMilliseconds() / 1000.0;
     }
 
     /**

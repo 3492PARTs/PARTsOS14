@@ -231,25 +231,39 @@ public class RobotContainer {
   }
 
   public void configureCandleBindings() {
-    candle.setColor(Color.BLUE);
+    candle.runRainbowAnimation();
 
-    // Note sensor
+    //* Note sensor */
+    // Has a note turn green
     noteTrigger.onTrue(Commands.runOnce(() -> {
       candle.setColor(Color.GREEN);
     }, candle));
 
+    // No note turn blue
     noteTrigger.onFalse(Commands.runOnce(() -> {
       candle.setColor(Color.BLUE);
     }, candle));
 
-    // Arm Limit Switch
+    //* Arm Limit Switch */
+    // Arm on ground, turn orange
     armGroundTrigger.onTrue(Commands.runOnce(() -> {
       candle.setColor(Color.ORANGE);
     }, candle));
 
+    // Arm not on ground, turn default blue,
+    // unless we have a note, so it stays the note triggered color
     armGroundTrigger.onFalse(Commands.runOnce(() -> {
       candle.setColor(Color.BLUE);
     }, candle).onlyIf(intake.doesNotHaveNoteSupplier()));
+  }
+
+  public void initializeCandleState() {
+    if (intake.hasNote())
+      candle.setColor(Color.GREEN);
+    else if (arm.getLimitSwitch())
+      candle.setColor(Color.ORANGE);
+    else
+      candle.runRainbowAnimation();
   }
 
   public void removeBindings() {
