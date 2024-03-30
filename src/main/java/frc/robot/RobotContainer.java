@@ -316,6 +316,9 @@ public class RobotContainer {
     // Arm Angle
     SmartDashboard.putNumber("Arm Angle", arm.getAngle());
 
+    // Arm Angle
+    SmartDashboard.putNumber("Arm Voltage", arm.getAverageVoltage());
+
     // Climber or Arm Controls
     SmartDashboard.putBoolean("Climber control", climbMode);
 
