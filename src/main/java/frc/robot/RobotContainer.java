@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.commands.NullCmd;
 import frc.robot.commands.Arm.HoldArmInPositionCmd;
 import frc.robot.commands.Arm.RunArmToLimitSwitchCmd;
 import frc.robot.commands.Arm.ZeroPivotEncodersCmd;
@@ -270,7 +271,7 @@ public class RobotContainer {
   public void removeBindings() {
     arm.removeDefaultCommand();
     driveTrain.removeDefaultCommand();
-    //zeroPivotTrigger.onTrue(null);
+    zeroPivotTrigger.onTrue(new NullCmd());
   }
 
   public void configureSmartDashboardCommands() {
