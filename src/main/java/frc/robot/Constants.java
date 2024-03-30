@@ -102,6 +102,7 @@ public final class Constants {
   /** Debug Constants<p>For testingg only.<p>Do not use in prod! */
   public static class Debug {
     public static final boolean debugMode = true;
+    public static final boolean logging = true;
   }
 
 }

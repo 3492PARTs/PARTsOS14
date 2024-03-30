@@ -5,6 +5,7 @@
 package frc.robot.commands.Drive;
 
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.util.Logger;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
@@ -14,11 +15,6 @@ public class DriveDistanceCmd extends Command {
   DriveTrain driveTrain;
   boolean direction;
 
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
   public DriveDistanceCmd(double distance) {
     driveTrain = DriveTrain.getInstance();
     this.distance = distance;
@@ -28,6 +24,7 @@ public class DriveDistanceCmd extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Logger.getInstance().logString(this.getName(), "start");
     driveTrain.zeroDriveEncoders();
   }
 
@@ -48,8 +45,7 @@ public class DriveDistanceCmd extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.out.println("end" + interrupted);
-    System.out.println(Math.abs(distance - ((driveTrain.leftDistance() + driveTrain.rightDistance()) / 2)));
+    Logger.getInstance().logString(this.getName(), String.format("end, interrupted: %s", interrupted));
     driveTrain.driveArcade(0, 0);
   }
 
@@ -57,8 +53,6 @@ public class DriveDistanceCmd extends Command {
   @Override
   public boolean isFinished() {
     // distance is in meters
-    System.out
-        .println("if dinshes" + Math.abs(distance - ((driveTrain.leftDistance() + driveTrain.rightDistance()) / 2)));
     return Math.abs(distance - ((driveTrain.leftDistance() + driveTrain.rightDistance()) / 2)) < .025; //.13;
   }
 }

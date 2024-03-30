@@ -42,9 +42,14 @@ public class Shooter extends SubsystemBase {
     return shooterInstance;
   }
 
-  public void runShooter(double speed) {
+  public void setSpeed(double speed) {
     shooterLeftMotor.set(ControlMode.PercentOutput, speed);
     shooterRightMotor.set(ControlMode.PercentOutput, speed);
+  }
+
+  public void setVelocity(double velocity) {
+    shooterLeftMotor.set(ControlMode.Velocity, velocity);
+    shooterRightMotor.set(ControlMode.Velocity, velocity);
   }
 
   public double getShooterRPM() {

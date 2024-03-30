@@ -5,6 +5,7 @@
 package frc.robot.commands.Drive;
 
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.util.Logger;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
@@ -28,6 +29,7 @@ public class TimeDriveCmd extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Logger.getInstance().logString(this.getName(), "start");
     startTime = System.currentTimeMillis();
   }
 
@@ -40,6 +42,7 @@ public class TimeDriveCmd extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Logger.getInstance().logString(this.getName(), String.format("end, interrupted: %s", interrupted));
     driveTrain.driveArcade(0, 0);
   }
 

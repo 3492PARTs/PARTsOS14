@@ -7,6 +7,7 @@ package frc.robot.commands.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Intake;
+import frc.robot.util.Logger;
 
 public class RunIntakePhotoEyeCmd extends Command {
   /** Creates a new RunIntakePhotoEyeCommand. */
@@ -24,6 +25,7 @@ public class RunIntakePhotoEyeCmd extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Logger.getInstance().logString(this.getName(), "start");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -38,7 +40,7 @@ public class RunIntakePhotoEyeCmd extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //System.out.println("end");
+    Logger.getInstance().logString(this.getName(), String.format("end, interrupted: %s", interrupted));
     intake.runIntake(0);
   }
 
@@ -46,7 +48,6 @@ public class RunIntakePhotoEyeCmd extends Command {
   @Override
   public boolean isFinished() {
     // Must sense note for at least 200ms or operator interrupt
-    //System.out.println("is Finsihed" + System.currentTimeMillis());
     return System.currentTimeMillis() - this.startTime >= 200 ||
         (System.currentTimeMillis() - this.startTime >= 200 && RobotContainer.operatorInterrupt());
   }

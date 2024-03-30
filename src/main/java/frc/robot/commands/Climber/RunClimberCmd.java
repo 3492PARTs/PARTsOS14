@@ -6,6 +6,7 @@ package frc.robot.commands.Climber;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climber;
+import frc.robot.util.Logger;
 
 public class RunClimberCmd extends Command {
   /** Creates a new RunClimberCmd. */
@@ -19,6 +20,7 @@ public class RunClimberCmd extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Logger.getInstance().logString(this.getName(), "start");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -31,6 +33,7 @@ public class RunClimberCmd extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Logger.getInstance().logString(this.getName(), String.format("end, interrupted: %s", interrupted));
     climber.setLeftSpeed(0);
     climber.setRightSpeed(0);
   }

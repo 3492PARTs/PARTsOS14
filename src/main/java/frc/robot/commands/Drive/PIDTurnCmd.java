@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.util.Logger;
 
 public class PIDTurnCmd extends Command {
   /** Creates a new PIDTurn. */
@@ -30,6 +31,7 @@ public class PIDTurnCmd extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Logger.getInstance().logString(this.getName(), "start");
     driveTrain.zeroGyro();
     rotPIDController.reset();
     initialAngle = driveTrain.getGyroAngle();
@@ -47,28 +49,28 @@ public class PIDTurnCmd extends Command {
     volts = MathUtil.clamp(volts, -6, 6);
 
     driveTrain.moveVolts(-volts, volts);
-    SmartDashboard.putNumber("PID Turn", volts);
-    //System.out.println("running");
-
+    //SmartDashboard.putNumber("PID Turn", volts);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Logger.getInstance().logString(this.getName(), String.format("end, interrupted: %s", interrupted));
     driveTrain.driveTank(0, 0);
-    //System.out.println("end");
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //
+    boolean motorVelocityUnderThreshold = Math.abs(driveTrain.getMotorVelocity()) < .02;
 
-    System.out.println("turn finsihes" + System.currentTimeMillis());
-    SmartDashboard.putBoolean("setpoint", rotPIDController.atSetpoint());
-    SmartDashboard.putNumber("motor velocity", Math.abs(driveTrain.getMotorVelocity()));
-    SmartDashboard.putBoolean("motor velocity thres", Math.abs(driveTrain.getMotorVelocity()) < .02);
+    if (Constants.Debug.debugMode) {
+      SmartDashboard.putBoolean(String.format("%s at setpoint", getName()), rotPIDController.atSetpoint());
+      SmartDashboard.putNumber(String.format("%s motor velocity", getName()), Math.abs(driveTrain.getMotorVelocity()));
+      SmartDashboard.putBoolean(String.format("%s motor velocity under threshold", getName()),
+          motorVelocityUnderThreshold);
+    }
 
-    return rotPIDController.atSetpoint() && Math.abs(driveTrain.getMotorVelocity()) < .02;
+    return rotPIDController.atSetpoint() && motorVelocityUnderThreshold;
   }
 }
