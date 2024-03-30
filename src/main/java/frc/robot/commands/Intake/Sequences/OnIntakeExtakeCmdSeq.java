@@ -5,19 +5,16 @@
 package frc.robot.commands.Intake.Sequences;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.Arm.ProfiledPivotArmCmd;
-import frc.robot.commands.Intake.RunIntakePhotoEyeCmd;
 import frc.robot.commands.Intake.TimeIntakeCmd;
-import frc.robot.subsystems.Intake;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class IntakeCmdSeq extends SequentialCommandGroup {
-  /** Creates a new IntakeArmPosCmdSeq. */
-  public IntakeCmdSeq(double speed) {
+public class OnIntakeExtakeCmdSeq extends SequentialCommandGroup {
+  /** Creates a new OnIntakeExtakeCmdSeq. */
+  public OnIntakeExtakeCmdSeq() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new RunIntakePhotoEyeCmd(speed), new OnIntakeExtakeCmdSeq());
+    addCommands(new TimeIntakeCmd(.2, .38));
   }
 }

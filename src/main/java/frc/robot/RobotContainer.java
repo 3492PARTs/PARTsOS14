@@ -222,6 +222,7 @@ public class RobotContainer {
 
       //speaker
       operatorController.y().onTrue(Commands.runOnce(() -> {
+        //Schedule this outside of the command sequence so it stays running after the arm moves.
         CommandScheduler.getInstance().schedule(new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM));
       }).andThen(new PivotArmCmdSeq(Constants.Arm.SPEAKER)));
 
