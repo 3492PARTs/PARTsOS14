@@ -45,7 +45,7 @@ public class AutoTwoNoteMiddle extends SequentialCommandGroup {
                                                 // has note
                                                 new SequentialCommandGroup(
                                                                 // Drive back to speaker
-                                                                new DriveDistanceCmd(-Units.inchesToMeters(36)),
+                                                                new DriveDistanceCmd(-Units.inchesToMeters(-36)),
                                                                 // Pivot up and speed
                                                                 new ParallelRaceGroup(
                                                                                 new ProfiledPivotArmCmd(
