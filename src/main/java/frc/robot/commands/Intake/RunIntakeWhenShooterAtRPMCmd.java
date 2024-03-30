@@ -40,8 +40,8 @@ public class RunIntakeWhenShooterAtRPMCmd extends Command {
     if (intake.hasNote())
       this.startTime = System.currentTimeMillis();
 
-    if (setCandleBlink && shooter.getShooterRPM() >= 0.9 * RPM) {
-      candle.runBlinkAnimation(Color.YELLOW);
+    if (setCandleBlink && shooter.getShooterRPM() >= 0.8 * RPM) {
+      candle.runFadeAnimation(Color.YELLOW);
       setCandleBlink = false;
     }
 

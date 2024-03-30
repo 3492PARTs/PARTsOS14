@@ -56,7 +56,7 @@ public final class Constants {
     public static final double kA = 0.027191;//0.021335;
 
     public static final double GROUND = 0;
-    public static final double SPEAKER = 28.0;
+    public static final double SPEAKER = 25.5;//28.0;
     public static final double HOME = 65.2;
     public static final double AMP = 100;
     public static final double UPPER_BOUND = AMP + 10;

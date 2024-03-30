@@ -164,7 +164,7 @@ public class RobotContainer {
         },
             climber));
 
-    //zeroPivotTrigger.onTrue(new ZeroPivotEncodersCmdSeq());
+    zeroPivotTrigger.onTrue(new ZeroPivotEncodersCmdSeq());
 
     //* ----------------------------------------------------------------------------------- */
     //* Button Binding commands */
@@ -297,6 +297,9 @@ public class RobotContainer {
       // Zero Pivot Command
       SmartDashboard.putData("Zero Arm Sequence", new ZeroArmCmdSeq());
     }
+
+    SmartDashboard.putBoolean("Auto Three Empty", false);
+
   }
 
   public void updateSmartDashboard() {
@@ -327,6 +330,8 @@ public class RobotContainer {
 
       SmartDashboard.putNumber("Gyro Angle", driveTrain.getGyroAngle());
     }
+
+    SmartDashboard.putBoolean("Auto Three Empty Tester", SmartDashboard.getBoolean("Auto Three Empty", false));
 
   }
 

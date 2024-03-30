@@ -60,7 +60,7 @@ public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
   public void execute() {
     super.execute();
     if (angleSetpoint == Constants.Arm.GROUND && getController().atGoal() && !Arm.getInstance().getLimitSwitch()) {
-      //Arm.getInstance().setSpeed(0.1);
+      Arm.getInstance().setSpeed(0.1);
       System.out.println("ARM EXTRA BOTTOM");
     }
   }
