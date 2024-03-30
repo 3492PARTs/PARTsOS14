@@ -271,7 +271,7 @@ public class RobotContainer {
   public void removeBindings() {
     arm.removeDefaultCommand();
     driveTrain.removeDefaultCommand();
-    zeroPivotTrigger.onTrue(new NullCmd());
+    //zeroPivotTrigger.onTrue(new NullCmd());
   }
 
   public void configureSmartDashboardCommands() {
