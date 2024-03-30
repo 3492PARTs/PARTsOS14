@@ -44,10 +44,18 @@ public class PIDTurnCmd extends Command {
   public void execute() {
     // Calculating how much distance covered and how much is left.
     double volts = rotPIDController.calculate(driveTrain.getGyroAngle() - initialAngle);
+
+    if (Math.abs(volts) > 0 && Math.abs(volts) < 1.05) {
+      if (volts > 0) {
+        volts = 1.05;
+      } else {
+        volts = -1.05;
+      }
+    }
     volts = MathUtil.clamp(volts, -6, 6);
 
     driveTrain.moveVolts(-volts, volts);
-    //SmartDashboard.putNumber("PID Turn", volts);
+    SmartDashboard.putNumber("PID Turn", volts);
   }
 
   // Called once the command ends or is interrupted.

@@ -5,10 +5,10 @@
 package frc.robot.commands.Drive;
 
 import frc.robot.subsystems.DriveTrain;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** DriveAngleCmd */
-@Deprecated
 public class DriveAngleCmd extends Command {
   double angle; // In meters.
   DriveTrain driveTrain;
@@ -38,9 +38,9 @@ public class DriveAngleCmd extends Command {
 
     // If angle is greater than set point, drive counter clock-wise otherwise go clock-wise.
     if (direction) {
-      driveTrain.driveArcade(0, -0.5);
+      driveTrain.driveArcade(0, -0.35);
     } else {
-      driveTrain.driveArcade(0, 0.5);
+      driveTrain.driveArcade(0, 0.35);
     }
 
   }
@@ -55,6 +55,6 @@ public class DriveAngleCmd extends Command {
   @Override
   public boolean isFinished() {
     // Angle is in meters.
-    return Math.abs(angle - driveTrain.getGyroAngle()) < .3;
+    return Math.abs(angle - driveTrain.getGyroAngle()) < 2;
   }
 }

@@ -11,6 +11,8 @@ import frc.robot.Constants;
 import frc.robot.commands.Arm.HoldArmInPositionCmd;
 import frc.robot.commands.Arm.ProfiledPivotArmCmd;
 import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
+import frc.robot.commands.Drive.DriveAngleCmd;
+import frc.robot.commands.Drive.DriveDistanceCmd;
 import frc.robot.commands.Drive.PIDDriveCmd;
 import frc.robot.commands.Drive.PIDTurnCmd;
 import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
@@ -30,10 +32,10 @@ public class AutoOneNoteEmptySide extends SequentialCommandGroup {
             new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
             new HoldArmInPositionCmd(Constants.Arm.SPEAKER)),
         //drive at an angle
-        new PIDDriveCmd(Units.inchesToMeters(163)).withTimeout(2),
+        new DriveDistanceCmd(Units.inchesToMeters(163)),
         //turn to face forward
-        new PIDTurnCmd(26.5 * red),
+        new DriveAngleCmd(26.5 * red),
         //drive to center
-        new PIDDriveCmd(Units.inchesToMeters(148)));
+        new DriveDistanceCmd(Units.inchesToMeters(148)));
   }
 }
