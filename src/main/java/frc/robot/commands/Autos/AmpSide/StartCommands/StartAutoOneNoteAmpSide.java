@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.Autos.AmpSide.AutoOneNoteAmpSide;
-import frc.robot.commands.Drive.PIDTurnCmd;
 
 public class StartAutoOneNoteAmpSide extends Command {
   private int red = 1;

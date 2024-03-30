@@ -10,8 +10,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.Autos.AmpSide.AutoOneNoteAmpSide;
-import frc.robot.commands.Autos.EmptySide.AutoOneNoteEmptySide;
 import frc.robot.commands.Autos.Middle.AutoFourNoteMiddle;
 
 public class StartAutoFourNoteMiddleSide extends Command {

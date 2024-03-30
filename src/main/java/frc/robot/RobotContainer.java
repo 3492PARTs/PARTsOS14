@@ -4,10 +4,8 @@
 
 package frc.robot;
 
-import frc.robot.commands.NullCmd;
 import frc.robot.commands.Arm.HoldArmInPositionCmd;
 import frc.robot.commands.Arm.RunArmToLimitSwitchCmd;
-import frc.robot.commands.Arm.ZeroPivotEncodersCmd;
 import frc.robot.commands.Arm.Sequences.PivotArmCmdSeq;
 import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
 import frc.robot.commands.Arm.Sequences.ZeroPivotEncodersCmdSeq;
@@ -23,7 +21,6 @@ import frc.robot.commands.Autos.Middle.AutoTwoNoteMiddle;
 import frc.robot.commands.Intake.RunIntakeCmd;
 import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
 import frc.robot.commands.Intake.Sequences.IntakeArmToPositionCmdSeq;
-import frc.robot.commands.Intake.Sequences.IntakeCmdSeq;
 import frc.robot.commands.Shooter.BangBangShooterCmd;
 import frc.robot.commands.Shooter.ShootCmd;
 import frc.robot.subsystems.Arm;

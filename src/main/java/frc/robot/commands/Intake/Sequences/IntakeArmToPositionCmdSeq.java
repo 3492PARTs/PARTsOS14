@@ -21,7 +21,7 @@ public class IntakeArmToPositionCmdSeq extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(new RunIntakePhotoEyeCmd(speed),
         new ConditionalCommand(
-            new ParallelCommandGroup(new OnIntakeExtakeCmdSeq(), new ProfiledPivotArmCmd(armPosition)),
+            new ParallelCommandGroup(new OnIntakeOuttakeCmdSeq(), new ProfiledPivotArmCmd(armPosition)),
             new IntakeCmdSeq(speed),
             Intake.getInstance().hasNoteSupplier()));
 

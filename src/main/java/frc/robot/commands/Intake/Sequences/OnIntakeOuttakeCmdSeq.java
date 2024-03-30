@@ -10,9 +10,9 @@ import frc.robot.commands.Intake.TimeIntakeCmd;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class OnIntakeExtakeCmdSeq extends SequentialCommandGroup {
-  /** Creates a new OnIntakeExtakeCmdSeq. */
-  public OnIntakeExtakeCmdSeq() {
+public class OnIntakeOuttakeCmdSeq extends SequentialCommandGroup {
+  /** Creates a new OnIntakeOuttakeCmdSeq. */
+  public OnIntakeOuttakeCmdSeq() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(new TimeIntakeCmd(.2, .38));

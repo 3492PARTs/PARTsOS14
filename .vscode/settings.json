@@ -31,6 +31,8 @@
     "Brushless",
     "Feedforward",
     "setpoint",
+    "teleop",
+    "teleoperated",
     "wpilibj"
   ]
 }
