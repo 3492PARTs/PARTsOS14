@@ -45,7 +45,7 @@ public class AutoTwoNoteMiddle extends SequentialCommandGroup {
                                                 // has note
                                                 new SequentialCommandGroup(
                                                                 // Drive back to speaker
-                                                                new DriveDistanceCmd(-Units.inchesToMeters(-36)),
+                                                                new DriveDistanceCmd(-Units.inchesToMeters(36)),
                                                                 // Pivot up and speed
                                                                 new ParallelRaceGroup(
                                                                                 new ProfiledPivotArmCmd(
@@ -61,7 +61,7 @@ public class AutoTwoNoteMiddle extends SequentialCommandGroup {
                                                                                 new HoldArmInPositionCmd(
                                                                                                 Constants.Arm.SPEAKER)),
                                                                 // Drive back to where note was
-                                                                new DriveDistanceCmd(-Units.inchesToMeters(36))),
+                                                                new DriveDistanceCmd(Units.inchesToMeters(36))),
                                                 // does not have note, pivot arm to home
                                                 new ProfiledPivotArmCmd(Constants.Arm.HOME),
                                                 Intake.getInstance().hasNoteSupplier()),
