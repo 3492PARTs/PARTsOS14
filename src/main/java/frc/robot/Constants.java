@@ -98,6 +98,22 @@ public final class Constants {
     public static final int LED_LENGTH = 100;
   }
 
+  public static final class Dashboard {
+    public enum Tabs {
+
+      PRE_MATCH("Pre Match"),
+      AUTONOMOUS("Autonomous"),
+      TELEOPERATED("Teleoperated"),
+      DEBUG("Debug")
+
+      public String tabName;
+
+      Tabs(String tabName) {
+          this.tabName = tabName;
+      }
+  }
+  }
+
   // THIS IS FOR SHUFFLEBOARD DEBUG PLUS OTHER MISC THINGS //
   /** Debug Constants<p>For testingg only.<p>Do not use in prod! */
   public static class Debug {

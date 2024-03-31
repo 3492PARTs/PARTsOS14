@@ -24,7 +24,7 @@ public class Logger {
 
             log = DataLogManager.getLog();
             // Record both DS control and joystick data
-            DriverStation.startDataLog(log);
+            //DriverStation.startDataLog(log);
         }
     }
 

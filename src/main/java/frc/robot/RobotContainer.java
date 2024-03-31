@@ -24,13 +24,22 @@ import frc.robot.commands.Intake.Sequences.IntakeArmToPositionCmdSeq;
 import frc.robot.commands.Shooter.BangBangShooterCmd;
 import frc.robot.commands.Shooter.ShootCmd;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Candle;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Candle.Color;
+import frc.robot.util.Dashboard;
 import frc.robot.util.Logger;
 import frc.robot.subsystems.Climber;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.VideoSource;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.SuppliedValueWidget;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -66,9 +75,7 @@ public class RobotContainer {
 
   public final Trigger zeroPivotTrigger = new Trigger(arm.getLimitSwitchSupplier());
   public final Trigger armGroundTrigger = new Trigger(arm.getLimitSwitchSupplier());
-  public final Trigger noteTrigger = new Trigger(() -> {
-    return intake.hasNote();
-  });
+  public final Trigger noteTrigger = new Trigger(intake.hasNoteSupplier());
 
   // SmartDashboard chooser for auto tasks.
   SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -290,6 +297,59 @@ public class RobotContainer {
     arm.removeDefaultCommand();
     driveTrain.removeDefaultCommand();
     //zeroPivotTrigger.onTrue(new NullCmd()); //idk if this is causing pause in autos or not?
+  }
+
+  public void configureDashboard() {
+    //Pre Match Dashboard
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.PRE_MATCH.tabName).add("Auto Mode", autoChooser)
+        .withSize(2, 1) // make the widget 2x1
+        .withPosition(0, 0); // place it in the top-left corner
+
+    ShuffleboardLayout auto3NoteMiddleOptions = Dashboard
+        .getDashboardTab(frc.robot.Constants.Dashboard.Tabs.PRE_MATCH.tabName)
+        .getLayout("3 Note Auto Options", BuiltInLayouts.kList)
+        .withSize(2, 2).withPosition(2, 0);
+
+    auto3NoteMiddleOptions.addBoolean("T: Go Amp, F: Go Empty", () -> {
+      return false;
+    }).withWidget(BuiltInWidgets.kToggleButton);
+    auto3NoteMiddleOptions.addBoolean("Go Amp: T: Shoot Speaker, F: Shoot Amp", () -> {
+      return false;
+    }).withWidget(BuiltInWidgets.kToggleButton);
+
+    // Autonomous Dashboard
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.AUTONOMOUS.tabName)
+        .addNumber("Gyro", driveTrain.getGyroAngleSupplier()).withWidget(BuiltInWidgets.kGyro);
+
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.AUTONOMOUS.tabName).add(arm);
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.AUTONOMOUS.tabName).addNumber("Arm Angle",
+        arm.getAngleSupplier());
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.AUTONOMOUS.tabName).addBoolean("Arm Limit",
+        arm.getLimitSwitchSupplier());
+
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.AUTONOMOUS.tabName).addBoolean("Note",
+        intake.hasNoteSupplier());
+
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.AUTONOMOUS.tabName).addNumber("Shooter RPM",
+        shooter::getShooterRPM);
+
+    // Teleoperated Dashboard
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).add(arm).withPosition(0, 0);
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addNumber("Arm Angle",
+        arm.getAngleSupplier()).withPosition(2, 0);
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addBoolean("Arm Limit",
+        arm.getLimitSwitchSupplier()).withPosition(4, 0);
+
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addBoolean("Note",
+        intake.hasNoteSupplier()).withPosition(0, 1);
+
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addNumber("Shooter RPM",
+        shooter::getShooterRPM).withPosition(0, 2);
+
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName)
+        .add(Camera.getInstance().getVideoSource()).withWidget(BuiltInWidgets.kCameraStream)
+        .withSize(2, 1).withPosition(6, 0);
+    // Debug Dashboard
   }
 
   public void configureSmartDashboardCommands() {
