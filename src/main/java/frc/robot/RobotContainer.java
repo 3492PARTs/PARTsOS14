@@ -33,13 +33,9 @@ import frc.robot.subsystems.Candle.Color;
 import frc.robot.util.Dashboard;
 import frc.robot.util.Logger;
 import frc.robot.subsystems.Climber;
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.VideoSource;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.shuffleboard.SuppliedValueWidget;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -350,6 +346,7 @@ public class RobotContainer {
         .add(Camera.getInstance().getVideoSource()).withWidget(BuiltInWidgets.kCameraStream)
         .withSize(2, 1).withPosition(6, 0);
     // Debug Dashboard
+
   }
 
   public void configureSmartDashboardCommands() {

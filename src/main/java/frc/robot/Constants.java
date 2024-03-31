@@ -104,18 +104,18 @@ public final class Constants {
       PRE_MATCH("Pre Match"),
       AUTONOMOUS("Autonomous"),
       TELEOPERATED("Teleoperated"),
-      DEBUG("Debug")
+      DEBUG("Debug");
 
       public String tabName;
 
       Tabs(String tabName) {
-          this.tabName = tabName;
+        this.tabName = tabName;
       }
-  }
+    }
   }
 
   // THIS IS FOR SHUFFLEBOARD DEBUG PLUS OTHER MISC THINGS //
-  /** Debug Constants<p>For testingg only.<p>Do not use in prod! */
+  /** Debug Constants For testing only. Do not use in prod! */
   public static class Debug {
     public static final boolean debugMode = true;
     public static final boolean logging = true;
