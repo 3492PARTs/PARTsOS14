@@ -15,6 +15,7 @@ import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Candle;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Candle.Color;
+import frc.robot.util.Dashboard;
 import frc.robot.util.Logger;
 
 /**
@@ -70,6 +71,9 @@ public class Robot extends TimedRobot {
               Shuffleboard.addEventMarker(
                   "Command finished", command.getName(), EventImportance.kNormal);
             });
+
+    if (Constants.Debug.debugMode)
+      Dashboard.selectDashboardTab(Constants.Dashboard.Tabs.DEBUG.tabName);
   }
 
   /**
@@ -92,7 +96,7 @@ public class Robot extends TimedRobot {
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    m_robotContainer.updateSmartDashboard();
+    //m_robotContainer.updateSmartDashboard();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -120,6 +124,9 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+
+    if (!Constants.Debug.debugMode)
+      Dashboard.selectDashboardTab(Constants.Dashboard.Tabs.AUTONOMOUS.tabName);
   }
 
   /** This function is called periodically during autonomous. */
@@ -139,6 +146,9 @@ public class Robot extends TimedRobot {
 
     m_robotContainer.configureBindings();
     m_robotContainer.initializeCandleState();
+
+    if (!Constants.Debug.debugMode)
+      Dashboard.selectDashboardTab(Constants.Dashboard.Tabs.TELEOPERATED.tabName);
   }
 
   /** This function is called periodically during operator control. */

@@ -14,8 +14,12 @@ import frc.robot.commands.Autos.AutoTurn;
 import frc.robot.commands.Autos.StartAutoCmd;
 import frc.robot.commands.Autos.AmpSide.AutoOneNoteAmpSide;
 import frc.robot.commands.Autos.AmpSide.AutoTwoNoteAmpSide;
+import frc.robot.commands.Autos.AmpSide.StartCommands.StartAutoOneNoteAmpSide;
+import frc.robot.commands.Autos.AmpSide.StartCommands.StartAutoTwoNoteAmpSide;
 import frc.robot.commands.Autos.EmptySide.AutoOneNoteEmptySide;
 import frc.robot.commands.Autos.EmptySide.AutoTwoNoteEmptySide;
+import frc.robot.commands.Autos.EmptySide.StartCommands.StartAutoOneNoteEmptySide;
+import frc.robot.commands.Autos.EmptySide.StartCommands.StartAutoTwoNoteEmptySide;
 import frc.robot.commands.Autos.Middle.AutoOneNoteMiddle;
 import frc.robot.commands.Autos.Middle.AutoTwoNoteMiddle;
 import frc.robot.commands.Intake.RunIntakeCmd;
@@ -33,6 +37,9 @@ import frc.robot.subsystems.Candle.Color;
 import frc.robot.util.Dashboard;
 import frc.robot.util.Logger;
 import frc.robot.subsystems.Climber;
+
+import java.util.Map;
+
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
@@ -82,7 +89,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     configureAutonomousCommands();
-    configureSmartDashboardCommands();
+    //configureSmartDashboardCommands();
     configureDashboard();
   }
 
@@ -357,51 +364,116 @@ public class RobotContainer {
         .withSize(7, 6).withPosition(3, 0);
     // Debug Dashboard
     if (Constants.Debug.debugMode) {
-      Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.DEBUG.tabName).add("Zero Arm Sequence",
-          new ZeroArmCmdSeq()).withSize(2, 1).withPosition(0, 0);
+      ShuffleboardLayout driveTrainLayout = Dashboard
+          .getDashboardTab(frc.robot.Constants.Dashboard.Tabs.DEBUG.tabName)
+          .getLayout("Drive Train", BuiltInLayouts.kList).withSize(2, 4).withPosition(0, 0)
+          .withProperties(Map.of("Label position", "TOP"));
+
+      driveTrainLayout.add(driveTrain);
+      driveTrainLayout.addNumber("Gyro", driveTrain.getGyroAngleSupplier()).withWidget(BuiltInWidgets.kGyro);
+      driveTrainLayout.addDouble("Left Drive Distance", driveTrain::leftDistance);
+      driveTrainLayout.addDouble("Right Drive Distance", driveTrain::rightDistance);
+
+      ShuffleboardLayout armLayout = Dashboard
+          .getDashboardTab(frc.robot.Constants.Dashboard.Tabs.DEBUG.tabName)
+          .getLayout("Arm", BuiltInLayouts.kList).withSize(2, 4).withPosition(2, 0)
+          .withProperties(Map.of("Label position", "TOP"));
+
+      armLayout.add(arm);
+
+      armLayout.add("Zero Arm Sequence", new ZeroArmCmdSeq()).withProperties(Map.of("Label position", "HIDDEN"));
+
+      armLayout.addBoolean("Arm Limit",
+          arm.getLimitSwitchSupplier());
+
+      armLayout.addNumber("Arm Angle",
+          arm.getAngleSupplier());
+
+      armLayout.addNumber("Arm Voltage",
+          arm::getAverageVoltage);
+
+      ShuffleboardLayout intakeLayout = Dashboard
+          .getDashboardTab(frc.robot.Constants.Dashboard.Tabs.DEBUG.tabName)
+          .getLayout("Intake", BuiltInLayouts.kList).withSize(2, 4).withPosition(4, 0)
+          .withProperties(Map.of("Label position", "TOP"));
+
+      intakeLayout.add(intake);
+
+      intakeLayout.addBoolean("Has Note",
+          intake.hasNoteSupplier());
+
+      ShuffleboardLayout shooterLayout = Dashboard
+          .getDashboardTab(frc.robot.Constants.Dashboard.Tabs.DEBUG.tabName)
+          .getLayout("Shooter", BuiltInLayouts.kList).withSize(2, 4).withPosition(6, 0)
+          .withProperties(Map.of("Label position", "TOP"));
+
+      shooterLayout.add(shooter);
+
+      shooterLayout.addDouble("Shooter RPM",
+          shooter::getShooterRPM);
+
+      shooterLayout.addDouble("Left Motor Velocity",
+          shooter::getLeftVelocity);
+
+      shooterLayout.addDouble("Right Motor Velocity",
+          shooter::getRightVelocity);
+
+      ShuffleboardLayout climberLayout = Dashboard
+          .getDashboardTab(frc.robot.Constants.Dashboard.Tabs.DEBUG.tabName)
+          .getLayout("Climber", BuiltInLayouts.kList).withSize(2, 4).withPosition(8, 0)
+          .withProperties(Map.of("Label position", "TOP"));
+
+      climberLayout.add(climber);
+
+      climberLayout.addBoolean("Climber Control",
+          () -> {
+            return climbMode;
+          });
     }
 
   }
 
+  /*
   public void configureSmartDashboardCommands() {
     if (Constants.Debug.debugMode) {
       // Zero Pivot Command
       SmartDashboard.putData("Zero Arm Sequence", new ZeroArmCmdSeq());
     }
   }
-
+  
   public void updateSmartDashboard() {
     // Shooter
     SmartDashboard.putNumber("Shooter RPM", shooter.getShooterRPM());
     SmartDashboard.putNumber("Shooter Left Velocity", shooter.getLeftVelocity());
     SmartDashboard.putNumber("Shooter Right Velocity", shooter.getRightVelocity());
-
+  
     // PhotoEye
     SmartDashboard.putBoolean("HAS NOTE", intake.hasNote());
-
+  
     // LimitSwitch
     SmartDashboard.putBoolean("Arm Switch", arm.getLimitSwitch());
-
+  
     // Arm Angle
     SmartDashboard.putNumber("Arm Angle", arm.getAngle());
-
+  
     // Arm Angle
     SmartDashboard.putNumber("Arm Voltage", arm.getAverageVoltage());
-
+  
     // Climber or Arm Controls
     SmartDashboard.putBoolean("Climber control", climbMode);
-
+  
     if (Constants.Debug.debugMode) {
       // Drive
       SmartDashboard.putNumber("Left Drive Distance", driveTrain.leftDistance());
       SmartDashboard.putNumber("Right Drive Distance", driveTrain.rightDistance());
-
+  
       SmartDashboard.putNumber("Gyro Angle", driveTrain.getGyroAngle());
     }
   }
+  */
 
   public void configureAutonomousCommands() {
-    SmartDashboard.putData("choose auto mode", autoChooser);
+    //SmartDashboard.putData("choose auto mode", autoChooser);
 
     // SIDE INDEPENDENT AUTOS
     autoChooser.addOption("Move Forward", new AutoMoveForward());
@@ -409,21 +481,11 @@ public class RobotContainer {
     autoChooser.addOption("One Note Middle", new AutoOneNoteMiddle());
     autoChooser.addOption("Two Note Middle", new AutoTwoNoteMiddle());
 
-    //RED AUTOS
-    autoChooser.addOption("RED: One Note Amp Side ", new AutoOneNoteAmpSide(1));
-    autoChooser.addOption("RED: One Note Empty Side", new AutoOneNoteEmptySide(1));
-    autoChooser.addOption("RED: Two Note Amp Side", new AutoTwoNoteAmpSide(1));
-    autoChooser.addOption("RED: Two Note Empty Side", new AutoTwoNoteEmptySide(1));
+    autoChooser.addOption("One Note Amp Side ", new StartAutoOneNoteAmpSide());
+    autoChooser.addOption("One Note Empty Side", new StartAutoOneNoteEmptySide());
+    autoChooser.addOption("Two Note Amp Side", new StartAutoTwoNoteAmpSide());
+    autoChooser.addOption("Two Note Empty Side", new StartAutoTwoNoteEmptySide());
 
-    //BLUE AUTOS
-    autoChooser.addOption("BLUE: One Note Amp Side ", new AutoOneNoteAmpSide(-1));
-    autoChooser.addOption("BLUE: One Note Empty Side", new AutoOneNoteEmptySide(-1));
-    autoChooser.addOption("BLUE: Two Note Amp Side", new AutoTwoNoteAmpSide(-1));
-    autoChooser.addOption("BLUE: Two Note Empty Side", new AutoTwoNoteEmptySide(-1));
-
-    if (Constants.Debug.debugMode) {
-      autoChooser.addOption("Test turn with color, red -> right, blue -> left", new StartAutoCmd());
-    }
   }
 
   /**

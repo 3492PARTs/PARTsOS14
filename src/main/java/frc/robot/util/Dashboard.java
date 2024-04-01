@@ -13,4 +13,8 @@ public class Dashboard {
     public static ShuffleboardTab getDashboardTab(String title) {
         return Shuffleboard.getTab(title);
     }
+
+    public static void selectDashboardTab(String title) {
+        Shuffleboard.selectTab(title);
+    }
 }
