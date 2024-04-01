@@ -74,6 +74,8 @@ public class Robot extends TimedRobot {
 
     if (Constants.Debug.debugMode)
       Dashboard.selectDashboardTab(Constants.Dashboard.Tabs.DEBUG.tabName);
+    else
+      Dashboard.selectDashboardTab(Constants.Dashboard.Tabs.PRE_MATCH.tabName);
   }
 
   /**

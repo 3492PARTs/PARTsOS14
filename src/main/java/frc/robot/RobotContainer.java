@@ -303,7 +303,9 @@ public class RobotContainer {
   }
 
   public void configureDashboard() {
-    //Pre Match Dashboard
+    //* ----------------------------------------------------------------------------------- */
+    //* Pre Match Dashboard */
+    //* ----------------------------------------------------------------------------------- */
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.PRE_MATCH.tabName).add("Auto Mode", autoChooser)
         .withSize(2, 1) // make the widget 2x1
         .withPosition(0, 0); // place it in the top-left corner
@@ -321,7 +323,9 @@ public class RobotContainer {
       return false;
     }).withWidget(BuiltInWidgets.kToggleButton);
 
-    // Autonomous Dashboard
+    //* ----------------------------------------------------------------------------------- */
+    //* Autonomous Dashboard */
+    //* ----------------------------------------------------------------------------------- */
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.AUTONOMOUS.tabName)
         .addNumber("Gyro", driveTrain.getGyroAngleSupplier()).withWidget(BuiltInWidgets.kGyro).withPosition(0, 0);
 
@@ -339,7 +343,9 @@ public class RobotContainer {
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.AUTONOMOUS.tabName).addNumber("Shooter RPM",
         shooter::getShooterRPM).withPosition(3, 2);
 
-    // Teleoperated Dashboard
+    //* ----------------------------------------------------------------------------------- */
+    //* Teleoperated Dashboard */
+    //* ----------------------------------------------------------------------------------- */
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).add(arm).withPosition(0, 0);
 
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addBoolean("Arm Limit",
@@ -362,7 +368,10 @@ public class RobotContainer {
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName)
         .add(Camera.getInstance().getVideoSource()).withWidget(BuiltInWidgets.kCameraStream)
         .withSize(7, 6).withPosition(3, 0);
-    // Debug Dashboard
+
+    //* ----------------------------------------------------------------------------------- */
+    //* Debug Dashboard */
+    //* ----------------------------------------------------------------------------------- */
     if (Constants.Debug.debugMode) {
       ShuffleboardLayout driveTrainLayout = Dashboard
           .getDashboardTab(frc.robot.Constants.Dashboard.Tabs.DEBUG.tabName)
