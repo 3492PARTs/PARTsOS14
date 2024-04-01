@@ -27,7 +27,10 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/Shuffleboard/Drivetrain Tests/Backward": "Command",
-      "/Shuffleboard/Drivetrain Tests/Forward": "Command"
+      "/Shuffleboard/Drivetrain Tests/Forward": "Command",
+      "/SmartDashboard/Arm": "Subsystem",
+      "/SmartDashboard/Zero Arm Sequence": "Command",
+      "/SmartDashboard/choose auto mode": "String Chooser"
     }
   },
   "NetworkTables": {
