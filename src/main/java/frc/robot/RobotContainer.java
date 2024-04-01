@@ -316,39 +316,49 @@ public class RobotContainer {
 
     // Autonomous Dashboard
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.AUTONOMOUS.tabName)
-        .addNumber("Gyro", driveTrain.getGyroAngleSupplier()).withWidget(BuiltInWidgets.kGyro);
+        .addNumber("Gyro", driveTrain.getGyroAngleSupplier()).withWidget(BuiltInWidgets.kGyro).withPosition(0, 0);
 
-    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.AUTONOMOUS.tabName).add(arm);
-    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.AUTONOMOUS.tabName).addNumber("Arm Angle",
-        arm.getAngleSupplier());
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.AUTONOMOUS.tabName).add(arm).withPosition(2, 0);
+
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.AUTONOMOUS.tabName).addBoolean("Arm Limit",
-        arm.getLimitSwitchSupplier());
+        arm.getLimitSwitchSupplier()).withPosition(2, 1);
+
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.AUTONOMOUS.tabName).addNumber("Arm Angle",
+        arm.getAngleSupplier()).withPosition(3, 1);
 
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.AUTONOMOUS.tabName).addBoolean("Note",
-        intake.hasNoteSupplier());
+        intake.hasNoteSupplier()).withPosition(2, 2);
 
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.AUTONOMOUS.tabName).addNumber("Shooter RPM",
-        shooter::getShooterRPM);
+        shooter::getShooterRPM).withPosition(3, 2);
 
     // Teleoperated Dashboard
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).add(arm).withPosition(0, 0);
-    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addNumber("Arm Angle",
-        arm.getAngleSupplier()).withPosition(2, 0);
+
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addBoolean("Arm Limit",
-        arm.getLimitSwitchSupplier()).withPosition(3, 0);
+        arm.getLimitSwitchSupplier()).withPosition(0, 1);
+
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addNumber("Arm Angle",
+        arm.getAngleSupplier()).withPosition(1, 1);
+
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addBoolean("Climber Control",
+        () -> {
+          return climbMode;
+        }).withPosition(2, 1);
 
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addBoolean("Note",
-        intake.hasNoteSupplier()).withPosition(0, 1);
+        intake.hasNoteSupplier()).withPosition(0, 2);
 
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addNumber("Shooter RPM",
-        shooter::getShooterRPM).withPosition(1, 1);
+        shooter::getShooterRPM).withPosition(1, 2);
 
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName)
         .add(Camera.getInstance().getVideoSource()).withWidget(BuiltInWidgets.kCameraStream)
-        .withSize(6, 5).withPosition(4, 0);
+        .withSize(7, 6).withPosition(3, 0);
     // Debug Dashboard
     if (Constants.Debug.debugMode) {
-
+      Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.DEBUG.tabName).add("Zero Arm Sequence",
+          new ZeroArmCmdSeq()).withSize(2, 1).withPosition(0, 0);
     }
 
   }
@@ -358,9 +368,6 @@ public class RobotContainer {
       // Zero Pivot Command
       SmartDashboard.putData("Zero Arm Sequence", new ZeroArmCmdSeq());
     }
-
-    SmartDashboard.putBoolean("Auto Three Empty", false);
-
   }
 
   public void updateSmartDashboard() {
@@ -391,9 +398,6 @@ public class RobotContainer {
 
       SmartDashboard.putNumber("Gyro Angle", driveTrain.getGyroAngle());
     }
-
-    SmartDashboard.putBoolean("Auto Three Empty Tester", SmartDashboard.getBoolean("Auto Three Empty", false));
-
   }
 
   public void configureAutonomousCommands() {
