@@ -83,7 +83,7 @@ public class RobotContainer {
   public RobotContainer() {
     configureAutonomousCommands();
     configureSmartDashboardCommands();
-    SmartDashboard.putData(arm);
+    configureDashboard();
   }
 
   /**
@@ -306,10 +306,11 @@ public class RobotContainer {
         .getLayout("3 Note Auto Options", BuiltInLayouts.kList)
         .withSize(2, 2).withPosition(2, 0);
 
-    auto3NoteMiddleOptions.addBoolean("T: Go Amp, F: Go Empty", () -> {
+    auto3NoteMiddleOptions.addBoolean("Go Amp: T: Shoot Speaker, F: Shoot Amp", () -> {
       return false;
     }).withWidget(BuiltInWidgets.kToggleButton);
-    auto3NoteMiddleOptions.addBoolean("Go Amp: T: Shoot Speaker, F: Shoot Amp", () -> {
+
+    auto3NoteMiddleOptions.addBoolean("T: Go Amp, F: Go Empty", () -> {
       return false;
     }).withWidget(BuiltInWidgets.kToggleButton);
 
@@ -334,18 +335,21 @@ public class RobotContainer {
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addNumber("Arm Angle",
         arm.getAngleSupplier()).withPosition(2, 0);
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addBoolean("Arm Limit",
-        arm.getLimitSwitchSupplier()).withPosition(4, 0);
+        arm.getLimitSwitchSupplier()).withPosition(3, 0);
 
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addBoolean("Note",
         intake.hasNoteSupplier()).withPosition(0, 1);
 
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addNumber("Shooter RPM",
-        shooter::getShooterRPM).withPosition(0, 2);
+        shooter::getShooterRPM).withPosition(1, 1);
 
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName)
         .add(Camera.getInstance().getVideoSource()).withWidget(BuiltInWidgets.kCameraStream)
-        .withSize(2, 1).withPosition(6, 0);
+        .withSize(6, 5).withPosition(4, 0);
     // Debug Dashboard
+    if (Constants.Debug.debugMode) {
+
+    }
 
   }
 
