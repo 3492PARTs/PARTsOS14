@@ -6,18 +6,27 @@ package frc.robot.commands.Autos.Middle.StartCommands;
 
 import java.util.Optional;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.Autos.Middle.AutoFourNoteMiddle;
+import frc.robot.commands.Autos.Middle.AutoThreeNoteMiddle;
 
-public class StartAutoFourNoteMiddleSide extends Command {
+public class StartAutoThreeNoteMiddle extends Command {
   private int red = 1;
+  private GenericEntry ampOrEmpty;
+  private GenericEntry speakerOrAmp;
+
+  private boolean ampOrEmptyBool;
+  private boolean speakerOrAmpBool;
 
   /** Creates a new StartAutoCmd. */
-  public StartAutoFourNoteMiddleSide() {
+  public StartAutoThreeNoteMiddle(GenericEntry ampOrEmpty, GenericEntry speakerOrAmp) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.ampOrEmpty = ampOrEmpty;
+    this.speakerOrAmp = speakerOrAmp;
   }
 
   // Called when the command is initially scheduled.
@@ -32,6 +41,9 @@ public class StartAutoFourNoteMiddleSide extends Command {
         red = -1;
       }
     }
+
+    ampOrEmptyBool = ampOrEmpty.getBoolean(false);
+    speakerOrAmpBool = speakerOrAmp.getBoolean(false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -42,7 +54,7 @@ public class StartAutoFourNoteMiddleSide extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    CommandScheduler.getInstance().schedule(new AutoFourNoteMiddle(red));
+    CommandScheduler.getInstance().schedule(new AutoThreeNoteMiddle(red, ampOrEmptyBool, speakerOrAmpBool));
   }
 
   // Returns true when the command should end.

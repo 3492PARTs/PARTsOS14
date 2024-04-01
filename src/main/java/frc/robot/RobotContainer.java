@@ -22,6 +22,7 @@ import frc.robot.commands.Autos.EmptySide.StartCommands.StartAutoOneNoteEmptySid
 import frc.robot.commands.Autos.EmptySide.StartCommands.StartAutoTwoNoteEmptySide;
 import frc.robot.commands.Autos.Middle.AutoOneNoteMiddle;
 import frc.robot.commands.Autos.Middle.AutoTwoNoteMiddle;
+import frc.robot.commands.Autos.Middle.StartCommands.StartAutoThreeNoteMiddle;
 import frc.robot.commands.Intake.RunIntakeCmd;
 import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
 import frc.robot.commands.Intake.Sequences.IntakeArmToPositionCmdSeq;
@@ -91,9 +92,9 @@ public class RobotContainer {
    */
 
   public RobotContainer() {
-    configureAutonomousCommands();
     //configureSmartDashboardCommands();
     configureDashboard();
+    configureAutonomousCommands();
   }
 
   /**
@@ -485,11 +486,12 @@ public class RobotContainer {
   public void configureAutonomousCommands() {
     //SmartDashboard.putData("choose auto mode", autoChooser);
 
-    // SIDE INDEPENDENT AUTOS
     autoChooser.addOption("Move Forward", new AutoMoveForward());
     autoChooser.addOption("Move Turn", new AutoTurn());
     autoChooser.addOption("One Note Middle", new AutoOneNoteMiddle());
     autoChooser.addOption("Two Note Middle", new AutoTwoNoteMiddle());
+
+    autoChooser.addOption("Three Note Middle", new StartAutoThreeNoteMiddle(ampOrEmpty, speakerOrAmp));
 
     autoChooser.addOption("One Note Amp Side ", new StartAutoOneNoteAmpSide());
     autoChooser.addOption("One Note Empty Side", new StartAutoOneNoteEmptySide());
@@ -505,7 +507,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    SmartDashboard.putBoolean("MODE", ampOrEmpty.getBoolean(false));
     return autoChooser.getSelected();
   }
 
