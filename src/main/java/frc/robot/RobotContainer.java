@@ -40,6 +40,7 @@ import frc.robot.subsystems.Climber;
 
 import java.util.Map;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
@@ -82,6 +83,8 @@ public class RobotContainer {
 
   // SmartDashboard chooser for auto tasks.
   SendableChooser<Command> autoChooser = new SendableChooser<>();
+  private GenericEntry ampOrEmpty;
+  private GenericEntry speakerOrAmp;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -315,13 +318,11 @@ public class RobotContainer {
         .getLayout("3 Note Auto Options", BuiltInLayouts.kList)
         .withSize(2, 2).withPosition(2, 0);
 
-    auto3NoteMiddleOptions.addBoolean("Go Amp: T: Shoot Speaker, F: Shoot Amp", () -> {
-      return false;
-    }).withWidget(BuiltInWidgets.kToggleButton);
+    ampOrEmpty = auto3NoteMiddleOptions.add("T: Go Empty, F: Go Amp", false).withWidget(BuiltInWidgets.kToggleButton)
+        .getEntry();
 
-    auto3NoteMiddleOptions.addBoolean("T: Go Amp, F: Go Empty", () -> {
-      return false;
-    }).withWidget(BuiltInWidgets.kToggleButton);
+    speakerOrAmp = auto3NoteMiddleOptions.add("Amp Chosen: T: Shoot Speaker, F: Shoot Amp", false)
+        .withWidget(BuiltInWidgets.kToggleButton).getEntry();
 
     //* ----------------------------------------------------------------------------------- */
     //* Autonomous Dashboard */
@@ -504,6 +505,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
+    SmartDashboard.putBoolean("MODE", ampOrEmpty.getBoolean(false));
     return autoChooser.getSelected();
   }
 
