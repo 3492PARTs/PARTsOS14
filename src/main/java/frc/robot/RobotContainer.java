@@ -348,24 +348,22 @@ public class RobotContainer {
     //* ----------------------------------------------------------------------------------- */
     //* Teleoperated Dashboard */
     //* ----------------------------------------------------------------------------------- */
-    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).add(arm).withPosition(0, 0);
-
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addBoolean("Arm Limit",
-        arm.getLimitSwitchSupplier()).withPosition(0, 1);
+        arm.getLimitSwitchSupplier()).withPosition(0, 0);
 
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addNumber("Arm Angle",
-        arm.getAngleSupplier()).withPosition(1, 1);
+        arm.getAngleSupplier()).withPosition(1, 0);
 
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addBoolean("Climber Control",
         () -> {
           return climbMode;
-        }).withPosition(2, 1);
+        }).withPosition(2, 0);
 
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addBoolean("Note",
-        intake.hasNoteSupplier()).withPosition(0, 2);
+        intake.hasNoteSupplier()).withPosition(0, 1);
 
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addNumber("Shooter RPM",
-        shooter::getShooterRPM).withPosition(1, 2);
+        shooter::getShooterRPM).withPosition(1, 1);
 
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName)
         .add(Camera.getInstance().getVideoSource()).withWidget(BuiltInWidgets.kCameraStream)
