@@ -481,6 +481,7 @@ public class RobotContainer {
 
     autoChooser.addOption("Move Forward", new AutoMoveForward());
     autoChooser.addOption("Move Turn", new AutoTurn());
+
     autoChooser.addOption("One Note Middle", new AutoOneNoteMiddle());
     autoChooser.addOption("Two Note Middle", new AutoTwoNoteMiddle());
 
@@ -488,8 +489,9 @@ public class RobotContainer {
     autoChooser.addOption("Four Note Middle", new StartAutoFourNoteMiddle());
 
     autoChooser.addOption("One Note Amp Side ", new StartAutoOneNoteAmpSide());
-    autoChooser.addOption("One Note Empty Side", new StartAutoOneNoteEmptySide());
     autoChooser.addOption("Two Note Amp Side", new StartAutoTwoNoteAmpSide());
+
+    autoChooser.addOption("One Note Empty Side", new StartAutoOneNoteEmptySide());
     autoChooser.addOption("Two Note Empty Side", new StartAutoTwoNoteEmptySide());
 
   }
