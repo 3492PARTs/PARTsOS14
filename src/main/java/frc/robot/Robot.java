@@ -129,6 +129,8 @@ public class Robot extends TimedRobot {
 
     if (!Constants.Debug.debugMode)
       Dashboard.selectDashboardTab(Constants.Dashboard.Tabs.AUTONOMOUS.tabName);
+    else
+      Dashboard.selectDashboardTab(Constants.Dashboard.Tabs.DEBUG.tabName);
   }
 
   /** This function is called periodically during autonomous. */
@@ -151,6 +153,8 @@ public class Robot extends TimedRobot {
 
     if (!Constants.Debug.debugMode)
       Dashboard.selectDashboardTab(Constants.Dashboard.Tabs.TELEOPERATED.tabName);
+    else
+      Dashboard.selectDashboardTab(Constants.Dashboard.Tabs.DEBUG.tabName);
   }
 
   /** This function is called periodically during operator control. */
