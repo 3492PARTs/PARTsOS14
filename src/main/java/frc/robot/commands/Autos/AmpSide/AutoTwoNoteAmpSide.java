@@ -23,18 +23,17 @@ import frc.robot.subsystems.Intake;
 public class AutoTwoNoteAmpSide extends SequentialCommandGroup {
         /** Creates a new AutoTwoNoteRightPos. */
         public AutoTwoNoteAmpSide(int red) {
-
                 addCommands(new ZeroArmCmdSeq(),
                                 // Move arm to angle and warm up shooter
                                 new ParallelRaceGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
                                                 new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM)),
-                                // Shoot
+                                // Shoot preload note 1
                                 new ParallelRaceGroup(
                                                 new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new HoldArmInPositionCmd(Constants.Arm.SPEAKER)),
-                                // drives FORWARD 10 inches
-                                new DriveDistanceCmd(Units.inchesToMeters(9)), //.withTimeout(2),
+                                // drives forward to line up with note
+                                new DriveDistanceCmd(Units.inchesToMeters(9)),
                                 // turns LEFT face note
                                 new DriveAngleCmd(-59 * red),
                                 // Move arm to ground, turn on intake, and move forward
@@ -45,15 +44,16 @@ public class AutoTwoNoteAmpSide extends SequentialCommandGroup {
                                 new ConditionalCommand(
                                                 // has note
                                                 new SequentialCommandGroup(
-                                                                //Move arm to home, drive forward
                                                                 new ParallelCommandGroup(
+                                                                                //Move arm to home
                                                                                 new ProfiledPivotArmCmd(
                                                                                                 Constants.Arm.HOME),
+                                                                                // line up with amp
                                                                                 new DriveDistanceCmd(Units
                                                                                                 .inchesToMeters(-3))),
                                                                 //turn left to amp
                                                                 new DriveAngleCmd(-85 * red),
-                                                                //move are to amp and drive backward
+                                                                //move arm to amp and drive backward
                                                                 new ParallelCommandGroup(
                                                                                 new ProfiledPivotArmCmd(
                                                                                                 Constants.Arm.AMP),
@@ -78,8 +78,11 @@ public class AutoTwoNoteAmpSide extends SequentialCommandGroup {
                                                 // does not have note, pivot arm to home
                                                 new ProfiledPivotArmCmd(Constants.Arm.HOME),
                                                 Intake.getInstance().hasNoteSupplier()),
-
-                                //drive to center
-                                new DriveDistanceCmd(Units.inchesToMeters(60)));
+                                new ParallelRaceGroup(
+                                                //drive to center
+                                                new DriveDistanceCmd(Units.inchesToMeters(60)),
+                                                new HoldArmInPositionCmd(Constants.Arm.HOME)),
+                                // hold arm till end
+                                new HoldArmInPositionCmd(Constants.Arm.HOME));
         }
 }
