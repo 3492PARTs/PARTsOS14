@@ -17,7 +17,6 @@ import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.MutableMeasure;
 import edu.wpi.first.units.Velocity;
 import edu.wpi.first.units.Voltage;
-import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -125,7 +124,7 @@ public class Arm extends SubsystemBase {
 
   // Rotation calculations
   public double getRotationRate() {
-    //TODO: need to change to alernate encoders
+    //TODO: need to change to alternate encoders
 
     double left = pivotLeftMotor.getEncoder().getVelocity();
     double right = pivotRightMotor.getEncoder().getVelocity();

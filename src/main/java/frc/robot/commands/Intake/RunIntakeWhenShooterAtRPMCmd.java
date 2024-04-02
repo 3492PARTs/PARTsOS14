@@ -15,7 +15,7 @@ public class RunIntakeWhenShooterAtRPMCmd extends Command {
   Shooter shooter;
   Intake intake;
   Candle candle;
-  int RPM;
+  double RPM;
   long startTime;
   boolean setCandleBlink = true;
 
