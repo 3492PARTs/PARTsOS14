@@ -32,7 +32,7 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                 new ParallelRaceGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
                                                 new BangBangShooterCmd(
                                                                 Constants.Shooter.WARMUP_SPEAKER_RPM)),
-                                // Shoot
+                                // Shoot preload note 1
                                 new ParallelRaceGroup(
                                                 new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
@@ -46,10 +46,11 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                 // Pivot up and speed
                                 new ParallelRaceGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER_BACK_30),
                                                 new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM)),
-                                // Shoot
+                                // Shoot note 2
                                 new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new HoldArmInPositionCmd(Constants.Arm.SPEAKER_BACK_30)),
+                                // drive forward to line up with note
                                 new DriveDistanceCmd(Units.inchesToMeters(1.1)),
                                 // Go amp or Go Empty side
                                 new ConditionalCommand(
@@ -77,7 +78,7 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                                                                                                 Constants.Arm.SPEAKER_BACK_30),
                                                                                                 new PIDTurnCmd(90
                                                                                                                 * red))),
-                                                                // Shoot
+                                                                // Shoot note 3
                                                                 new ParallelRaceGroup(new BangBangShooterCmd(
                                                                                 Constants.Shooter.SPEAKER_RPM),
                                                                                 new RunIntakeWhenShooterAtRPMCmd(
@@ -103,9 +104,9 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                                                                                                 36))),
                                                                 // Shoot speaker or shoot amp
                                                                 new ConditionalCommand(
-                                                                                //robot goes to speaker 
+                                                                                // Condition: robot goes to speaker 
                                                                                 new SequentialCommandGroup(
-                                                                                                // Turn raise arm and speed up
+                                                                                                // Turn, raise arm, and speed up
                                                                                                 new ParallelRaceGroup(
                                                                                                                 new BangBangShooterCmd(
                                                                                                                                 Constants.Shooter.WARMUP_SPEAKER_RPM),
@@ -124,7 +125,6 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                                                                                 // Turn to center 
                                                                                                 new PIDTurnCmd(-30
                                                                                                                 * red)),
-
                                                                                 //robot goes to amp
                                                                                 new SequentialCommandGroup(
                                                                                                 // Turn to amp

@@ -19,7 +19,7 @@ public class RunIntakeWhenShooterAtRPMCmd extends Command {
   long startTime;
   boolean setCandleBlink = true;
 
-  public RunIntakeWhenShooterAtRPMCmd(int RPM) {
+  public RunIntakeWhenShooterAtRPMCmd(double RPM) {
     // Use addRequirements() here to declare subsystem dependencies.
     shooter = Shooter.getInstance();
     intake = Intake.getInstance();
