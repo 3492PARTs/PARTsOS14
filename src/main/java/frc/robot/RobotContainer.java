@@ -22,6 +22,7 @@ import frc.robot.commands.Autos.EmptySide.StartCommands.StartAutoOneNoteEmptySid
 import frc.robot.commands.Autos.EmptySide.StartCommands.StartAutoTwoNoteEmptySide;
 import frc.robot.commands.Autos.Middle.AutoOneNoteMiddle;
 import frc.robot.commands.Autos.Middle.AutoTwoNoteMiddle;
+import frc.robot.commands.Autos.Middle.StartCommands.StartAutoFourNoteMiddle;
 import frc.robot.commands.Autos.Middle.StartCommands.StartAutoThreeNoteMiddle;
 import frc.robot.commands.Intake.RunIntakeCmd;
 import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
@@ -490,6 +491,7 @@ public class RobotContainer {
     autoChooser.addOption("Two Note Middle", new AutoTwoNoteMiddle());
 
     autoChooser.addOption("Three Note Middle", new StartAutoThreeNoteMiddle(ampOrEmpty, speakerOrAmp));
+    autoChooser.addOption("Four Note Middle", new StartAutoFourNoteMiddle());
 
     autoChooser.addOption("One Note Amp Side ", new StartAutoOneNoteAmpSide());
     autoChooser.addOption("One Note Empty Side", new StartAutoOneNoteEmptySide());
