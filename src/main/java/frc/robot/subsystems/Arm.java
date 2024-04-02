@@ -200,7 +200,7 @@ public class Arm extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  //TODO: Test this works
+  // Test this works
   /* 
   @Override
   public void initSendable(SendableBuilder builder) {

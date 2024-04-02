@@ -30,12 +30,14 @@
   "cSpell.words": [
     "AHRS",
     "Brushless",
+    "Burny",
     "Feedforward",
     "PHOTOEYE",
     "pivotarm",
     "setpoint",
     "teleop",
     "teleoperated",
+    "Vbat",
     "wpilibj"
   ]
 }
