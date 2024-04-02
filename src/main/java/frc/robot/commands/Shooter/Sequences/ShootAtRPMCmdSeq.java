@@ -6,7 +6,6 @@ package frc.robot.commands.Shooter.Sequences;
 
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants;
 import frc.robot.commands.Arm.HoldArmInPositionCmd;
 import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
 import frc.robot.commands.Shooter.BangBangShooterCmd;

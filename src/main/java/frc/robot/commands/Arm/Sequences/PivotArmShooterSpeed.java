@@ -4,29 +4,22 @@
 
 package frc.robot.commands.Arm.Sequences;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants;
 import frc.robot.commands.Arm.ProfiledPivotArmCmd;
-import frc.robot.commands.Drive.PIDTurnCmd;
 import frc.robot.commands.Shooter.BangBangShooterCmd;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class PivotArmTurnWarmUpShooterCmdSeq extends SequentialCommandGroup {
-  /** Creates a new PivotArmTurnWarmUpShooterCmdSeq. */
-  public PivotArmTurnWarmUpShooterCmdSeq(double armAngle, double turnAngle, double shooterRPM, int red) {
+public class PivotArmShooterSpeed extends SequentialCommandGroup {
+  /** Creates a new PivotArmShooter. */
+  public PivotArmShooterSpeed(double armAngle, double rpm) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
         new ParallelRaceGroup(
-            new ParallelCommandGroup(new ProfiledPivotArmCmd(
-                armAngle),
-                new PIDTurnCmd(-70
-                    * red)),
-            new BangBangShooterCmd(
-                shooterRPM)));
+            new ProfiledPivotArmCmd(armAngle),
+            new BangBangShooterCmd(rpm)));
   }
 }
