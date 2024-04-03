@@ -15,6 +15,7 @@ import frc.robot.commands.Arm.ProfiledPivotArmCmd;
 import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
 import frc.robot.commands.Drive.DriveAngleCmd;
 import frc.robot.commands.Drive.DriveDistanceCmd;
+import frc.robot.commands.Drive.PIDTurnCmd;
 import frc.robot.commands.Intake.RunIntakePhotoEyeCmd;
 import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
 import frc.robot.commands.Shooter.BangBangShooterCmd;
@@ -35,7 +36,7 @@ public class AutoTwoNoteAmpSide extends SequentialCommandGroup {
                                 // drives forward to line up with note
                                 new DriveDistanceCmd(Units.inchesToMeters(9)),
                                 // turns LEFT face note
-                                new DriveAngleCmd(-59 * red),
+                                new PIDTurnCmd(-65 * red), //new DriveAngleCmd(-59 * red),
                                 // Move arm to ground, turn on intake, and move forward
                                 new ParallelCommandGroup(new ProfiledPivotArmCmd(Constants.Arm.GROUND),
                                                 new RunIntakePhotoEyeCmd(Constants.Intake.INTAKE_SPEED).withTimeout(5),
@@ -52,13 +53,13 @@ public class AutoTwoNoteAmpSide extends SequentialCommandGroup {
                                                                                 new DriveDistanceCmd(Units
                                                                                                 .inchesToMeters(-3))),
                                                                 //turn left to amp
-                                                                new DriveAngleCmd(-85 * red),
+                                                                new PIDTurnCmd(-83 * red), //new DriveAngleCmd(-85 * red),
                                                                 //move arm to amp and drive backward
                                                                 new ParallelCommandGroup(
                                                                                 new ProfiledPivotArmCmd(
                                                                                                 Constants.Arm.AMP),
                                                                                 new DriveDistanceCmd(Units
-                                                                                                .inchesToMeters(-28))),
+                                                                                                .inchesToMeters(-25))),
                                                                 // Shoot in amp
                                                                 new ParallelRaceGroup(
                                                                                 new BangBangShooterCmd(
@@ -74,7 +75,7 @@ public class AutoTwoNoteAmpSide extends SequentialCommandGroup {
                                                                                 new DriveDistanceCmd(Units
                                                                                                 .inchesToMeters(5))),
                                                                 //turn to center
-                                                                new DriveAngleCmd(90 * red)),
+                                                                new PIDTurnCmd(90 * red)),
                                                 // does not have note, pivot arm to home
                                                 new ProfiledPivotArmCmd(Constants.Arm.HOME),
                                                 Intake.getInstance().hasNoteSupplier()),

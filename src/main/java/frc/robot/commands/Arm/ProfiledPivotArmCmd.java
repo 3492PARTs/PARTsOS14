@@ -51,7 +51,6 @@ public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
   @Override
   public void initialize() {
     super.initialize();
-    System.out.println("angle setpoint " + angleSetpoint);
   }
 
   @Override
@@ -59,20 +58,19 @@ public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
     super.execute();
     if (angleSetpoint == Constants.Arm.GROUND && getController().atGoal() && !Arm.getInstance().getLimitSwitch()) {
       Arm.getInstance().setSpeed(0.1);
-      System.out.println("ARM EXTRA BOTTOM");
     }
   }
 
   @Override
   public void end(boolean interrupted) {
     Arm.getInstance().setSpeed(0);
+    System.out.println("Pivot arm end interrupt:" + interrupted);
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    System.out.println("at goal " + getController().atGoal());
-    System.out.println("arm " + Arm.getInstance().getLimitSwitch());
     if (angleSetpoint == Constants.Arm.GROUND) {
       return Arm.getInstance().getLimitSwitch();
     } else {

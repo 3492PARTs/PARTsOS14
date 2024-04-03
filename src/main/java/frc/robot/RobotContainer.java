@@ -182,7 +182,6 @@ public class RobotContainer {
     //* Change arm controls to climber controls */
     operatorController.povRight().onTrue(Commands.runOnce(() -> {
       climbMode = !climbMode;
-      System.out.println("climb mode " + climbMode);
     }));
 
     //* ----------------------------------------------------------------------------------- */
@@ -374,7 +373,7 @@ public class RobotContainer {
           .withProperties(Map.of("Label position", "TOP"));
 
       driveTrainLayout.add(driveTrain);
-      driveTrainLayout.addNumber("Gyro", driveTrain.getGyroAngleSupplier()).withWidget(BuiltInWidgets.kGyro);
+      driveTrainLayout.addNumber("Gyro", driveTrain.getGyroAngleSupplier());
       driveTrainLayout.addDouble("Left Drive Distance", driveTrain::leftDistance);
       driveTrainLayout.addDouble("Right Drive Distance", driveTrain::rightDistance);
 

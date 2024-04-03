@@ -23,9 +23,9 @@ import frc.robot.commands.Shooter.BangBangShooterCmd;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class AutoThreeNoteMiddle extends SequentialCommandGroup {
+public class AutoThreeAmpOnlyNoteMiddleCopy extends SequentialCommandGroup {
         /** Creates a new AutoFourNoteMiddlePosition. */
-        public AutoThreeNoteMiddle(int red, boolean ampOrEmpty, boolean speakerOrAmp) {
+        public AutoThreeAmpOnlyNoteMiddleCopy(int red, boolean ampOrEmpty, boolean speakerOrAmp) {
                 // Add your commands in the addCommands() call, e.g.
                 // addCommands(new FooCommand(), new BarCommand());
                 addCommands(new ZeroArmCmdSeq(),
@@ -55,7 +55,7 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                                 new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new HoldArmInPositionCmd(Constants.Arm.SPEAKER)),
                                 // drive forward to line up with note
-                                new DriveDistanceCmd(Units.inchesToMeters(41.0)),
+                                new DriveDistanceCmd(Units.inchesToMeters(43.0)),
                                 // Go amp or Go Empty side
                                 new ConditionalCommand(
                                                 // Condition: Turn to empty side note
@@ -94,7 +94,7 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                                 // Condition: Turn to amp side note
                                                 new SequentialCommandGroup(
                                                                 new ParallelCommandGroup(// Turn to note
-                                                                                new DriveAngleCmd(80 * red),
+                                                                                new DriveAngleCmd(83 * red),
                                                                                 //Move arm to ground
                                                                                 new ProfiledPivotArmCmd(
                                                                                                 Constants.Arm.GROUND)),
@@ -109,16 +109,16 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                                                 new ConditionalCommand(
                                                                                 // Condition: robot goes to speaker 
                                                                                 new SequentialCommandGroup(
-                                                                                                // turn, raise arm, and speed up
+                                                                                                //drive back to center 
+                                                                                                // turn to speaker
+                                                                                                new DriveAngleCmd(-70
+                                                                                                                * red),
+                                                                                                // Drive to speaker, raise arm, and speed up
                                                                                                 new ParallelRaceGroup(
                                                                                                                 new BangBangShooterCmd(
                                                                                                                                 Constants.Shooter.WARMUP_SPEAKER_RPM),
-                                                                                                                new ParallelCommandGroup(// turn to speaker
-                                                                                                                                new DriveAngleCmd(
-                                                                                                                                                -70
-                                                                                                                                                                * red),
-                                                                                                                                new ProfiledPivotArmCmd(
-                                                                                                                                                38))),
+                                                                                                                new ProfiledPivotArmCmd(
+                                                                                                                                38)),
                                                                                                 // Shoot
                                                                                                 new ParallelRaceGroup(
                                                                                                                 new BangBangShooterCmd(
@@ -126,8 +126,8 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                                                                                                 new RunIntakeWhenShooterAtRPMCmd(
                                                                                                                                 Constants.Shooter.SPEAKER_RPM),
                                                                                                                 new HoldArmInPositionCmd(
-                                                                                                                                38)),
-                                                                                                new DriveAngleCmd(-10
+                                                                                                                                43)),
+                                                                                                new DriveAngleCmd(-30
                                                                                                                 * red)),
                                                                                 //robot goes to amp
                                                                                 new SequentialCommandGroup(

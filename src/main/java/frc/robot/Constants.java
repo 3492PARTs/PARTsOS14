@@ -31,7 +31,7 @@ public final class Constants {
     public static final double kI = 0.1;
     public static final double kD = 0.6;
 
-    public static final double turning_kP = .073;//0.07;
+    public static final double turning_kP = 0.091;
     public static final double turning_kI = 0.0;//0.013;
     public static final double turning_kD = 0.0;//0.01;
   }

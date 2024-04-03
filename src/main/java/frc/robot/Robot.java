@@ -56,6 +56,7 @@ public class Robot extends TimedRobot {
               Logger.getInstance().logString(command.getName(), "Command initialized");
               Shuffleboard.addEventMarker(
                   "Command initialized", command.getName(), EventImportance.kNormal);
+              System.out.println("Command initialized " + command.getName());
             });
     CommandScheduler.getInstance()
         .onCommandInterrupt(
@@ -63,6 +64,7 @@ public class Robot extends TimedRobot {
               Logger.getInstance().logString(command.getName(), "Command interrupted");
               Shuffleboard.addEventMarker(
                   "Command interrupted", command.getName(), EventImportance.kNormal);
+              System.out.println("Command interrupted " + command.getName());
             });
     CommandScheduler.getInstance()
         .onCommandFinish(
@@ -70,12 +72,14 @@ public class Robot extends TimedRobot {
               Logger.getInstance().logString(command.getName(), "Command finished");
               Shuffleboard.addEventMarker(
                   "Command finished", command.getName(), EventImportance.kNormal);
+              System.out.println("Command finished " + command.getName());
+
             });
 
-    if (Constants.Debug.debugMode)
-      Dashboard.selectDashboardTab(Constants.Dashboard.Tabs.DEBUG.tabName);
-    else
+    if (!Constants.Debug.debugMode)
       Dashboard.selectDashboardTab(Constants.Dashboard.Tabs.PRE_MATCH.tabName);
+    //else
+    //Dashboard.selectDashboardTab(Constants.Dashboard.Tabs.DEBUG.tabName);
   }
 
   /**
@@ -129,8 +133,8 @@ public class Robot extends TimedRobot {
 
     if (!Constants.Debug.debugMode)
       Dashboard.selectDashboardTab(Constants.Dashboard.Tabs.AUTONOMOUS.tabName);
-    else
-      Dashboard.selectDashboardTab(Constants.Dashboard.Tabs.DEBUG.tabName);
+    //else
+    //Dashboard.selectDashboardTab(Constants.Dashboard.Tabs.DEBUG.tabName);
   }
 
   /** This function is called periodically during autonomous. */
@@ -153,8 +157,8 @@ public class Robot extends TimedRobot {
 
     if (!Constants.Debug.debugMode)
       Dashboard.selectDashboardTab(Constants.Dashboard.Tabs.TELEOPERATED.tabName);
-    else
-      Dashboard.selectDashboardTab(Constants.Dashboard.Tabs.DEBUG.tabName);
+    //else
+    //Dashboard.selectDashboardTab(Constants.Dashboard.Tabs.DEBUG.tabName);
   }
 
   /** This function is called periodically during operator control. */
