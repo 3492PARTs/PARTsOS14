@@ -51,7 +51,7 @@ public class Intake extends SubsystemBase {
 
   // methods for note detection using photoEyes
   public Boolean hasNote() {
-    return !photoEye.get();
+    return photoEye != null && !photoEye.get();
   }
 
   public BooleanSupplier hasNoteSupplier() {

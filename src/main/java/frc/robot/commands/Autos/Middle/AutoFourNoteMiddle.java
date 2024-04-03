@@ -31,7 +31,7 @@ public class AutoFourNoteMiddle extends SequentialCommandGroup {
                                 new ParallelRaceGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
                                                 new BangBangShooterCmd(
                                                                 Constants.Shooter.WARMUP_SPEAKER_RPM)),
-                                // Shoot
+                                // Shoot preload note 1
                                 new ParallelRaceGroup(
                                                 new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
@@ -45,18 +45,17 @@ public class AutoFourNoteMiddle extends SequentialCommandGroup {
                                 // Pivot up and speed
                                 new ParallelRaceGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER_BACK_30),
                                                 new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM)),
-                                // Shoot
+                                // Shoot note 2
                                 new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new HoldArmInPositionCmd(Constants.Arm.SPEAKER_BACK_30)),
-                                //TODO Untested below
+                                // drive forward to line up with next note
                                 new DriveDistanceCmd(Units.inchesToMeters(1.1)),
-                                // Turn to empty side note
-
-                                new PIDTurnCmd(-90 * red), //-75
-
-                                //Move arm to ground
-                                new ProfiledPivotArmCmd(Constants.Arm.GROUND),
+                                new ParallelCommandGroup(
+                                                // Turn to empty side note
+                                                new PIDTurnCmd(-90 * red), //-75
+                                                //Move arm to ground
+                                                new ProfiledPivotArmCmd(Constants.Arm.GROUND)),
                                 //  turn on intake, and move forward
                                 new ParallelCommandGroup(
                                                 new IntakeCmdSeq(Constants.Intake.INTAKE_SPEED), //.withTimeout(5),
@@ -64,38 +63,40 @@ public class AutoFourNoteMiddle extends SequentialCommandGroup {
 
                                 // Back up to avoid stage
                                 new DriveDistanceCmd(-Units.inchesToMeters(34)),
-                                // Turn raise arm and speed up
+                                // Turn, raise arm, and speed up
                                 new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM),
                                                 new ParallelCommandGroup(
                                                                 new ProfiledPivotArmCmd(Constants.Arm.SPEAKER_BACK_30),
                                                                 new PIDTurnCmd(90 * red))),
-                                // Shoot
+                                // Shoot note 3
                                 new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new HoldArmInPositionCmd(Constants.Arm.SPEAKER_BACK_30)),
-
-                                // Turn to amp side note
-                                new PIDTurnCmd(90 * red),
-                                //Move arm to ground
-                                new ProfiledPivotArmCmd(Constants.Arm.GROUND),
+                                new ParallelCommandGroup(
+                                                // Turn to amp side note
+                                                new PIDTurnCmd(90 * red),
+                                                //Move arm to ground
+                                                new ProfiledPivotArmCmd(Constants.Arm.GROUND)),
                                 //  turn on intake, and move forward
                                 new ParallelCommandGroup(
                                                 new IntakeCmdSeq(Constants.Intake.INTAKE_SPEED), //.withTimeout(5),
                                                 new DriveDistanceCmd(Units.inchesToMeters(36))),
-
-                                // Turn raise arm and speed up
+                                // Turn, raise arm, and speed up
                                 new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM),
                                                 new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
                                                 new PIDTurnCmd(-70 * red)),
-                                // Shoot
+                                // Shoot note 4
                                 new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new HoldArmInPositionCmd(Constants.Arm.SPEAKER)),
                                 // Turn to center and home arm
                                 new ParallelCommandGroup(new ProfiledPivotArmCmd(Constants.Arm.HOME),
                                                 new PIDTurnCmd(-30 * red)),
-                                // Drive to center
-                                new DriveDistanceCmd(Units.inchesToMeters(156)));
+                                new ParallelRaceGroup(// Drive to center
+                                                new DriveDistanceCmd(Units.inchesToMeters(156)),
+                                                new HoldArmInPositionCmd(Constants.Arm.HOME)),
+                                // hold arm until end of auto
+                                new HoldArmInPositionCmd(Constants.Arm.HOME));
 
         }
 }

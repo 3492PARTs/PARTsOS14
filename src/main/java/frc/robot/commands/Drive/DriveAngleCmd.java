@@ -5,7 +5,6 @@
 package frc.robot.commands.Drive;
 
 import frc.robot.subsystems.DriveTrain;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** DriveAngleCmd */
@@ -38,9 +37,9 @@ public class DriveAngleCmd extends Command {
 
     // If angle is greater than set point, drive counter clock-wise otherwise go clock-wise.
     if (direction) {
-      driveTrain.driveArcade(0, -0.35);
+      driveTrain.driveArcade(0, -0.45);
     } else {
-      driveTrain.driveArcade(0, 0.35);
+      driveTrain.driveArcade(0, 0.45);
     }
 
   }

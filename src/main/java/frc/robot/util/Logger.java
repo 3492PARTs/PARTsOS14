@@ -9,7 +9,6 @@ import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
-import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants;
 
 /** Add your docs here. */
@@ -24,7 +23,7 @@ public class Logger {
 
             log = DataLogManager.getLog();
             // Record both DS control and joystick data
-            DriverStation.startDataLog(log);
+            //DriverStation.startDataLog(log);
         }
     }
 

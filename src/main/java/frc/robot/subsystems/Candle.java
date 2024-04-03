@@ -58,7 +58,7 @@ public class Candle extends SubsystemBase {
         //configAll.stripType = LEDStripType.RGB;
         configAll.stripType = LEDStripType.GRB;
         configAll.brightnessScalar = 0.5;
-        configAll.vBatOutputMode = VBatOutputMode.Modulated; //TODO: does this do anything?
+        configAll.vBatOutputMode = VBatOutputMode.Modulated; // does this do anything?
         candle.configAllSettings(configAll, 100);
 
         setColor(Color.OFF);

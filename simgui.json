@@ -26,8 +26,21 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Autonomous/Arm": "Subsystem",
+      "/Shuffleboard/Debug/Arm/Arm": "Subsystem",
+      "/Shuffleboard/Debug/Arm/Zero Arm Sequence": "Command",
+      "/Shuffleboard/Debug/Climber/Climber": "Subsystem",
+      "/Shuffleboard/Debug/Drive Train/DriveTrain": "Subsystem",
+      "/Shuffleboard/Debug/Intake/Intake": "Subsystem",
+      "/Shuffleboard/Debug/Shooter/Shooter": "Subsystem",
+      "/Shuffleboard/Debug/Zero Arm Sequence": "Command",
       "/Shuffleboard/Drivetrain Tests/Backward": "Command",
-      "/Shuffleboard/Drivetrain Tests/Forward": "Command"
+      "/Shuffleboard/Drivetrain Tests/Forward": "Command",
+      "/Shuffleboard/Pre Match/Auto Mode": "String Chooser",
+      "/Shuffleboard/Teleoperated/Arm": "Subsystem",
+      "/SmartDashboard/Arm": "Subsystem",
+      "/SmartDashboard/Zero Arm Sequence": "Command",
+      "/SmartDashboard/choose auto mode": "String Chooser"
     }
   },
   "NetworkTables": {

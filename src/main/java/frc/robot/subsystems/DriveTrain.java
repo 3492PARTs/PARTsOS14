@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.DoubleSupplier;
+
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
@@ -112,6 +114,10 @@ public class DriveTrain extends SubsystemBase {
 
   public double getGyroAngle() {
     return gyro.getAngle();
+  }
+
+  public DoubleSupplier getGyroAngleSupplier() {
+    return this::getGyroAngle;
   }
 
   public void zeroGyro() {

@@ -26,7 +26,7 @@ public class RunArmToLimitSwitchCmd extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    arm.setSpeed(.2);
+    arm.setSpeed(.3);
   }
 
   // Called once the command ends or is interrupted.

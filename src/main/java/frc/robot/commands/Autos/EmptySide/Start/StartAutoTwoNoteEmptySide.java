@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Autos.AmpSide.StartCommands;
+package frc.robot.commands.Autos.EmptySide.Start;
 
 import java.util.Optional;
 
@@ -10,13 +10,13 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.Autos.AmpSide.AutoTwoNoteAmpSide;
+import frc.robot.commands.Autos.EmptySide.AutoTwoNoteEmptySide;
 
-public class StartAutoTwoNoteAmpSide extends Command {
+public class StartAutoTwoNoteEmptySide extends Command {
   private int red = 1;
 
   /** Creates a new StartAutoCmd. */
-  public StartAutoTwoNoteAmpSide() {
+  public StartAutoTwoNoteEmptySide() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -42,7 +42,7 @@ public class StartAutoTwoNoteAmpSide extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    CommandScheduler.getInstance().schedule(new AutoTwoNoteAmpSide(red));
+    CommandScheduler.getInstance().schedule(new AutoTwoNoteEmptySide(red));
   }
 
   // Returns true when the command should end.

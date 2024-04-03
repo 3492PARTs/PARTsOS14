@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.VideoSource;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Camera extends SubsystemBase {
@@ -17,5 +18,9 @@ public class Camera extends SubsystemBase {
             camInstance = new Camera();
         }
         return camInstance;
+    }
+
+    public VideoSource getVideoSource() {
+        return CameraServer.getVideo().getSource();
     }
 }

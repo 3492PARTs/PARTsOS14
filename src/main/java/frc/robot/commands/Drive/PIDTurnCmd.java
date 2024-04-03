@@ -31,12 +31,12 @@ public class PIDTurnCmd extends Command {
   @Override
   public void initialize() {
     driveTrain.zeroGyro();
-    rotPIDController.reset();
-    initialAngle = driveTrain.getGyroAngle();
 
+    initialAngle = driveTrain.getGyroAngle();
+    rotPIDController.reset();
     rotPIDController.setTolerance(4);
     rotPIDController.setSetpoint(setPoint);
-    rotPIDController.setIntegratorRange(-1, 1);
+    //rotPIDController.setIntegratorRange(-1, 1);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -44,7 +44,7 @@ public class PIDTurnCmd extends Command {
   public void execute() {
     // Calculating how much distance covered and how much is left.
     double volts = rotPIDController.calculate(driveTrain.getGyroAngle() - initialAngle);
-
+    /* 
     if (Math.abs(volts) > 0 && Math.abs(volts) < 1.05) {
       if (volts > 0) {
         volts = 1.05;
@@ -52,15 +52,18 @@ public class PIDTurnCmd extends Command {
         volts = -1.05;
       }
     }
+    */
     volts = MathUtil.clamp(volts, -6, 6);
 
     driveTrain.moveVolts(-volts, volts);
-    SmartDashboard.putNumber("PID Turn", volts);
+    //SmartDashboard.putNumber("PID Turn", volts);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    System.out.println("Drive turn end interrupt:" + interrupted);
+
     driveTrain.driveTank(0, 0);
   }
 
@@ -72,6 +75,8 @@ public class PIDTurnCmd extends Command {
     if (Constants.Debug.debugMode) {
       SmartDashboard.putBoolean(String.format("%s at setpoint", getName()), rotPIDController.atSetpoint());
       SmartDashboard.putNumber(String.format("%s motor velocity", getName()), Math.abs(driveTrain.getMotorVelocity()));
+      SmartDashboard.putNumber(String.format("%s gyro velocity", getName()), Math.abs(driveTrain.getGyroAngle()));
+
       SmartDashboard.putBoolean(String.format("%s motor velocity under threshold", getName()),
           motorVelocityUnderThreshold);
     }

@@ -11,28 +11,37 @@ import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
 import frc.robot.commands.Arm.Sequences.ZeroPivotEncodersCmdSeq;
 import frc.robot.commands.Autos.AutoMoveForward;
 import frc.robot.commands.Autos.AutoTurn;
-import frc.robot.commands.Autos.StartAutoCmd;
-import frc.robot.commands.Autos.AmpSide.AutoOneNoteAmpSide;
-import frc.robot.commands.Autos.AmpSide.AutoTwoNoteAmpSide;
-import frc.robot.commands.Autos.EmptySide.AutoOneNoteEmptySide;
-import frc.robot.commands.Autos.EmptySide.AutoTwoNoteEmptySide;
+import frc.robot.commands.Autos.AmpSide.Start.StartAutoOneNoteAmpSide;
+import frc.robot.commands.Autos.AmpSide.Start.StartAutoTwoNoteAmpSide;
+import frc.robot.commands.Autos.EmptySide.Start.StartAutoOneNoteEmptySide;
+import frc.robot.commands.Autos.EmptySide.Start.StartAutoTwoNoteEmptySide;
 import frc.robot.commands.Autos.Middle.AutoOneNoteMiddle;
 import frc.robot.commands.Autos.Middle.AutoTwoNoteMiddle;
+import frc.robot.commands.Autos.Middle.Start.StartAutoFourNoteMiddle;
+import frc.robot.commands.Autos.Middle.Start.StartAutoThreeNoteMiddle;
 import frc.robot.commands.Intake.RunIntakeCmd;
 import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
 import frc.robot.commands.Intake.Sequences.IntakeArmToPositionCmdSeq;
 import frc.robot.commands.Shooter.BangBangShooterCmd;
 import frc.robot.commands.Shooter.ShootCmd;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Candle;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Candle.Color;
+import frc.robot.util.Dashboard;
 import frc.robot.util.Logger;
 import frc.robot.subsystems.Climber;
+
+import java.util.Map;
+
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -66,21 +75,21 @@ public class RobotContainer {
 
   public final Trigger zeroPivotTrigger = new Trigger(arm.getLimitSwitchSupplier());
   public final Trigger armGroundTrigger = new Trigger(arm.getLimitSwitchSupplier());
-  public final Trigger noteTrigger = new Trigger(() -> {
-    return intake.hasNote();
-  });
+  public final Trigger noteTrigger = new Trigger(intake.hasNoteSupplier());
 
   // SmartDashboard chooser for auto tasks.
   SendableChooser<Command> autoChooser = new SendableChooser<>();
+  private GenericEntry ampOrEmpty;
+  private GenericEntry speakerOrAmp;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
 
   public RobotContainer() {
+    //configureSmartDashboardCommands();
+    configureDashboard();
     configureAutonomousCommands();
-    configureSmartDashboardCommands();
-    SmartDashboard.putData(arm);
   }
 
   /**
@@ -173,7 +182,6 @@ public class RobotContainer {
     //* Change arm controls to climber controls */
     operatorController.povRight().onTrue(Commands.runOnce(() -> {
       climbMode = !climbMode;
-      System.out.println("climb mode " + climbMode);
     }));
 
     //* ----------------------------------------------------------------------------------- */
@@ -292,73 +300,199 @@ public class RobotContainer {
     //zeroPivotTrigger.onTrue(new NullCmd()); //idk if this is causing pause in autos or not?
   }
 
+  public void configureDashboard() {
+    //* ----------------------------------------------------------------------------------- */
+    //* Pre Match Dashboard */
+    //* ----------------------------------------------------------------------------------- */
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.PRE_MATCH.tabName).add("Auto Mode", autoChooser)
+        .withSize(2, 1) // make the widget 2x1
+        .withPosition(0, 0); // place it in the top-left corner
+
+    ShuffleboardLayout auto3NoteMiddleOptions = Dashboard
+        .getDashboardTab(frc.robot.Constants.Dashboard.Tabs.PRE_MATCH.tabName)
+        .getLayout("3 Note Auto Options", BuiltInLayouts.kList)
+        .withSize(2, 2).withPosition(2, 0);
+
+    ampOrEmpty = auto3NoteMiddleOptions.add("T: Go Empty, F: Go Amp", false).withWidget(BuiltInWidgets.kToggleButton)
+        .getEntry();
+
+    speakerOrAmp = auto3NoteMiddleOptions.add("Amp Chosen: T: Shoot Speaker, F: Shoot Amp", false)
+        .withWidget(BuiltInWidgets.kToggleButton).getEntry();
+
+    //* ----------------------------------------------------------------------------------- */
+    //* Autonomous Dashboard */
+    //* ----------------------------------------------------------------------------------- */
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.AUTONOMOUS.tabName)
+        .addNumber("Gyro", driveTrain.getGyroAngleSupplier()).withWidget(BuiltInWidgets.kGyro).withPosition(0, 0);
+
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.AUTONOMOUS.tabName).add(arm).withPosition(2, 0);
+
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.AUTONOMOUS.tabName).addBoolean("Arm Limit",
+        arm.getLimitSwitchSupplier()).withPosition(2, 1);
+
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.AUTONOMOUS.tabName).addNumber("Arm Angle",
+        arm.getAngleSupplier()).withPosition(3, 1);
+
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.AUTONOMOUS.tabName).addBoolean("Note",
+        intake.hasNoteSupplier()).withPosition(2, 2);
+
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.AUTONOMOUS.tabName).addNumber("Shooter RPM",
+        shooter::getShooterRPM).withPosition(3, 2);
+
+    //* ----------------------------------------------------------------------------------- */
+    //* Teleoperated Dashboard */
+    //* ----------------------------------------------------------------------------------- */
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addBoolean("Arm Limit",
+        arm.getLimitSwitchSupplier()).withPosition(0, 0);
+
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addNumber("Arm Angle",
+        arm.getAngleSupplier()).withPosition(1, 0);
+
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addBoolean("Climber Control",
+        () -> {
+          return climbMode;
+        }).withPosition(2, 0);
+
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addBoolean("Note",
+        intake.hasNoteSupplier()).withPosition(0, 1);
+
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addNumber("Shooter RPM",
+        shooter::getShooterRPM).withPosition(1, 1);
+
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName)
+        .add(Camera.getInstance().getVideoSource()).withWidget(BuiltInWidgets.kCameraStream)
+        .withSize(7, 6).withPosition(3, 0);
+
+    //* ----------------------------------------------------------------------------------- */
+    //* Debug Dashboard */
+    //* ----------------------------------------------------------------------------------- */
+    if (Constants.Debug.debugMode) {
+      ShuffleboardLayout driveTrainLayout = Dashboard
+          .getDashboardTab(frc.robot.Constants.Dashboard.Tabs.DEBUG.tabName)
+          .getLayout("Drive Train", BuiltInLayouts.kList).withSize(2, 4).withPosition(0, 0)
+          .withProperties(Map.of("Label position", "TOP"));
+
+      driveTrainLayout.add(driveTrain);
+      driveTrainLayout.addNumber("Gyro", driveTrain.getGyroAngleSupplier());
+      driveTrainLayout.addDouble("Left Drive Distance", driveTrain::leftDistance);
+      driveTrainLayout.addDouble("Right Drive Distance", driveTrain::rightDistance);
+
+      ShuffleboardLayout armLayout = Dashboard
+          .getDashboardTab(frc.robot.Constants.Dashboard.Tabs.DEBUG.tabName)
+          .getLayout("Arm", BuiltInLayouts.kList).withSize(2, 4).withPosition(2, 0)
+          .withProperties(Map.of("Label position", "TOP"));
+
+      armLayout.add(arm);
+
+      armLayout.add("Zero Arm Sequence", new ZeroArmCmdSeq()).withProperties(Map.of("Label position", "HIDDEN"));
+
+      armLayout.addBoolean("Arm Limit",
+          arm.getLimitSwitchSupplier());
+
+      armLayout.addNumber("Arm Angle",
+          arm.getAngleSupplier());
+
+      armLayout.addNumber("Arm Voltage",
+          arm::getAverageVoltage);
+
+      ShuffleboardLayout intakeLayout = Dashboard
+          .getDashboardTab(frc.robot.Constants.Dashboard.Tabs.DEBUG.tabName)
+          .getLayout("Intake", BuiltInLayouts.kList).withSize(2, 4).withPosition(4, 0)
+          .withProperties(Map.of("Label position", "TOP"));
+
+      intakeLayout.add(intake);
+
+      intakeLayout.addBoolean("Has Note",
+          intake.hasNoteSupplier());
+
+      ShuffleboardLayout shooterLayout = Dashboard
+          .getDashboardTab(frc.robot.Constants.Dashboard.Tabs.DEBUG.tabName)
+          .getLayout("Shooter", BuiltInLayouts.kList).withSize(2, 4).withPosition(6, 0)
+          .withProperties(Map.of("Label position", "TOP"));
+
+      shooterLayout.add(shooter);
+
+      shooterLayout.addDouble("Shooter RPM",
+          shooter::getShooterRPM);
+
+      shooterLayout.addDouble("Left Motor Velocity",
+          shooter::getLeftVelocity);
+
+      shooterLayout.addDouble("Right Motor Velocity",
+          shooter::getRightVelocity);
+
+      ShuffleboardLayout climberLayout = Dashboard
+          .getDashboardTab(frc.robot.Constants.Dashboard.Tabs.DEBUG.tabName)
+          .getLayout("Climber", BuiltInLayouts.kList).withSize(2, 4).withPosition(8, 0)
+          .withProperties(Map.of("Label position", "TOP"));
+
+      climberLayout.add(climber);
+
+      climberLayout.addBoolean("Climber Control",
+          () -> {
+            return climbMode;
+          });
+    }
+
+  }
+
+  /*
   public void configureSmartDashboardCommands() {
     if (Constants.Debug.debugMode) {
       // Zero Pivot Command
       SmartDashboard.putData("Zero Arm Sequence", new ZeroArmCmdSeq());
     }
-
-    SmartDashboard.putBoolean("Auto Three Empty", false);
-
   }
-
+  
   public void updateSmartDashboard() {
     // Shooter
     SmartDashboard.putNumber("Shooter RPM", shooter.getShooterRPM());
     SmartDashboard.putNumber("Shooter Left Velocity", shooter.getLeftVelocity());
     SmartDashboard.putNumber("Shooter Right Velocity", shooter.getRightVelocity());
-
+  
     // PhotoEye
     SmartDashboard.putBoolean("HAS NOTE", intake.hasNote());
-
+  
     // LimitSwitch
     SmartDashboard.putBoolean("Arm Switch", arm.getLimitSwitch());
-
+  
     // Arm Angle
     SmartDashboard.putNumber("Arm Angle", arm.getAngle());
-
+  
     // Arm Angle
     SmartDashboard.putNumber("Arm Voltage", arm.getAverageVoltage());
-
+  
     // Climber or Arm Controls
     SmartDashboard.putBoolean("Climber control", climbMode);
-
+  
     if (Constants.Debug.debugMode) {
       // Drive
       SmartDashboard.putNumber("Left Drive Distance", driveTrain.leftDistance());
       SmartDashboard.putNumber("Right Drive Distance", driveTrain.rightDistance());
-
+  
       SmartDashboard.putNumber("Gyro Angle", driveTrain.getGyroAngle());
     }
-
-    SmartDashboard.putBoolean("Auto Three Empty Tester", SmartDashboard.getBoolean("Auto Three Empty", false));
-
   }
+  */
 
   public void configureAutonomousCommands() {
-    SmartDashboard.putData("choose auto mode", autoChooser);
+    //SmartDashboard.putData("choose auto mode", autoChooser);
 
-    // SIDE INDEPENDENT AUTOS
     autoChooser.addOption("Move Forward", new AutoMoveForward());
     autoChooser.addOption("Move Turn", new AutoTurn());
+
     autoChooser.addOption("One Note Middle", new AutoOneNoteMiddle());
     autoChooser.addOption("Two Note Middle", new AutoTwoNoteMiddle());
 
-    //RED AUTOS
-    autoChooser.addOption("RED: One Note Amp Side ", new AutoOneNoteAmpSide(1));
-    autoChooser.addOption("RED: One Note Empty Side", new AutoOneNoteEmptySide(1));
-    autoChooser.addOption("RED: Two Note Amp Side", new AutoTwoNoteAmpSide(1));
-    autoChooser.addOption("RED: Two Note Empty Side", new AutoTwoNoteEmptySide(1));
+    autoChooser.addOption("Three Note Middle", new StartAutoThreeNoteMiddle(ampOrEmpty, speakerOrAmp));
+    autoChooser.addOption("Four Note Middle", new StartAutoFourNoteMiddle());
 
-    //BLUE AUTOS
-    autoChooser.addOption("BLUE: One Note Amp Side ", new AutoOneNoteAmpSide(-1));
-    autoChooser.addOption("BLUE: One Note Empty Side", new AutoOneNoteEmptySide(-1));
-    autoChooser.addOption("BLUE: Two Note Amp Side", new AutoTwoNoteAmpSide(-1));
-    autoChooser.addOption("BLUE: Two Note Empty Side", new AutoTwoNoteEmptySide(-1));
+    autoChooser.addOption("One Note Amp Side ", new StartAutoOneNoteAmpSide());
+    autoChooser.addOption("Two Note Amp Side", new StartAutoTwoNoteAmpSide());
 
-    if (Constants.Debug.debugMode) {
-      autoChooser.addOption("Test turn with color, red -> right, blue -> left", new StartAutoCmd());
-    }
+    autoChooser.addOption("One Note Empty Side", new StartAutoOneNoteEmptySide());
+    autoChooser.addOption("Two Note Empty Side", new StartAutoTwoNoteEmptySide());
+
   }
 
   /**

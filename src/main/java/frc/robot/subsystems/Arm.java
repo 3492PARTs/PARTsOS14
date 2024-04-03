@@ -124,7 +124,7 @@ public class Arm extends SubsystemBase {
 
   // Rotation calculations
   public double getRotationRate() {
-    //TODO: need to change to alernate encoders
+    //TODO: need to change to alternate encoders
 
     double left = pivotLeftMotor.getEncoder().getVelocity();
     double right = pivotRightMotor.getEncoder().getVelocity();
@@ -200,7 +200,7 @@ public class Arm extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  //TODO: Test this works
+  // Test this works
   /* 
   @Override
   public void initSendable(SendableBuilder builder) {

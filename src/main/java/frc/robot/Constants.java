@@ -31,7 +31,7 @@ public final class Constants {
     public static final double kI = 0.1;
     public static final double kD = 0.6;
 
-    public static final double turning_kP = .073;//0.07;
+    public static final double turning_kP = 0.091;
     public static final double turning_kI = 0.0;//0.013;
     public static final double turning_kD = 0.0;//0.01;
   }
@@ -58,7 +58,7 @@ public final class Constants {
     public static final double GROUND = 0;
     public static final double SPEAKER = 25.5;//28.0;
     public static final double HOME = 65.2;
-    public static final double AMP = 100;
+    public static final double AMP = 95;
     public static final double UPPER_BOUND = AMP + 10;
     public static final double SPEAKER_BACK_30 = 37;
     //public static final double LOWER_BOUND = GROUND + 10;
@@ -98,10 +98,26 @@ public final class Constants {
     public static final int LED_LENGTH = 100;
   }
 
+  public static final class Dashboard {
+    public enum Tabs {
+
+      PRE_MATCH("Pre Match"),
+      AUTONOMOUS("Autonomous"),
+      TELEOPERATED("Teleoperated"),
+      DEBUG("Debug");
+
+      public String tabName;
+
+      Tabs(String tabName) {
+        this.tabName = tabName;
+      }
+    }
+  }
+
   // THIS IS FOR SHUFFLEBOARD DEBUG PLUS OTHER MISC THINGS //
-  /** Debug Constants<p>For testingg only.<p>Do not use in prod! */
+  /** Debug Constants For testing only. Do not use in prod! */
   public static class Debug {
-    public static final boolean debugMode = true;
+    public static final boolean debugMode = false;
     public static final boolean logging = true;
   }
 
