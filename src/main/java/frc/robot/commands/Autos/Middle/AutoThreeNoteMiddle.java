@@ -48,7 +48,7 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                                 new ParallelCommandGroup(
                                                                 new DriveDistanceCmd(Units.inchesToMeters(-36)),
                                                                 new ProfiledPivotArmCmd(Constants.Arm.SPEAKER)),
-                                                new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM)),
+                                                new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM)), //TODO CHANGED
                                 // Shoot note 2
                                 new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
@@ -116,11 +116,10 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                                                                                 // turn, raise arm, and speed up
                                                                                                 new ParallelRaceGroup(
                                                                                                                 new BangBangShooterCmd(
-                                                                                                                                Constants.Shooter.WARMUP_SPEAKER_RPM),
+                                                                                                                                Constants.Shooter.SPEAKER_RPM), //TODO Changed
                                                                                                                 new ParallelCommandGroup(// turn to speaker
                                                                                                                                 new DriveAngleCmd(
-                                                                                                                                                -70
-                                                                                                                                                                * red),
+                                                                                                                                                -70 * red),
                                                                                                                                 new ProfiledPivotArmCmd(
                                                                                                                                                 38))),
                                                                                                 // Shoot
