@@ -58,7 +58,7 @@ public final class Constants {
     public static final double GROUND = 0;
     public static final double SPEAKER = 25.5;//28.0;
     public static final double HOME = 65.2;
-    public static final double AMP = 100;
+    public static final double AMP = 95;
     public static final double UPPER_BOUND = AMP + 10;
     public static final double SPEAKER_BACK_30 = 37;
     //public static final double LOWER_BOUND = GROUND + 10;
@@ -117,7 +117,7 @@ public final class Constants {
   // THIS IS FOR SHUFFLEBOARD DEBUG PLUS OTHER MISC THINGS //
   /** Debug Constants For testing only. Do not use in prod! */
   public static class Debug {
-    public static final boolean debugMode = true;
+    public static final boolean debugMode = false;
     public static final boolean logging = true;
   }
 

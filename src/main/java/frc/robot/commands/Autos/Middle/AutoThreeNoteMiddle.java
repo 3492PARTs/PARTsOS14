@@ -55,7 +55,7 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                                 new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new HoldArmInPositionCmd(Constants.Arm.SPEAKER)),
                                 // drive forward to line up with note
-                                new DriveDistanceCmd(Units.inchesToMeters(41.0)),
+                                new DriveDistanceCmd(Units.inchesToMeters(40.0)),
                                 // Go amp or Go Empty side
                                 new ConditionalCommand(
                                                 // Condition: Turn to empty side note
@@ -91,9 +91,11 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                                                                                 Constants.Arm.SPEAKER_BACK_30))
 
                                                 ),
+
                                                 // Condition: Turn to amp side note
                                                 new SequentialCommandGroup(
-                                                                new ParallelCommandGroup(// Turn to note
+                                                                new ParallelCommandGroup(
+                                                                                // Turn to note
                                                                                 new DriveAngleCmd(80 * red),
                                                                                 //Move arm to ground
                                                                                 new ProfiledPivotArmCmd(
@@ -133,13 +135,14 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                                                                 new SequentialCommandGroup(
                                                                                                 // Turn to amp
                                                                                                 new DriveAngleCmd(180),
-                                                                                                // Back up to amp
-                                                                                                new DriveDistanceCmd(
-                                                                                                                -Units.inchesToMeters(
-                                                                                                                                10)),
-                                                                                                // Move arm to amp
-                                                                                                new ProfiledPivotArmCmd(
-                                                                                                                Constants.Arm.AMP),
+                                                                                                new ParallelCommandGroup( // Back up to amp
+                                                                                                                new DriveDistanceCmd(
+                                                                                                                                Units.inchesToMeters(
+                                                                                                                                                -10)),
+                                                                                                                // Move arm to amp
+                                                                                                                new ProfiledPivotArmCmd(
+                                                                                                                                Constants.Arm.AMP)),
+
                                                                                                 // Shoot
                                                                                                 new ParallelRaceGroup(
                                                                                                                 new BangBangShooterCmd(
