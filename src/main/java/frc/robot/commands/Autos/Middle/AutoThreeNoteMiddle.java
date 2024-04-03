@@ -15,7 +15,6 @@ import frc.robot.commands.Arm.ProfiledPivotArmCmd;
 import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
 import frc.robot.commands.Drive.DriveAngleCmd;
 import frc.robot.commands.Drive.DriveDistanceCmd;
-import frc.robot.commands.Drive.DriveAngleCmd;
 import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
 import frc.robot.commands.Intake.Sequences.IntakeCmdSeq;
 import frc.robot.commands.Shooter.BangBangShooterCmd;
@@ -32,7 +31,7 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                 // Move arm to angle and warm up shooter
                                 new ParallelRaceGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
                                                 new BangBangShooterCmd(
-                                                                Constants.Shooter.WARMUP_SPEAKER_RPM)),
+                                                                Constants.Shooter.SPEAKER_RPM)), //TODO CHANGED
                                 // Shoot preload note 1
                                 new ParallelRaceGroup(
                                                 new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
@@ -42,14 +41,14 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                 new ProfiledPivotArmCmd(Constants.Arm.GROUND),
                                 //  turn on intake, and move forward
                                 new ParallelCommandGroup(
-                                                new IntakeCmdSeq(Constants.Intake.INTAKE_SPEED), //.withTimeout(5),
+                                                new IntakeCmdSeq(Constants.Intake.INTAKE_SPEED).withTimeout(5), //TODO CHANGED
                                                 new DriveDistanceCmd(Units.inchesToMeters(36))),
                                 // Pivot up and speed
                                 new ParallelRaceGroup(
                                                 new ParallelCommandGroup(
                                                                 new DriveDistanceCmd(Units.inchesToMeters(-36)),
                                                                 new ProfiledPivotArmCmd(Constants.Arm.SPEAKER)),
-                                                new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM)),
+                                                new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM)),
                                 // Shoot note 2
                                 new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
@@ -59,6 +58,7 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                 // Go amp or Go Empty side
                                 new ConditionalCommand(
                                                 // Condition: Turn to empty side note
+                                                // NOT USED
                                                 new SequentialCommandGroup(
                                                                 new ParallelCommandGroup(
                                                                                 //turn to note
@@ -91,8 +91,8 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                                                                                 Constants.Arm.SPEAKER_BACK_30))
 
                                                 ),
-
                                                 // Condition: Turn to amp side note
+                                                // THIS IS USED
                                                 new SequentialCommandGroup(
                                                                 new ParallelCommandGroup(
                                                                                 // Turn to note
@@ -103,13 +103,15 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                                                 //  turn on intake, and move forward
                                                                 new ParallelCommandGroup(
                                                                                 new IntakeCmdSeq(
-                                                                                                Constants.Intake.INTAKE_SPEED), //.withTimeout(5),
+                                                                                                Constants.Intake.INTAKE_SPEED)
+                                                                                                .withTimeout(5), //TODO CHANGED
                                                                                 new DriveDistanceCmd(
                                                                                                 Units.inchesToMeters(
                                                                                                                 36))),
                                                                 // Shoot speaker or shoot amp
                                                                 new ConditionalCommand(
                                                                                 // Condition: robot goes to speaker 
+                                                                                // THIS IS USED
                                                                                 new SequentialCommandGroup(
                                                                                                 // turn, raise arm, and speed up
                                                                                                 new ParallelRaceGroup(
@@ -129,9 +131,11 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                                                                                                                 Constants.Shooter.SPEAKER_RPM),
                                                                                                                 new HoldArmInPositionCmd(
                                                                                                                                 38)),
+                                                                                                // Turn to center
                                                                                                 new DriveAngleCmd(-10
                                                                                                                 * red)),
                                                                                 //robot goes to amp
+                                                                                // THIS IS NOT USED
                                                                                 new SequentialCommandGroup(
                                                                                                 // Turn to amp
                                                                                                 new DriveAngleCmd(180),
@@ -164,13 +168,12 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                                                                                                 * red)),
 
                                                                                 () -> {
-                                                                                        return speakerOrAmp;
+                                                                                        return true;//speakerOrAmp;
                                                                                 })),
                                                 () -> {
-                                                        return ampOrEmpty;
+                                                        return false; // ampOrEmpty;
                                                 }),
                                 // Home arm and Drive to center
-
                                 new ParallelRaceGroup(new DriveDistanceCmd(Units.inchesToMeters(72)),
                                                 new HoldArmInPositionCmd(Constants.Arm.HOME)),
                                 // Hold arm in position till finish
