@@ -62,8 +62,6 @@ public class PIDTurnCmd extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.out.println("Drive turn end interrupt:" + interrupted);
-
     driveTrain.driveTank(0, 0);
   }
 

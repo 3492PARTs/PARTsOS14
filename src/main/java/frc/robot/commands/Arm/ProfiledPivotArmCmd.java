@@ -64,8 +64,6 @@ public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
   @Override
   public void end(boolean interrupted) {
     Arm.getInstance().setSpeed(0);
-    System.out.println("Pivot arm end interrupt:" + interrupted);
-
   }
 
   // Returns true when the command should end.

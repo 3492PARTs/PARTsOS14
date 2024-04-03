@@ -43,7 +43,6 @@ public class DriveDistanceCmd extends Command {
   @Override
   public void end(boolean interrupted) {
     driveTrain.driveArcade(0, 0);
-    System.out.println("Drive dist end interrupt:" + interrupted);
   }
 
   // Returns true when the command should end.
