@@ -47,6 +47,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -214,6 +215,10 @@ public class RobotContainer {
     // Shoot out full speed
     operatorController.povUp().whileTrue(new ShootCmd(1));
 
+    //Lobbing Shooting
+    operatorController.povDown().onTrue(new ParallelRaceGroup(new BangBangShooterCmd(700),
+        new RunIntakeWhenShooterAtRPMCmd(700)));
+
     // Run intake in
     operatorController.povLeft().whileTrue(new RunIntakeCmd(-1));
 
@@ -228,7 +233,8 @@ public class RobotContainer {
       //speaker
       operatorController.y().onTrue(Commands.runOnce(() -> {
         //Schedule this outside of the command sequence so it stays running after the arm moves.
-        CommandScheduler.getInstance().schedule(new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM));
+        CommandScheduler.getInstance().schedule(new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM)
+            .withInterruptBehavior(InterruptionBehavior.kCancelSelf));
       }).andThen(new PivotArmCmdSeq(Constants.Arm.SPEAKER)));
 
       // home

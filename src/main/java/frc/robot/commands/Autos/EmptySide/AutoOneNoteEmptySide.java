@@ -30,9 +30,9 @@ public class AutoOneNoteEmptySide extends SequentialCommandGroup {
             new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
             new HoldArmInPositionCmd(Constants.Arm.SPEAKER)),
         //drive at an angle
-        new DriveDistanceCmd(Units.inchesToMeters(163)),
+        new DriveDistanceCmd(Units.inchesToMeters(100)),
         //turn to face forward
-        new DriveAngleCmd(26.5 * red),
+        new DriveAngleCmd(43.5 * red),
         //drive to center
         new DriveDistanceCmd(Units.inchesToMeters(148)));
   }

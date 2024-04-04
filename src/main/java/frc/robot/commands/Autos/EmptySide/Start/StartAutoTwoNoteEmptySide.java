@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.Autos.EmptySide.AutoSpeakTwoNoteEmptySide;
 import frc.robot.commands.Autos.EmptySide.AutoTwoNoteEmptySide;
 
 public class StartAutoTwoNoteEmptySide extends Command {
@@ -42,7 +43,7 @@ public class StartAutoTwoNoteEmptySide extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    CommandScheduler.getInstance().schedule(new AutoTwoNoteEmptySide(red));
+    CommandScheduler.getInstance().schedule(new AutoSpeakTwoNoteEmptySide(red));
   }
 
   // Returns true when the command should end.

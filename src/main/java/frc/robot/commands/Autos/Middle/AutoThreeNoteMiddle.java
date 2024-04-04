@@ -54,7 +54,7 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                                 new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM),
                                                 new HoldArmInPositionCmd(Constants.Arm.SPEAKER)),
                                 // drive forward to line up with note
-                                new DriveDistanceCmd(Units.inchesToMeters(40.0)),
+                                new DriveDistanceCmd(Units.inchesToMeters(46.0)),
                                 // Go amp or Go Empty side
                                 new ConditionalCommand(
                                                 // Condition: Turn to empty side note
@@ -119,9 +119,9 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                                                                                                                 Constants.Shooter.SPEAKER_RPM), //TODO Changed
                                                                                                                 new ParallelCommandGroup(// turn to speaker
                                                                                                                                 new DriveAngleCmd(
-                                                                                                                                                -70 * red),
+                                                                                                                                                -68 * red),
                                                                                                                                 new ProfiledPivotArmCmd(
-                                                                                                                                                Constants.Arm.AMP_NOTE_SPEAKER))),
+                                                                                                                                                41))),
                                                                                                 // Shoot note 3
                                                                                                 new ParallelRaceGroup(
                                                                                                                 new BangBangShooterCmd(
@@ -129,7 +129,7 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                                                                                                 new RunIntakeWhenShooterAtRPMCmd(
                                                                                                                                 Constants.Shooter.SPEAKER_RPM),
                                                                                                                 new HoldArmInPositionCmd(
-                                                                                                                                Constants.Arm.AMP_NOTE_SPEAKER)),
+                                                                                                                                41)),
                                                                                                 // Turn to center
                                                                                                 new DriveAngleCmd(-10
                                                                                                                 * red)),
