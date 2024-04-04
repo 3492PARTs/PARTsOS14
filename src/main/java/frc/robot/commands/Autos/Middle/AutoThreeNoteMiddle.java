@@ -122,7 +122,7 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                                                                                                                                 -70 * red),
                                                                                                                                 new ProfiledPivotArmCmd(
                                                                                                                                                 Constants.Arm.AMP_NOTE_SPEAKER))),
-                                                                                                // Shoot
+                                                                                                // Shoot note 3
                                                                                                 new ParallelRaceGroup(
                                                                                                                 new BangBangShooterCmd(
                                                                                                                                 Constants.Shooter.SPEAKER_RPM),
