@@ -12,7 +12,7 @@ import frc.robot.commands.Arm.Sequences.ZeroPivotEncodersCmdSeq;
 import frc.robot.commands.Autos.AutoMoveForward;
 import frc.robot.commands.Autos.AutoTurn;
 import frc.robot.commands.Autos.AmpSide.Start.StartAutoOneNoteAmpSide;
-import frc.robot.commands.Autos.AmpSide.Start.StartAutoTwoNoteAmpSide;
+import frc.robot.commands.Autos.AmpSide.Start.StartAutoSpeakTwoNoteAmpSide;
 import frc.robot.commands.Autos.EmptySide.Start.StartAutoOneNoteEmptySide;
 import frc.robot.commands.Autos.EmptySide.Start.StartAutoTwoNoteEmptySide;
 import frc.robot.commands.Autos.Middle.AutoOneNoteMiddle;
@@ -488,7 +488,8 @@ public class RobotContainer {
     autoChooser.addOption("Four Note Middle", new StartAutoFourNoteMiddle());
 
     autoChooser.addOption("One Note Amp Side ", new StartAutoOneNoteAmpSide());
-    autoChooser.addOption("Two Note Amp Side", new StartAutoTwoNoteAmpSide());
+    autoChooser.addOption("Two Note Amp Side", new StartAutoSpeakTwoNoteAmpSide());
+    autoChooser.addOption("Two Note Speak Amp Side", new StartAutoSpeakTwoNoteAmpSide());
 
     autoChooser.addOption("One Note Empty Side", new StartAutoOneNoteEmptySide());
     autoChooser.addOption("Two Note Empty Side", new StartAutoTwoNoteEmptySide());

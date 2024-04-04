@@ -137,7 +137,8 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                                                                 // THIS IS NOT USED
                                                                                 new SequentialCommandGroup(
                                                                                                 // Turn to amp
-                                                                                                new DriveAngleCmd(180),
+                                                                                                new DriveAngleCmd(180
+                                                                                                                * red),
                                                                                                 new ParallelCommandGroup( // Back up to amp
                                                                                                                 new DriveDistanceCmd(
                                                                                                                                 Units.inchesToMeters(
