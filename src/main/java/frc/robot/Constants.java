@@ -61,7 +61,7 @@ public final class Constants {
     public static final double AMP = 95;
     public static final double UPPER_BOUND = AMP + 10;
     public static final double SPEAKER_BACK_30 = 37;
-    public static final double AMP_NOTE_SPEAKER = 38;
+    public static final double AMP_NOTE_SPEAKER = 40;
     //public static final double LOWER_BOUND = GROUND + 10;
 
     //public static final double SPEAKER_SIDE_ANGLE = 41.0;

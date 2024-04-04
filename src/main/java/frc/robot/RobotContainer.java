@@ -348,6 +348,9 @@ public class RobotContainer {
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addNumber("Arm Angle",
         arm.getAngleSupplier()).withPosition(1, 0);
 
+    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName)
+        .add("Zero Arm Sequence", new ZeroArmCmdSeq()).withPosition(0, 3);
+
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addBoolean("Climber Control",
         () -> {
           return climbMode;

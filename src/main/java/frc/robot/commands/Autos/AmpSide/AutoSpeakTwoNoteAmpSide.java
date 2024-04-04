@@ -18,6 +18,7 @@ import frc.robot.commands.Drive.DriveDistanceCmd;
 import frc.robot.commands.Drive.PIDTurnCmd;
 import frc.robot.commands.Intake.RunIntakePhotoEyeCmd;
 import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
+import frc.robot.commands.Intake.Sequences.IntakeCmdSeq;
 import frc.robot.commands.Shooter.BangBangShooterCmd;
 import frc.robot.subsystems.Intake;
 
@@ -36,10 +37,10 @@ public class AutoSpeakTwoNoteAmpSide extends SequentialCommandGroup {
                                 // drives forward to line up with note
                                 new DriveDistanceCmd(Units.inchesToMeters(9)),
                                 // turns LEFT face note
-                                new PIDTurnCmd(-65 * red), //new DriveAngleCmd(-59 * red),
+                                new DriveAngleCmd(-47 * red),
                                 // Move arm to ground, turn on intake, and move forward
                                 new ParallelCommandGroup(new ProfiledPivotArmCmd(Constants.Arm.GROUND),
-                                                new RunIntakePhotoEyeCmd(Constants.Intake.INTAKE_SPEED).withTimeout(5),
+                                                new IntakeCmdSeq(Constants.Intake.INTAKE_SPEED).withTimeout(5),
                                                 new DriveDistanceCmd(Units.inchesToMeters(60))),
                                 // Conditional group, for getting the note or not
                                 new ConditionalCommand(
@@ -54,9 +55,8 @@ public class AutoSpeakTwoNoteAmpSide extends SequentialCommandGroup {
                                                                                                 new ProfiledPivotArmCmd(
                                                                                                                 Constants.Arm.AMP_NOTE_SPEAKER),
                                                                                                 //TODO: fix angle
-                                                                                                new DriveAngleCmd(Units
-                                                                                                                .inchesToMeters(20
-                                                                                                                                * red)))),
+                                                                                                new DriveAngleCmd(30
+                                                                                                                * red))),
                                                                 new ParallelRaceGroup(
                                                                                 new BangBangShooterCmd(
                                                                                                 Constants.Shooter.SPEAKER_RPM),

@@ -38,7 +38,8 @@ public class Shooter extends SubsystemBase {
     shooterLeftMotor.configContinuousCurrentLimit(50, 500);
     shooterRightMotor.configContinuousCurrentLimit(50, 500);
     //TODO: fix current limit
-    //shooterLeftMotor.configPeakCurrentLimit(70);
+    shooterLeftMotor.configPeakCurrentLimit(70);
+    shooterRightMotor.configPeakCurrentLimit(70);
   }
 
   public static Shooter getInstance() {
