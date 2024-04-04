@@ -121,7 +121,7 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                                                                                                                 new DriveAngleCmd(
                                                                                                                                                 -70 * red),
                                                                                                                                 new ProfiledPivotArmCmd(
-                                                                                                                                                38))),
+                                                                                                                                                Constants.Arm.AMP_NOTE_SPEAKER))),
                                                                                                 // Shoot
                                                                                                 new ParallelRaceGroup(
                                                                                                                 new BangBangShooterCmd(
@@ -129,7 +129,7 @@ public class AutoThreeNoteMiddle extends SequentialCommandGroup {
                                                                                                                 new RunIntakeWhenShooterAtRPMCmd(
                                                                                                                                 Constants.Shooter.SPEAKER_RPM),
                                                                                                                 new HoldArmInPositionCmd(
-                                                                                                                                38)),
+                                                                                                                                Constants.Arm.AMP_NOTE_SPEAKER)),
                                                                                                 // Turn to center
                                                                                                 new DriveAngleCmd(-10
                                                                                                                 * red)),
