@@ -181,7 +181,7 @@ public class RobotContainer {
     //* ----------------------------------------------------------------------------------- */
     // Run intake in until note detected, send to home after. 
     operatorController.leftTrigger(.1)
-        .onTrue(new IntakeArmToPositionCmdSeq(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME));
+        .onTrue(new IntakeArmToPositionCmdSeq(Constants.Intake.INTAKE_SPEED, Constants.Arm.SPEAKER));
 
     // Run intake out
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
