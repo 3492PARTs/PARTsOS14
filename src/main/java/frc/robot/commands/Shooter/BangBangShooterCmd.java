@@ -9,12 +9,15 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.math.controller.BangBangController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.util.StopWatch;
 
 public class BangBangShooterCmd extends Command {
   private Shooter shooter;
   private double setpoint;
   private BangBangController bbController = new BangBangController(Constants.Shooter.TOLERANCE);
+  private long timer;
 
   /** Creates a new BangBang. */
   public BangBangShooterCmd(double setpoint) {
@@ -29,6 +32,7 @@ public class BangBangShooterCmd extends Command {
   public void initialize() {
     Shooter.shooterLeftMotor.setNeutralMode(NeutralMode.Coast);
     Shooter.shooterRightMotor.setNeutralMode(NeutralMode.Coast);
+    timer = System.currentTimeMillis();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,6 +40,10 @@ public class BangBangShooterCmd extends Command {
   public void execute() {
     double speed = calcBB(setpoint);
     shooter.setSpeed(speed);
+
+    if (Intake.getInstance().hasNote()) {
+      timer = System.currentTimeMillis();
+    }
   }
 
   double calcBB(double setpoint) {
@@ -58,6 +66,6 @@ public class BangBangShooterCmd extends Command {
   @Override
   public boolean isFinished() {
     // the time part is to keep from false stopping when the command starts
-    return false; //System.currentTimeMillis() - time > 300 && RobotContainer.operatorButtonInterrupt();
+    return System.currentTimeMillis() - timer > 200;
   }
 }

@@ -18,7 +18,7 @@ public class PivotArmCmdSeq extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(new ProfiledPivotArmCmd(angleSetpoint),
-        new IntakeArmToPositionCmdSeq(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME).onlyIf(() -> {
+        new IntakeArmToPositionCmdSeq(Constants.Intake.INTAKE_SPEED, Constants.Arm.SPEAKER).onlyIf(() -> {
           return angleSetpoint == Constants.Arm.GROUND;
         }));
   }

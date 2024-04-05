@@ -4,12 +4,17 @@
 
 package frc.robot.commands.Intake.Sequences;
 
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants;
 import frc.robot.commands.Arm.ProfiledPivotArmCmd;
 import frc.robot.commands.Intake.RunIntakePhotoEyeCmd;
+import frc.robot.commands.Shooter.BangBangShooterCmd;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -21,7 +26,11 @@ public class IntakeArmToPositionCmdSeq extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(new RunIntakePhotoEyeCmd(speed),
         new ConditionalCommand(
-            new ParallelCommandGroup(new OnIntakeOuttakeCmdSeq(), new ProfiledPivotArmCmd(armPosition)),
+            new SequentialCommandGroup(
+                new ParallelCommandGroup(new OnIntakeOuttakeCmdSeq(), new ProfiledPivotArmCmd(armPosition)),
+                Commands.runOnce(() -> {
+                  CommandScheduler.getInstance().schedule(new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM));
+                }, Shooter.getInstance())),
             new IntakeCmdSeq(speed),
             Intake.getInstance().hasNoteSupplier()));
 

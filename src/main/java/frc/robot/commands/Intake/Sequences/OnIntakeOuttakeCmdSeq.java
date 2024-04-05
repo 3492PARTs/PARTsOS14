@@ -15,6 +15,6 @@ public class OnIntakeOuttakeCmdSeq extends SequentialCommandGroup {
   public OnIntakeOuttakeCmdSeq() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new TimeIntakeCmd(.2, .38));
+    addCommands(new TimeIntakeCmd(.2, .40));
   }
 }

@@ -214,11 +214,10 @@ public class RobotContainer {
           .onTrue(new PivotArmCmdSeq(Constants.Arm.GROUND).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
       //speaker
-      operatorController.y().onTrue(Commands.runOnce(() -> {
-        //Schedule this outside of the command sequence so it stays running after the arm moves.
-        CommandScheduler.getInstance().schedule(new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM)
-            .withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-      }).andThen(new PivotArmCmdSeq(Constants.Arm.SPEAKER).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
+      operatorController.y().onTrue(
+          new PivotArmCmdSeq(Constants.Arm.SPEAKER).withInterruptBehavior(InterruptionBehavior.kCancelSelf).andThen(
+              new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM)
+                  .withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
 
       // home
       operatorController.b()
