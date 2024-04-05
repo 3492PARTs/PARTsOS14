@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.commands.Arm.HoldArmInPositionCmd;
+import frc.robot.commands.Arm.JoystickArmCmd;
 import frc.robot.commands.Arm.RunArmToLimitSwitchCmd;
 import frc.robot.commands.Arm.Sequences.PivotArmCmdSeq;
 import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
@@ -71,8 +72,8 @@ public class RobotContainer {
   private boolean climbMode = false;
 
   // Drive controls drivetrain, operator controls arm, intake, and shooter.
-  public static final CommandXboxController driveController = new CommandXboxController(0);
-  public static final CommandXboxController operatorController = new CommandXboxController(1);
+  public final CommandXboxController driveController = new CommandXboxController(0);
+  public final CommandXboxController operatorController = new CommandXboxController(1);
 
   public final Trigger zeroPivotTrigger = new Trigger(arm.getLimitSwitchSupplier());
   public final Trigger armGroundTrigger = new Trigger(arm.getLimitSwitchSupplier());
@@ -118,61 +119,35 @@ public class RobotContainer {
         },
             driveTrain));
 
+    // Default is hold arm in place
     arm.setDefaultCommand(
         new RunCommand(() -> {
-          // Manual control with a lower hard stop.
-          if (Math.abs(operatorController.getRightY()) > .1 && !climbMode) {
-            //at bottom limit
-            if (arm.getLimitSwitch()) {
-              // Negative controller value is up on arm
-              if (operatorController.getRightY() < 0)
-                arm.setSpeed(operatorController.getRightY());
-              else
-                arm.setSpeed(0);
-            }
-            // at top limit
-            else if (arm.getAngle() >= Constants.Arm.UPPER_BOUND) {
-              // Positive controller value is down on arm
-              if (operatorController.getRightY() > 0)
-                arm.setSpeed(operatorController.getRightY());
-              else
-                arm.setSpeed(0);
-            }
-            // full manual, in safe bounds
-            else
-              arm.setSpeed(operatorController.getRightY());
-          }
-          // hold arm in current position
-          else {
-            arm.setSpeed(0);
-            if (arm.getAngle() > 2) {
-              //if (Math.abs(arm.getRotationRate()) < 5)
-              CommandScheduler.getInstance().schedule(new HoldArmInPositionCmd(arm.getAngle()));
+          arm.setSpeed(0);
+          if (arm.getAngle() > 2) {
+            //if (Math.abs(arm.getRotationRate()) < 5)
+            CommandScheduler.getInstance().schedule(
+                new HoldArmInPositionCmd(arm.getAngle()).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
-            }
           }
-        },
-            arm));
+        }, arm));
 
-    climber.setDefaultCommand(
-        new RunCommand(() -> {
-          if (climbMode) {
-            if (Math.abs(operatorController.getLeftY()) > .1) {
-              climber.setLeftSpeed(operatorController.getLeftY());
-            } else {
-              climber.setLeftSpeed(0);
-            }
-            if (Math.abs(operatorController.getRightY()) > .1) {
-              climber.setRightSpeed(operatorController.getRightY());
-            } else {
-              climber.setRightSpeed(0);
-            }
-          } else {
-            climber.setLeftSpeed(0);
-            climber.setRightSpeed(0);
-          }
-        },
-            climber));
+    climber.setDefaultCommand(new RunCommand(() -> {
+      if (climbMode) {
+        if (Math.abs(operatorController.getLeftY()) > .1) {
+          climber.setLeftSpeed(operatorController.getLeftY());
+        } else {
+          climber.setLeftSpeed(0);
+        }
+        if (Math.abs(operatorController.getRightY()) > .1) {
+          climber.setRightSpeed(operatorController.getRightY());
+        } else {
+          climber.setRightSpeed(0);
+        }
+      } else {
+        climber.setLeftSpeed(0);
+        climber.setRightSpeed(0);
+      }
+    }, climber));
 
     zeroPivotTrigger.onTrue(new ZeroPivotEncodersCmdSeq());
 
@@ -195,9 +170,8 @@ public class RobotContainer {
 
     //Amp
     //TODO: Test out setting bang bang to higher value
-    operatorController.rightBumper()
-        .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.AMP_RPM),
-            new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.AMP_RPM)));
+    operatorController.rightBumper().onTrue(new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.AMP_RPM),
+        new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.AMP_RPM)));
 
     //* ----------------------------------------------------------------------------------- */
     //* Intake commands */
@@ -216,8 +190,8 @@ public class RobotContainer {
     operatorController.povUp().whileTrue(new ShootCmd(1));
 
     //Lobbing Shooting
-    operatorController.povDown().onTrue(new ParallelRaceGroup(new BangBangShooterCmd(700),
-        new RunIntakeWhenShooterAtRPMCmd(700)));
+    operatorController.povDown()
+        .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(700), new RunIntakeWhenShooterAtRPMCmd(700)));
 
     // Run intake in
     operatorController.povLeft().whileTrue(new RunIntakeCmd(-1));
@@ -225,23 +199,31 @@ public class RobotContainer {
     //* ----------------------------------------------------------------------------------- */
     //* Arm commands */
     //* ----------------------------------------------------------------------------------- */
+    //Trigger for manual control to run arm manually
+    new Trigger(() -> {
+      return Math.abs(operatorController.getRightY()) > Constants.Arm.JOYSTICK_CONTROL_LIMIT && !climbMode;
+    }).onTrue(new JoystickArmCmd(operatorController));
+
     if (!Constants.Arm.SYSID) {
       //*  Profiled Pivot Functions */
       // ground
-      operatorController.x().onTrue(new PivotArmCmdSeq(Constants.Arm.GROUND));
+      operatorController.x()
+          .onTrue(new PivotArmCmdSeq(Constants.Arm.GROUND).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
       //speaker
       operatorController.y().onTrue(Commands.runOnce(() -> {
         //Schedule this outside of the command sequence so it stays running after the arm moves.
         CommandScheduler.getInstance().schedule(new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM)
             .withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-      }).andThen(new PivotArmCmdSeq(Constants.Arm.SPEAKER)));
+      }).andThen(new PivotArmCmdSeq(Constants.Arm.SPEAKER).withInterruptBehavior(InterruptionBehavior.kCancelSelf)));
 
       // home
-      operatorController.b().onTrue(new PivotArmCmdSeq(Constants.Arm.HOME));
+      operatorController.b()
+          .onTrue(new PivotArmCmdSeq(Constants.Arm.HOME).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
       // amp 
-      operatorController.a().onTrue(new PivotArmCmdSeq(Constants.Arm.AMP));
+      operatorController.a()
+          .onTrue(new PivotArmCmdSeq(Constants.Arm.AMP).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
     } else {
       //* SysID Functions */
@@ -515,18 +497,4 @@ public class RobotContainer {
     return autoChooser.getSelected();
   }
 
-  public static boolean operatorButtonInterrupt() {
-    return operatorController.leftBumper().getAsBoolean() ||
-        operatorController.leftTrigger().getAsBoolean() ||
-        operatorController.rightBumper().getAsBoolean() ||
-        operatorController.rightTrigger().getAsBoolean() ||
-        operatorController.a().getAsBoolean() ||
-        operatorController.b().getAsBoolean() ||
-        operatorController.x().getAsBoolean() ||
-        operatorController.y().getAsBoolean();
-  }
-
-  public static boolean operatorJoystickInterrupt() {
-    return Math.abs(RobotContainer.operatorController.getRightY()) > .1;
-  }
 }

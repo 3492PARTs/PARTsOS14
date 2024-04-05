@@ -69,6 +69,7 @@ public final class Constants {
     public static final int L_SWITCH_PORT = 0;
 
     public static final boolean SYSID = false;
+    public static final double JOYSTICK_CONTROL_LIMIT = .1;
   }
 
   /** Intake Constants */

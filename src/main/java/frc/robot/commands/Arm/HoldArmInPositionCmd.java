@@ -21,7 +21,6 @@ public class HoldArmInPositionCmd extends ProfiledPivotArmCmd {
   @Override
   public boolean isFinished() {
     // End when the operator wants to move the arm or until the driver wants to end it.
-    return RobotContainer.operatorJoystickInterrupt() ||
-        RobotContainer.operatorButtonInterrupt();
+    return false;
   }
 }
