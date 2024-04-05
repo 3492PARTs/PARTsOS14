@@ -278,7 +278,7 @@ public class RobotContainer {
     // Climb mode on turn on change color
     climbModeTrigger.onTrue(Commands.runOnce(() -> {
       Logger.getInstance().logBoolean("Climb Mode Trigger", true);
-      candle.setColor(Color.PURPLE);
+      candle.runRainbowAnimation();
     }, candle));
 
     climbModeTrigger.onFalse(Commands.runOnce(() -> {
