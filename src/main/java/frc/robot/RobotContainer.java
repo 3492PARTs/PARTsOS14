@@ -161,8 +161,12 @@ public class RobotContainer {
 
     //* Change arm controls to climber controls */
     operatorController.povRight().onTrue(Commands.runOnce(() -> {
-      climbMode = !climbMode;
+      climbMode = true;
     }).andThen(new ProfiledPivotArmCmd(Constants.Arm.GROUND)));
+
+    operatorController.povLeft().onTrue(Commands.runOnce(() -> {
+      climbMode = false;
+    }));
 
     //* ----------------------------------------------------------------------------------- */
     //* Shooting commands */
