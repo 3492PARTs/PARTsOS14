@@ -267,7 +267,7 @@ public class RobotContainer {
     armGroundTrigger.onTrue(Commands.runOnce(() -> {
       Logger.getInstance().logBoolean("Arm Trigger", true);
       candle.setColor(Color.ORANGE);
-    }, candle));
+    }, candle).onlyIf(() -> { return !climbMode; }));
 
     // Arm not on ground, turn default blue,
     // unless we have a note, so it stays the note triggered color
@@ -276,7 +276,7 @@ public class RobotContainer {
     }).andThen(
         Commands.runOnce(() -> {
           candle.setColor(Color.BLUE);
-        }, candle).onlyIf(intake.doesNotHaveNoteSupplier())));
+        }, candle).onlyIf(() -> {return !intake.hasNote() && !climbMode;})));
 
     //* Climb Mode */
     // Climb mode on turn on change color
