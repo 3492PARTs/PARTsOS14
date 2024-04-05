@@ -79,6 +79,9 @@ public class RobotContainer {
   public final Trigger zeroPivotTrigger = new Trigger(arm.getLimitSwitchSupplier());
   public final Trigger armGroundTrigger = new Trigger(arm.getLimitSwitchSupplier());
   public final Trigger noteTrigger = new Trigger(intake.hasNoteSupplier());
+  public final Trigger climbModeTrigger = new Trigger(() -> {
+    return climbMode;
+  });
 
   // SmartDashboard chooser for auto tasks.
   SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -271,6 +274,18 @@ public class RobotContainer {
         Commands.runOnce(() -> {
           candle.setColor(Color.BLUE);
         }, candle).onlyIf(intake.doesNotHaveNoteSupplier())));
+
+    //* Climb Mode */
+    // Climb mode on turn on change color
+    climbModeTrigger.onTrue(Commands.runOnce(() -> {
+      Logger.getInstance().logBoolean("Climb Mode Trigger", true);
+      candle.setColor(Color.PURPLE);
+    }, candle));
+
+    climbModeTrigger.onFalse(Commands.runOnce(() -> {
+      Logger.getInstance().logBoolean("Climb mode trigger Trigger", false);
+      initializeCandleState();
+    }, candle));
   }
 
   public void initializeCandleState() {
