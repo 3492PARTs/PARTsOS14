@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.commands.Arm.HoldArmInPositionCmd;
 import frc.robot.commands.Arm.JoystickArmCmd;
+import frc.robot.commands.Arm.ProfiledPivotArmCmd;
 import frc.robot.commands.Arm.RunArmToLimitSwitchCmd;
 import frc.robot.commands.Arm.Sequences.PivotArmCmdSeq;
 import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
@@ -157,8 +158,9 @@ public class RobotContainer {
 
     //* Change arm controls to climber controls */
     operatorController.povRight().onTrue(Commands.runOnce(() -> {
+      CommandScheduler.getInstance().cancelAll();
       climbMode = !climbMode;
-    }));
+    }).andThen(new ProfiledPivotArmCmd(Constants.Arm.GROUND)));
 
     //* ----------------------------------------------------------------------------------- */
     //* Shooting commands */
