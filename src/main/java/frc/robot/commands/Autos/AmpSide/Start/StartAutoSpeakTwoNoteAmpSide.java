@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.Autos.AmpSide.AutoSpeakTwoNoteAmpSide;
-import frc.robot.commands.Autos.AmpSide.AutoTwoNoteAmpSide;
 
 public class StartAutoSpeakTwoNoteAmpSide extends Command {
   private int red = 1;

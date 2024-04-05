@@ -4,8 +4,6 @@
 
 package frc.robot.commands.Arm;
 
-import frc.robot.RobotContainer;
-
 public class HoldArmInPositionCmd extends ProfiledPivotArmCmd {
   double angle;
 

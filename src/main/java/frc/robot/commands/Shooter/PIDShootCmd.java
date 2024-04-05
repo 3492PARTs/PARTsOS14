@@ -6,7 +6,6 @@ package frc.robot.commands.Shooter;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.Shooter;
 import frc.robot.util.StopWatch;
 
