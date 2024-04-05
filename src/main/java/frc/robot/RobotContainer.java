@@ -194,7 +194,7 @@ public class RobotContainer {
 
     //Lobbing Shooting
     operatorController.povDown()
-        .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(700), new RunIntakeWhenShooterAtRPMCmd(700)));
+        .onTrue(new ParallelRaceGroup(new BangBangShooterCmd(600), new RunIntakeWhenShooterAtRPMCmd(600)));
 
     // Run intake in
     operatorController.povLeft().whileTrue(new RunIntakeCmd(-1));
