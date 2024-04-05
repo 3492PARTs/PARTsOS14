@@ -157,10 +157,10 @@ public class RobotContainer {
     //* ----------------------------------------------------------------------------------- */
 
     //* Change arm controls to climber controls */
-    operatorController.povRight().onTrue(Commands.runOnce(() -> {
-      CommandScheduler.getInstance().cancelAll();
+    operatorController.povRight().onTrue(new ProfiledPivotArmCmd(Constants.Arm.GROUND).andThen(Commands.runOnce(() -> {
       climbMode = !climbMode;
-    }).andThen(new ProfiledPivotArmCmd(Constants.Arm.GROUND)));
+      CommandScheduler.getInstance().cancelAll();
+    })));
 
     //* ----------------------------------------------------------------------------------- */
     //* Shooting commands */
