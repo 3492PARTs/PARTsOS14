@@ -108,7 +108,7 @@ public final class Constants {
       TELEOPERATED("Teleoperated"),
       DEBUG("Debug");
 
-      public String tabName;
+      public final String tabName;
 
       Tabs(String tabName) {
         this.tabName = tabName;
