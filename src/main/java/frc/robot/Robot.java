@@ -18,6 +18,8 @@ import frc.robot.subsystems.Candle.Color;
 import frc.robot.util.Dashboard;
 import frc.robot.util.Logger;
 
+import com.pathplanner.lib.commands.FollowPathCommand;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to
@@ -79,6 +81,8 @@ public class Robot extends TimedRobot {
       Dashboard.selectDashboardTab(Constants.Dashboard.Tabs.PRE_MATCH.tabName);
     //else
     //Dashboard.selectDashboardTab(Constants.Dashboard.Tabs.DEBUG.tabName);
+
+    FollowPathCommand.warmupCommand().schedule();
   }
 
   /**

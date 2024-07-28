@@ -38,6 +38,7 @@
       "/Shuffleboard/Drivetrain Tests/Forward": "Command",
       "/Shuffleboard/Pre Match/Auto Mode": "String Chooser",
       "/Shuffleboard/Teleoperated/Arm": "Subsystem",
+      "/Shuffleboard/Teleoperated/Zero Arm Sequence": "Command",
       "/SmartDashboard/Arm": "Subsystem",
       "/SmartDashboard/Zero Arm Sequence": "Command",
       "/SmartDashboard/choose auto mode": "String Chooser"

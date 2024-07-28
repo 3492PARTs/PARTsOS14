@@ -9,21 +9,12 @@ import frc.robot.commands.Arm.RunArmToLimitSwitchCmd;
 import frc.robot.commands.Arm.Sequences.PivotArmCmdSeq;
 import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
 import frc.robot.commands.Arm.Sequences.ZeroPivotEncodersCmdSeq;
-import frc.robot.commands.Autos.AutoMoveForward;
-import frc.robot.commands.Autos.AutoTurn;
-import frc.robot.commands.Autos.AmpSide.Start.StartAutoOneNoteAmpSide;
-import frc.robot.commands.Autos.AmpSide.Start.StartAutoSpeakTwoNoteAmpSide;
-import frc.robot.commands.Autos.EmptySide.Start.StartAutoOneNoteEmptySide;
-import frc.robot.commands.Autos.EmptySide.Start.StartAutoTwoNoteEmptySide;
-import frc.robot.commands.Autos.Middle.AutoOneNoteMiddle;
-import frc.robot.commands.Autos.Middle.AutoTwoNoteMiddle;
-import frc.robot.commands.Autos.Middle.Start.StartAutoFourNoteMiddle;
-import frc.robot.commands.Autos.Middle.Start.StartAutoThreeNoteMiddle;
 import frc.robot.commands.Intake.RunIntakeCmd;
 import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
 import frc.robot.commands.Intake.Sequences.IntakeArmToPositionCmdSeq;
 import frc.robot.commands.Shooter.BangBangShooterCmd;
 import frc.robot.commands.Shooter.ShootCmd;
+import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Candle;
@@ -37,11 +28,22 @@ import frc.robot.subsystems.Climber;
 
 import java.util.Map;
 
-import edu.wpi.first.networktables.GenericEntry;
+import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.SteerRequestType;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -79,9 +81,21 @@ public class RobotContainer {
   public final Trigger noteTrigger = new Trigger(intake.hasNoteSupplier());
 
   // SmartDashboard chooser for auto tasks.
-  SendableChooser<Command> autoChooser = new SendableChooser<>();
-  private GenericEntry ampOrEmpty;
-  private GenericEntry speakerOrAmp;
+  private SendableChooser<Command> autoChooser;
+  //private GenericEntry ampOrEmpty;
+  //private GenericEntry speakerOrAmp;
+
+  // Swerve
+  private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
+  private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
+  private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
+  private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+      .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+      .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
+      .withSteerRequestType(SteerRequestType.MotionMagicExpo);
+  private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+  private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+  private final Telemetry logger = new Telemetry(MaxSpeed);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -112,11 +126,33 @@ public class RobotContainer {
     //* ----------------------------------------------------------------------------------- */
     //* Default commands */
     //* ----------------------------------------------------------------------------------- */
+    /*
     driveTrain.setDefaultCommand(
         new RunCommand(() -> {
           driveTrain.driveArcade(-driveController.getLeftY(), driveController.getRightX());
         },
             driveTrain));
+    */
+
+    drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+        drivetrain.applyRequest(() -> 
+          drive.withVelocityX(-MathUtil.applyDeadband(driveController.getLeftY(), .1) * MaxSpeed) // Drive forward with negative Y (forward)
+            .withVelocityY(-MathUtil.applyDeadband(driveController.getLeftX(), .1) * MaxSpeed) // Drive left with negative X (left)
+            .withRotationalRate(-MathUtil.applyDeadband(driveController.getRightX(), .1) * MaxAngularRate)// Drive counterclockwise with negative X (left)    
+    ));
+
+    driveController.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    driveController.b().whileTrue(drivetrain
+        .applyRequest(() -> point.withModuleDirection(new Rotation2d(-driveController.getLeftY(), -driveController.getLeftX()))));
+
+    driveController.povRight().onTrue(drivetrain.SnapToAngle(90));
+    // reset the field-centric heading on left bumper press
+    driveController.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
+
+    if (Utils.isSimulation()) {
+      drivetrain.seedFieldRelative(new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
+    }
+    drivetrain.registerTelemetry(logger::telemeterize);
 
     arm.setDefaultCommand(
         new RunCommand(() -> {
@@ -314,6 +350,7 @@ public class RobotContainer {
         .withSize(2, 1) // make the widget 2x1
         .withPosition(0, 0); // place it in the top-left corner
 
+    /* 
     ShuffleboardLayout auto3NoteMiddleOptions = Dashboard
         .getDashboardTab(frc.robot.Constants.Dashboard.Tabs.PRE_MATCH.tabName)
         .getLayout("3 Note Auto Options", BuiltInLayouts.kList)
@@ -324,6 +361,7 @@ public class RobotContainer {
 
     speakerOrAmp = auto3NoteMiddleOptions.add("Amp Chosen: T: Shoot Speaker, F: Shoot Amp", false)
         .withWidget(BuiltInWidgets.kToggleButton).getEntry();
+    */
 
     //* ----------------------------------------------------------------------------------- */
     //* Autonomous Dashboard */
@@ -444,7 +482,7 @@ public class RobotContainer {
     }
 
   }
-
+ 
   /*
   public void configureSmartDashboardCommands() {
     if (Constants.Debug.debugMode) {
@@ -486,7 +524,9 @@ public class RobotContainer {
 
   public void configureAutonomousCommands() {
     //SmartDashboard.putData("choose auto mode", autoChooser);
+    autoChooser = AutoBuilder.buildAutoChooser();
 
+    /*
     autoChooser.addOption("Move Forward", new AutoMoveForward());
     autoChooser.addOption("Move Turn", new AutoTurn());
 
@@ -502,7 +542,8 @@ public class RobotContainer {
 
     autoChooser.addOption("One Note Empty Side", new StartAutoOneNoteEmptySide());
     autoChooser.addOption("Two Note Empty Side", new StartAutoTwoNoteEmptySide());
-
+    */
+    SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
   /**
@@ -512,7 +553,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return autoChooser.getSelected();
+    // return autoChooser.getSelected();
+    return new PathPlannerAuto("New Auto");
   }
 
   public static boolean operatorButtonInterrupt() {
