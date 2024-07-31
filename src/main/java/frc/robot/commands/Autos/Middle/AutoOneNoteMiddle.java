@@ -17,7 +17,7 @@ public class AutoOneNoteMiddle extends SequentialCommandGroup {
   /** Creates a new AutoOneNoteMiddlePos. */
   public AutoOneNoteMiddle() {
     // Set arm pos then shoot in speaker.
-    addCommands(new ZeroArmCmdSeq(),
+    addCommands(
         new ParallelRaceGroup(new ProfiledPivotArmCmd(Constants.Arm.SPEAKER),
             new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM)),
         new ParallelRaceGroup(new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM),

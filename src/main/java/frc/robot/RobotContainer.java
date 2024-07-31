@@ -5,13 +5,16 @@
 package frc.robot;
 
 import frc.robot.commands.Arm.HoldArmInPositionCmd;
+import frc.robot.commands.Arm.ProfiledPivotArmCmd;
 import frc.robot.commands.Arm.RunArmToLimitSwitchCmd;
 import frc.robot.commands.Arm.Sequences.PivotArmCmdSeq;
 import frc.robot.commands.Arm.Sequences.ZeroArmCmdSeq;
 import frc.robot.commands.Arm.Sequences.ZeroPivotEncodersCmdSeq;
+import frc.robot.commands.Autos.Middle.AutoOneNoteMiddle;
 import frc.robot.commands.Intake.RunIntakeCmd;
 import frc.robot.commands.Intake.RunIntakeWhenShooterAtRPMCmd;
 import frc.robot.commands.Intake.Sequences.IntakeArmToPositionCmdSeq;
+import frc.robot.commands.Intake.Sequences.IntakeCmdSeq;
 import frc.robot.commands.Shooter.BangBangShooterCmd;
 import frc.robot.commands.Shooter.ShootCmd;
 import frc.robot.generated.TunerConstants;
@@ -32,6 +35,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.SteerRequestType;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.MathUtil;
@@ -503,13 +507,23 @@ public class RobotContainer {
 
   public void configureAutonomousCommands() {
     //SmartDashboard.putData("choose auto mode", autoChooser);
+    NamedCommands.registerCommand("Shoot First Note", new AutoOneNoteMiddle());
+    NamedCommands.registerCommand("Pivot to Ground", new ProfiledPivotArmCmd(Constants.Arm.GROUND));
+    NamedCommands.registerCommand("Intake", new IntakeCmdSeq(Constants.Intake.INTAKE_SPEED));
+    NamedCommands.registerCommand("Pivot to Speaker", new ProfiledPivotArmCmd(Constants.Arm.SPEAKER));
+    NamedCommands.registerCommand("Warm Up Shooter", new BangBangShooterCmd(Constants.Shooter.WARMUP_SPEAKER_RPM));
+    NamedCommands.registerCommand("Bang Bang Shooter", new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM));
+    NamedCommands.registerCommand("Run Intake Until RPM", new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM));
+    NamedCommands.registerCommand("Hold Arm Speaker", new HoldArmInPositionCmd(Constants.Arm.SPEAKER));
+
     autoChooser = AutoBuilder.buildAutoChooser();
+    autoChooser.addOption("One Note Middle", new AutoOneNoteMiddle());
 
     /*
     autoChooser.addOption("Move Forward", new AutoMoveForward());
     autoChooser.addOption("Move Turn", new AutoTurn());
 
-    autoChooser.addOption("One Note Middle", new AutoOneNoteMiddle());
+    
     autoChooser.addOption("Two Note Middle", new AutoTwoNoteMiddle());
 
     autoChooser.addOption("Three Note Middle", new StartAutoThreeNoteMiddle(ampOrEmpty, speakerOrAmp));
@@ -532,8 +546,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    // return autoChooser.getSelected();
-    return new PathPlannerAuto("New Auto");
+  return autoChooser.getSelected();
+   // return new PathPlannerAuto("New Auto");
   }
 
   public static boolean operatorButtonInterrupt() {
