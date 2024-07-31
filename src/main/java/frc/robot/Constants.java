@@ -54,7 +54,7 @@ public final class Constants {
     public static final double OPEN_LOOP_RATE = 0.34;
 
     // PID
-    public static final double kP = 22.0;
+    public static final double kP = 19;
     public static final double kI = 0.0;
     public static final double kD = 0.0;
 
@@ -66,8 +66,8 @@ public final class Constants {
 
     public static final double GROUND = 0;
     public static final double SPEAKER = 25.5;//28.0;
-    public static final double HOME = 65.2;
-    public static final double AMP = 83;
+    public static final double HOME = 63;
+    public static final double AMP = 95;
     public static final double UPPER_BOUND = AMP + 10;
     public static final double SPEAKER_BACK_30 = 37;
     public static final double AMP_NOTE_SPEAKER = 40;

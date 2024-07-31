@@ -129,7 +129,10 @@ public class Arm extends SubsystemBase {
 
     
     return new Rotation2d(Math.toRadians(absoluteEncoder.getAbsolutePosition() * 360)).rotateBy(new Rotation2d(Math.toRadians(15))).getDegrees();
+  }
 
+  public DoubleSupplier getAbsoluteEncoderFrequency(){
+    return () -> absoluteEncoder.getFrequency();
   }
 
   public DoubleSupplier getAngleSupplier() {

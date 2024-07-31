@@ -1,0 +1,256 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.4229570277322372,
+      "y": 5.559932574410603
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot First Note"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Pivot to Ground"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Move to First Note Middle"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Move Back to Speaker Middle"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pivot to Speaker"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Warm Up Shooter"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Bang Bang Shooter"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Run Intake Until RPM"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Hold Arm Speaker"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pivot to Ground"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Move to Amp Note from Middle"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Move Back to Speaker from Amp"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pivot to Speaker"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Warm Up Shooter"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Bang Bang Shooter"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Run Intake Until RPM"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Hold Arm Speaker"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pivot to Ground"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Move to Empty Side Note from Amp"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Move Back to Speaker from Empty Side"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pivot to Speaker"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Warm Up Shooter"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Bang Bang Shooter"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Run Intake Until RPM"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Hold Arm Speaker"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Move Past First Note Middle"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

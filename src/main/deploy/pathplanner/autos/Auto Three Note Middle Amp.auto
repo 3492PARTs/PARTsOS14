@@ -93,28 +93,90 @@
           }
         },
         {
-          "type": "race",
+          "type": "named",
+          "data": {
+            "name": "Pivot to Ground"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Move to Amp Note from Middle"
+          }
+        },
+        {
+          "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Move Past First Note Middle"
+                  "pathName": "Move Back to Speaker from Amp"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Pivot to Home"
+                  "name": "Pivot to Speaker"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Warm Up Shooter"
                 }
               }
             ]
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "Hold Arm Home"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Bang Bang Shooter"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Run Intake Until RPM"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Hold Arm Speaker"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Move to Center Line from Speaker"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pivot to Ground"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
           }
         }
       ]

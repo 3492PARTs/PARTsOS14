@@ -151,7 +151,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     }
 
     public void resetPose(Pose2d pose) {
-        // m_pigeon2.setYaw(pose.getRotation().getDegrees());
+        m_pigeon2.setYaw(pose.getRotation().getDegrees());
         super.m_odometry.resetPosition(pose.getRotation(), m_modulePositions, pose);
     }
     

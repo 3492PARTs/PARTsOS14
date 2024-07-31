@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4229570277322372,
-      "y": 5.559932574410603
+      "x": 0.7139723370355832,
+      "y": 6.670053340106681
     },
-    "rotation": 0
+    "rotation": 58.172553423326846
   },
   "command": {
     "type": "sequential",
@@ -30,7 +30,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Move to First Note Middle"
+                  "pathName": "Move to First Note Amp from Amp Side"
                 }
               },
               {
@@ -49,7 +49,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Move Back to Speaker Middle"
+                  "pathName": "Move Back to Speaker Amp Side from First Note"
                 }
               },
               {
@@ -93,28 +93,84 @@
           }
         },
         {
-          "type": "race",
+          "type": "parallel",
           "data": {
             "commands": [
               {
+                "type": "named",
+                "data": {
+                  "name": "Pivot to Ground"
+                }
+              },
+              {
                 "type": "path",
                 "data": {
-                  "pathName": "Move Past First Note Middle"
+                  "pathName": "Move to Center Line from Amp"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Pivot to Home"
+                  "name": "Intake"
                 }
               }
             ]
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Hold Arm Home"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Move Back to Speaker from Center Line Amp"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Pivot to Speaker"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Warm Up Shooter"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Bang Bang Shooter"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Run Intake Until RPM"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Hold Arm Speaker"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Move to Center Line from Speaker"
           }
         }
       ]

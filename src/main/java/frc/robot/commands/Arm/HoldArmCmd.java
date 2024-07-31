@@ -7,24 +7,25 @@ package frc.robot.commands.Arm;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
-import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Arm;
 
-public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
-
+// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// information, see:
+// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+public class HoldArmCmd extends ProfiledPIDCommand {
+  /** Creates a new HoldArmCmd. */
   double angleSetpoint;
 
-  /** Creates a new profiledPivotArm. */
-  public ProfiledPivotArmCmd(double angleSetpoint) {
+  public HoldArmCmd(double angleSetpoint) {
     super(
         // The ProfiledPIDController used by the command
         new ProfiledPIDController(
-            // The PID gains (tune later)
-            Constants.Arm.kP, // 2,7
-            Constants.Arm.kI,
-            Constants.Arm.kD,
-            // The motion profile constraints
-            Arm.getInstance().getConstraints()),
+            // The PID gains
+            8,
+            0,
+            0,
+           Arm.getInstance().getConstraints()),
         // This should return the measurement
         () -> Arm.getInstance().getCurrentState().position, // getCurrentState() is a trapezoid profile object
         // This should return the goal (can also be a constant)
@@ -67,9 +68,7 @@ public class ProfiledPivotArmCmd extends ProfiledPIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-      System.out.println("finished pp");
-      return getController().atGoal();
-    
-
+      return RobotContainer.operatorJoystickInterrupt() ||
+        RobotContainer.operatorButtonInterrupt();
   }
 }

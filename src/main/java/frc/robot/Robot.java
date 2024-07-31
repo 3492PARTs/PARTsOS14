@@ -48,6 +48,7 @@ public class Robot extends TimedRobot {
     Camera.getInstance();
     Logger.getInstance();
 
+
     // Set the scheduler to log Shuffleboard events for command initialize, interrupt, finish
     CommandScheduler.getInstance()
         .onCommandInitialize(

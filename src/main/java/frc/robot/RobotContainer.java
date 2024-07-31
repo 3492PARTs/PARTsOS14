@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.commands.Arm.HoldArmCmd;
 import frc.robot.commands.Arm.HoldArmInPositionCmd;
 import frc.robot.commands.Arm.ProfiledPivotArmCmd;
 import frc.robot.commands.Arm.RunArmToLimitSwitchCmd;
@@ -39,6 +40,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -77,14 +79,18 @@ public class RobotContainer {
   public static final CommandXboxController driveController = new CommandXboxController(0);
   public static final CommandXboxController operatorController = new CommandXboxController(1);
 
+  SlewRateLimiter xRateLimiter = new SlewRateLimiter(1);
+  SlewRateLimiter yRateLimiter = new SlewRateLimiter(1);
+  SlewRateLimiter rotRateLimiter = new SlewRateLimiter(4);
+
+
   public final Trigger zeroPivotTrigger = new Trigger(arm.getLimitSwitchSupplier());
   public final Trigger armGroundTrigger = new Trigger(arm.getLimitSwitchSupplier());
   public final Trigger noteTrigger = new Trigger(intake.hasNoteSupplier());
 
   // SmartDashboard chooser for auto tasks.
   private SendableChooser<Command> autoChooser;
-  //private GenericEntry ampOrEmpty;
-  //private GenericEntry speakerOrAmp;
+
 
   // Swerve
   private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
@@ -128,26 +134,19 @@ public class RobotContainer {
     //* ----------------------------------------------------------------------------------- */
     //* Default commands */
     //* ----------------------------------------------------------------------------------- */
-    /*
-    driveTrain.setDefaultCommand(
-        new RunCommand(() -> {
-          driveTrain.driveArcade(-driveController.getLeftY(), driveController.getRightX());
-        },
-            driveTrain));
-    */
 
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> 
-          drive.withVelocityX(-MathUtil.applyDeadband(driveController.getLeftY(), .1) * MaxSpeed) // Drive forward with negative Y (forward)
-            .withVelocityY(-MathUtil.applyDeadband(driveController.getLeftX(), .1) * MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate(-MathUtil.applyDeadband(driveController.getRightX(), .1) * MaxAngularRate)// Drive counterclockwise with negative X (left)    
+          drive.withVelocityX(xRateLimiter.calculate(-MathUtil.applyDeadband(driveController.getLeftY(), .1)) * MaxSpeed) // Drive forward with negative Y (forward)
+            .withVelocityY(yRateLimiter.calculate(-MathUtil.applyDeadband(driveController.getLeftX(), .1)) * MaxSpeed) // Drive left with negative X (left)
+            .withRotationalRate(rotRateLimiter.calculate(-MathUtil.applyDeadband(driveController.getRightX(), .1)) * MaxAngularRate)// Drive counterclockwise with negative X (left)    
     ));
 
     driveController.a().whileTrue(drivetrain.applyRequest(() -> brake));
-    driveController.b().whileTrue(drivetrain
-        .applyRequest(() -> point.withModuleDirection(new Rotation2d(-driveController.getLeftY(), -driveController.getLeftX()))));
+    //driveController.b().whileTrue(drivetrain
+       // .applyRequest(() -> point.withModuleDirection(new Rotation2d(-driveController.getLeftY(), -driveController.getLeftX()))));
 
-    driveController.povRight().onTrue(drivetrain.SnapToAngle(90));
+
     // reset the field-centric heading on left bumper press
     driveController.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 
@@ -195,16 +194,9 @@ public class RobotContainer {
             arm));
 
 
-    zeroPivotTrigger.onTrue(new ZeroPivotEncodersCmdSeq());
-
     //* ----------------------------------------------------------------------------------- */
     //* Button Binding commands */
     //* ----------------------------------------------------------------------------------- */
-
-    //* Change arm controls to climber controls */
-    operatorController.povRight().onTrue(Commands.runOnce(() -> {
-      climbMode = !climbMode;
-    }));
 
     //* ----------------------------------------------------------------------------------- */
     //* Shooting commands */
@@ -225,7 +217,7 @@ public class RobotContainer {
     //* ----------------------------------------------------------------------------------- */
     // Run intake in until note detected, send to home after. 
     operatorController.leftTrigger(.1)
-        .onTrue(new IntakeArmToPositionCmdSeq(Constants.Intake.INTAKE_SPEED, Constants.Arm.HOME));
+        .onTrue(new IntakeArmToPositionCmdSeq(Constants.Intake.INTAKE_SPEED, Constants.Arm.SPEAKER));
 
     // Run intake out
     operatorController.leftBumper().whileTrue(new RunIntakeCmd(1));
@@ -323,7 +315,6 @@ public class RobotContainer {
 
   public void removeBindings() {
     arm.removeDefaultCommand();
-    //zeroPivotTrigger.onTrue(new NullCmd()); //idk if this is causing pause in autos or not?
   }
 
   public void configureDashboard() {
@@ -334,18 +325,6 @@ public class RobotContainer {
         .withSize(2, 1) // make the widget 2x1
         .withPosition(0, 0); // place it in the top-left corner
 
-    /* 
-    ShuffleboardLayout auto3NoteMiddleOptions = Dashboard
-        .getDashboardTab(frc.robot.Constants.Dashboard.Tabs.PRE_MATCH.tabName)
-        .getLayout("3 Note Auto Options", BuiltInLayouts.kList)
-        .withSize(2, 2).withPosition(2, 0);
-
-    ampOrEmpty = auto3NoteMiddleOptions.add("T: Go Empty, F: Go Amp", false).withWidget(BuiltInWidgets.kToggleButton)
-        .getEntry();
-
-    speakerOrAmp = auto3NoteMiddleOptions.add("Amp Chosen: T: Shoot Speaker, F: Shoot Amp", false)
-        .withWidget(BuiltInWidgets.kToggleButton).getEntry();
-    */
 
     //* ----------------------------------------------------------------------------------- */
     //* Autonomous Dashboard */
@@ -376,13 +355,11 @@ public class RobotContainer {
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addNumber("Arm Angle",
         arm.getAngleSupplier()).withPosition(1, 0);
 
-    Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName)
-        .add("Zero Arm Sequence", new ZeroArmCmdSeq()).withPosition(0, 3);
-
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addBoolean("Climber Control",
         () -> {
           return climbMode;
         }).withPosition(2, 0);
+
 
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.TELEOPERATED.tabName).addBoolean("Note",
         intake.hasNoteSupplier()).withPosition(0, 1);
@@ -403,10 +380,6 @@ public class RobotContainer {
           .getLayout("Drive Train", BuiltInLayouts.kList).withSize(2, 4).withPosition(0, 0)
           .withProperties(Map.of("Label position", "TOP"));
 
-      //driveTrainLayout.add(driveTrain);
-      //driveTrainLayout.addNumber("Gyro", driveTrain.getGyroAngleSupplier());
-      //driveTrainLayout.addDouble("Left Drive Distance", driveTrain::leftDistance);
-      //driveTrainLayout.addDouble("Right Drive Distance", driveTrain::rightDistance);
 
       ShuffleboardLayout armLayout = Dashboard
           .getDashboardTab(frc.robot.Constants.Dashboard.Tabs.DEBUG.tabName)
@@ -452,61 +425,14 @@ public class RobotContainer {
       /*shooterLayout.addDouble("Right Motor Velocity",
           shooter::getRightVelocity);
 */
-      ShuffleboardLayout climberLayout = Dashboard
-          .getDashboardTab(frc.robot.Constants.Dashboard.Tabs.DEBUG.tabName)
-          .getLayout("Climber", BuiltInLayouts.kList).withSize(2, 4).withPosition(8, 0)
-          .withProperties(Map.of("Label position", "TOP"));
+     
 
-
-      climberLayout.addBoolean("Climber Control",
-          () -> {
-            return climbMode;
-          });
     }
 
   }
  
-  /*
-  public void configureSmartDashboardCommands() {
-    if (Constants.Debug.debugMode) {
-      // Zero Pivot Command
-      SmartDashboard.putData("Zero Arm Sequence", new ZeroArmCmdSeq());
-    }
-  }
-  
-  public void updateSmartDashboard() {
-    // Shooter
-    SmartDashboard.putNumber("Shooter RPM", shooter.getShooterRPM());
-    SmartDashboard.putNumber("Shooter Left Velocity", shooter.getLeftVelocity());
-    SmartDashboard.putNumber("Shooter Right Velocity", shooter.getRightVelocity());
-  
-    // PhotoEye
-    SmartDashboard.putBoolean("HAS NOTE", intake.hasNote());
-  
-    // LimitSwitch
-    SmartDashboard.putBoolean("Arm Switch", arm.getLimitSwitch());
-  
-    // Arm Angle
-    SmartDashboard.putNumber("Arm Angle", arm.getAngle());
-  
-    // Arm Angle
-    SmartDashboard.putNumber("Arm Voltage", arm.getAverageVoltage());
-  
-    // Climber or Arm Controls
-    SmartDashboard.putBoolean("Climber control", climbMode);
-  
-    if (Constants.Debug.debugMode) {
-      // Drive
-      SmartDashboard.putNumber("Left Drive Distance", driveTrain.leftDistance());
-      SmartDashboard.putNumber("Right Drive Distance", driveTrain.rightDistance());
-  
-      SmartDashboard.putNumber("Gyro Angle", driveTrain.getGyroAngle());
-    }
-  }
-  */
 
   public void configureAutonomousCommands() {
-    //SmartDashboard.putData("choose auto mode", autoChooser);
     NamedCommands.registerCommand("Shoot First Note", new AutoOneNoteMiddle());
     NamedCommands.registerCommand("Pivot to Ground", new ProfiledPivotArmCmd(Constants.Arm.GROUND));
     NamedCommands.registerCommand("Intake", new IntakeCmdSeq(Constants.Intake.INTAKE_SPEED));
@@ -515,27 +441,12 @@ public class RobotContainer {
     NamedCommands.registerCommand("Bang Bang Shooter", new BangBangShooterCmd(Constants.Shooter.SPEAKER_RPM));
     NamedCommands.registerCommand("Run Intake Until RPM", new RunIntakeWhenShooterAtRPMCmd(Constants.Shooter.SPEAKER_RPM));
     NamedCommands.registerCommand("Hold Arm Speaker", new HoldArmInPositionCmd(Constants.Arm.SPEAKER));
+    NamedCommands.registerCommand("Hold Arm Home", new HoldArmInPositionCmd(Constants.Arm.HOME));
+    NamedCommands.registerCommand("Pivot to Home", new ProfiledPivotArmCmd(Constants.Arm.HOME));
 
     autoChooser = AutoBuilder.buildAutoChooser();
     autoChooser.addOption("One Note Middle", new AutoOneNoteMiddle());
 
-    /*
-    autoChooser.addOption("Move Forward", new AutoMoveForward());
-    autoChooser.addOption("Move Turn", new AutoTurn());
-
-    
-    autoChooser.addOption("Two Note Middle", new AutoTwoNoteMiddle());
-
-    autoChooser.addOption("Three Note Middle", new StartAutoThreeNoteMiddle(ampOrEmpty, speakerOrAmp));
-    autoChooser.addOption("Four Note Middle", new StartAutoFourNoteMiddle());
-
-    autoChooser.addOption("One Note Amp Side ", new StartAutoOneNoteAmpSide());
-    autoChooser.addOption("Two Note Amp Side", new StartAutoSpeakTwoNoteAmpSide());
-    autoChooser.addOption("Two Note Speak Amp Side", new StartAutoSpeakTwoNoteAmpSide());
-
-    autoChooser.addOption("One Note Empty Side", new StartAutoOneNoteEmptySide());
-    autoChooser.addOption("Two Note Empty Side", new StartAutoTwoNoteEmptySide());
-    */
     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
