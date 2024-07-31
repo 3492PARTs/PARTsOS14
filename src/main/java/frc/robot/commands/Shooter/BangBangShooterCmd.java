@@ -30,7 +30,7 @@ public class BangBangShooterCmd extends Command {
   @Override
   public void initialize() {
     Shooter.shooterLeftMotor.setNeutralMode(NeutralMode.Coast);
-    Shooter.shooterRightMotor.setNeutralMode(NeutralMode.Coast);
+    //Shooter.shooterRightMotor.setNeutralMode(NeutralMode.Coast);
     time = System.currentTimeMillis();
   }
 
@@ -53,7 +53,7 @@ public class BangBangShooterCmd extends Command {
     // Stop dem motor !!!
     shooter.setSpeed(0);
     Shooter.shooterLeftMotor.setNeutralMode(NeutralMode.Brake);
-    Shooter.shooterRightMotor.setNeutralMode(NeutralMode.Brake);
+    //Shooter.shooterRightMotor.setNeutralMode(NeutralMode.Brake);
 
   }
 

@@ -17,29 +17,29 @@ public class Shooter extends SubsystemBase {
 
   /** Creates a new Shooter. */
   public static TalonSRX shooterLeftMotor;
-  public static TalonSRX shooterRightMotor;
+  //public static TalonSRX shooterRightMotor;
 
   private final double SHOOTER_WHEEL_RADIUS = 2.0;
 
   public Shooter() {
     // Initialize the motors.
     shooterLeftMotor = new TalonSRX(Constants.Shooter.LEFT_MOTOR);
-    shooterRightMotor = new TalonSRX(Constants.Shooter.RIGHT_MOTOR);
+    //shooterRightMotor = new TalonSRX(Constants.Shooter.RIGHT_MOTOR);
 
-    shooterRightMotor.setInverted(true);
+    //shooterRightMotor.setInverted(true);
     shooterLeftMotor.setInverted(true);
 
     shooterLeftMotor.setNeutralMode(NeutralMode.Brake);
-    shooterRightMotor.setNeutralMode(NeutralMode.Brake);
+    //shooterRightMotor.setNeutralMode(NeutralMode.Brake);
 
-    shooterRightMotor.configOpenloopRamp(1, 0);
+    //shooterRightMotor.configOpenloopRamp(1, 0);
     shooterLeftMotor.configOpenloopRamp(1, 0);
 
     shooterLeftMotor.configContinuousCurrentLimit(50, 500);
-    shooterRightMotor.configContinuousCurrentLimit(50, 500);
+    //shooterRightMotor.configContinuousCurrentLimit(50, 500);
     //TODO: fix current limit
     shooterLeftMotor.configPeakCurrentLimit(70);
-    shooterRightMotor.configPeakCurrentLimit(70);
+    //shooterRightMotor.configPeakCurrentLimit(70);
   }
 
   public static Shooter getInstance() {
@@ -52,12 +52,12 @@ public class Shooter extends SubsystemBase {
 
   public void setSpeed(double speed) {
     shooterLeftMotor.set(ControlMode.PercentOutput, speed);
-    shooterRightMotor.set(ControlMode.PercentOutput, speed);
+   // shooterRightMotor.set(ControlMode.PercentOutput, speed);
   }
 
   public void setVelocity(double velocity) {
     shooterLeftMotor.set(ControlMode.Velocity, velocity);
-    shooterRightMotor.set(ControlMode.Velocity, velocity);
+  //  shooterRightMotor.set(ControlMode.Velocity, velocity);
   }
 
   public double getShooterRPM() {
@@ -67,8 +67,9 @@ public class Shooter extends SubsystemBase {
 
   public double getVelocity() {
     double left = shooterLeftMotor.getSelectedSensorVelocity();
-    double right = shooterRightMotor.getSelectedSensorVelocity();
-    return Math.abs(left) > Math.abs(right) ? left : right;
+   // double right = shooterRightMotor.getSelectedSensorVelocity();
+    //return Math.abs(left) > Math.abs(right) ? left : right;
+    return left;
   }
 
   public double getLeftVelocity() {
@@ -76,10 +77,12 @@ public class Shooter extends SubsystemBase {
     return left;
   }
 
+  /* 
   public double getRightVelocity() {
     double right = shooterRightMotor.getSelectedSensorVelocity();
     return right;
   }
+  */
 
   @Override
   public void periodic() {

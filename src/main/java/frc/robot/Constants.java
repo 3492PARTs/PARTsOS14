@@ -48,26 +48,26 @@ public final class Constants {
   /** Arm Constants */
   public static final class Arm {
     public static final int LEFT_PIVOT_MOTOR = 4;
-    public static final int RIGHT_PIVOT_MOTOR = 7;
+    public static final int RIGHT_PIVOT_MOTOR = 8;
 
     public static final double PIVOT_GEAR_RATIO = 234;
     public static final double OPEN_LOOP_RATE = 0.34;
 
     // PID
-    public static final double kP = 30.0;
+    public static final double kP = 22.0;
     public static final double kI = 0.0;
     public static final double kD = 0.0;
 
-    //Feedforward
-    public static final double kS = 0.02204; //0.21092; // .38107
-    public static final double kV = 0.15682;//0.11019; // .10239
-    public static final double kG = 0.65433; //0.02501; // .02501
-    public static final double kA = 0.027191;//0.021335;
+    //Feedforward Radians
+    public static final double kS = .43078; //0.21092; // .38107
+    public static final double kV = 0.10925;//0.11019; // .10239
+    public static final double kG = 0.4; //0.02501; // .02501
+    public static final double kA = 0.016668;//0.021335;
 
     public static final double GROUND = 0;
     public static final double SPEAKER = 25.5;//28.0;
     public static final double HOME = 65.2;
-    public static final double AMP = 95;
+    public static final double AMP = 83;
     public static final double UPPER_BOUND = AMP + 10;
     public static final double SPEAKER_BACK_30 = 37;
     public static final double AMP_NOTE_SPEAKER = 40;
@@ -75,7 +75,7 @@ public final class Constants {
 
     //public static final double SPEAKER_SIDE_ANGLE = 41.0;
 
-    public static final int L_SWITCH_PORT = 0;
+    //public static final int L_SWITCH_PORT = 0;
 
     public static final boolean SYSID = false;
   }
@@ -84,7 +84,7 @@ public final class Constants {
   public static final class Intake {
     public static final int INTAKE_MOTOR = 11;
     public static final double INTAKE_SPEED = -.8;
-    public static final int PHOTOEYE = 9;
+    public static final int PHOTOEYE = 0;
   }
 
   /** Intake Constants */
@@ -100,8 +100,8 @@ public final class Constants {
   }
 
   public static final class Climber {
-    public static final int LEFT_MOTOR = 8;
-    public static final int RIGHT_MOTOR = 9;
+    public static final int LEFT_MOTOR = 18;
+    public static final int RIGHT_MOTOR = 23;
   }
 
   public static final class LED {

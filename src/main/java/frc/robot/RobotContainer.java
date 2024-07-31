@@ -18,13 +18,12 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Candle;
-import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Candle.Color;
+import frc.robot.util.CommandSwerveDrivetrain;
 import frc.robot.util.Dashboard;
 import frc.robot.util.Logger;
-import frc.robot.subsystems.Climber;
 
 import java.util.Map;
 
@@ -64,12 +63,10 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private final DriveTrain driveTrain = DriveTrain.getInstance();
   private final Arm arm = Arm.getInstance();
   private final Intake intake = Intake.getInstance();
   private final Shooter shooter = Shooter.getInstance();
   private final Candle candle = Candle.getInstance();
-  private final Climber climber = Climber.getInstance();
   private boolean climbMode = false;
 
   // Drive controls drivetrain, operator controls arm, intake, and shooter.
@@ -103,8 +100,9 @@ public class RobotContainer {
 
   public RobotContainer() {
     //configureSmartDashboardCommands();
-    configureDashboard();
+    
     configureAutonomousCommands();
+    configureDashboard();
   }
 
   /**
@@ -156,6 +154,7 @@ public class RobotContainer {
 
     arm.setDefaultCommand(
         new RunCommand(() -> {
+
           // Manual control with a lower hard stop.
           if (Math.abs(operatorController.getRightY()) > .1 && !climbMode) {
             //at bottom limit
@@ -184,31 +183,13 @@ public class RobotContainer {
             if (arm.getAngle() > 2) {
               //if (Math.abs(arm.getRotationRate()) < 5)
               CommandScheduler.getInstance().schedule(new HoldArmInPositionCmd(arm.getAngle()));
-
+              
             }
+           
           }
         },
             arm));
 
-    climber.setDefaultCommand(
-        new RunCommand(() -> {
-          if (climbMode) {
-            if (Math.abs(operatorController.getLeftY()) > .1) {
-              climber.setLeftSpeed(operatorController.getLeftY());
-            } else {
-              climber.setLeftSpeed(0);
-            }
-            if (Math.abs(operatorController.getRightY()) > .1) {
-              climber.setRightSpeed(operatorController.getRightY());
-            } else {
-              climber.setRightSpeed(0);
-            }
-          } else {
-            climber.setLeftSpeed(0);
-            climber.setRightSpeed(0);
-          }
-        },
-            climber));
 
     zeroPivotTrigger.onTrue(new ZeroPivotEncodersCmdSeq());
 
@@ -338,7 +319,6 @@ public class RobotContainer {
 
   public void removeBindings() {
     arm.removeDefaultCommand();
-    driveTrain.removeDefaultCommand();
     //zeroPivotTrigger.onTrue(new NullCmd()); //idk if this is causing pause in autos or not?
   }
 
@@ -367,7 +347,7 @@ public class RobotContainer {
     //* Autonomous Dashboard */
     //* ----------------------------------------------------------------------------------- */
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.AUTONOMOUS.tabName)
-        .addNumber("Gyro", driveTrain.getGyroAngleSupplier()).withWidget(BuiltInWidgets.kGyro).withPosition(0, 0);
+        .addNumber("Gyro", () -> 0).withWidget(BuiltInWidgets.kGyro).withPosition(0, 0);
 
     Dashboard.getDashboardTab(frc.robot.Constants.Dashboard.Tabs.AUTONOMOUS.tabName).add(arm).withPosition(2, 0);
 
@@ -419,10 +399,10 @@ public class RobotContainer {
           .getLayout("Drive Train", BuiltInLayouts.kList).withSize(2, 4).withPosition(0, 0)
           .withProperties(Map.of("Label position", "TOP"));
 
-      driveTrainLayout.add(driveTrain);
-      driveTrainLayout.addNumber("Gyro", driveTrain.getGyroAngleSupplier());
-      driveTrainLayout.addDouble("Left Drive Distance", driveTrain::leftDistance);
-      driveTrainLayout.addDouble("Right Drive Distance", driveTrain::rightDistance);
+      //driveTrainLayout.add(driveTrain);
+      //driveTrainLayout.addNumber("Gyro", driveTrain.getGyroAngleSupplier());
+      //driveTrainLayout.addDouble("Left Drive Distance", driveTrain::leftDistance);
+      //driveTrainLayout.addDouble("Right Drive Distance", driveTrain::rightDistance);
 
       ShuffleboardLayout armLayout = Dashboard
           .getDashboardTab(frc.robot.Constants.Dashboard.Tabs.DEBUG.tabName)
@@ -465,15 +445,14 @@ public class RobotContainer {
       shooterLayout.addDouble("Left Motor Velocity",
           shooter::getLeftVelocity);
 
-      shooterLayout.addDouble("Right Motor Velocity",
+      /*shooterLayout.addDouble("Right Motor Velocity",
           shooter::getRightVelocity);
-
+*/
       ShuffleboardLayout climberLayout = Dashboard
           .getDashboardTab(frc.robot.Constants.Dashboard.Tabs.DEBUG.tabName)
           .getLayout("Climber", BuiltInLayouts.kList).withSize(2, 4).withPosition(8, 0)
           .withProperties(Map.of("Label position", "TOP"));
 
-      climberLayout.add(climber);
 
       climberLayout.addBoolean("Climber Control",
           () -> {

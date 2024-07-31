@@ -12,12 +12,14 @@ import java.util.function.DoubleSupplier;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.units.Angle;
 import edu.wpi.first.units.MutableMeasure;
 import edu.wpi.first.units.Velocity;
 import edu.wpi.first.units.Voltage;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
@@ -33,11 +35,13 @@ public class Arm extends SubsystemBase {
 
   private static CANSparkMax pivotLeftMotor;
   private static CANSparkMax pivotRightMotor;
-  private static DigitalInput armLimit = new DigitalInput(Constants.Arm.L_SWITCH_PORT);
+  //private static DigitalInput armLimit = new DigitalInput(Constants.Arm.L_SWITCH_PORT);
 
   public TrapezoidProfile.Constraints ArmConstraints;
 
   public ArmFeedforward armFeedForward;
+
+  DutyCycleEncoder absoluteEncoder = new DutyCycleEncoder(1);
 
   // SysID routine  
   private final MutableMeasure<Voltage> m_appliedVoltage = mutable(Volts.of(0));
@@ -59,7 +63,7 @@ public class Arm extends SubsystemBase {
                     m_appliedVoltage.mut_replace(
                         getAverageVoltage(), Volts))
                 .angularPosition(m_angle.mut_replace(
-                    ((alternateLeftEncoder.getPosition())),
+                    ((getAbsoluteAngle())),
                     Rotations))
                 .angularVelocity(
                     m_velocity.mut_replace(getRPS(), RotationsPerSecond));
@@ -110,15 +114,26 @@ public class Arm extends SubsystemBase {
 
   // Angle calculations
   public double getAngle() {
+    return getAbsoluteAngle();
     // old way using motor encoder return 360 * pivotLeftMotor.getEncoder().getPosition() / pivotGearRatio;
+    //double left = alternateLeftEncoder.getPosition();
+    //double right = alternateRightEncoder.getPosition();
+    //return ((Math.abs(left) > Math.abs(right) ? left : right) * 360) * -1; // CPR * 360 to convert to angle * -1 to flip the angle orientation
+    
+   // CPR * 360 to convert to angle * -1 to flip the angle orientation
+  }
 
-    double left = alternateLeftEncoder.getPosition();
-    double right = alternateRightEncoder.getPosition();
-    return ((Math.abs(left) > Math.abs(right) ? left : right) * 360) * -1; // CPR * 360 to convert to angle * -1 to flip the angle orientation
+  public double getAbsoluteAngle() {
+    // old way using motor encoder return 360 * pivotLeftMotor.getEncoder().getPosition() / pivotGearRatio;
+    //345 is the offset
+
+    
+    return new Rotation2d(Math.toRadians(absoluteEncoder.getAbsolutePosition() * 360)).rotateBy(new Rotation2d(Math.toRadians(15))).getDegrees();
+
   }
 
   public DoubleSupplier getAngleSupplier() {
-    DoubleSupplier s = () -> getAngle();
+    DoubleSupplier s = () -> getAbsoluteAngle();
     return s;
   }
 
@@ -140,23 +155,23 @@ public class Arm extends SubsystemBase {
     pivotLeftMotor.getEncoder().setPosition(0);
     pivotRightMotor.getEncoder().setPosition(0);
 
+
     alternateLeftEncoder.setPosition(0);
     alternateRightEncoder.setPosition(0);
   }
 
   public boolean getLimitSwitch() {
-    if (!armLimit.get()) {
-      /*if (!armLimitBuffer) {
-        setPivotSpeed(0);
-      }
-      */
-      return true;
+    return getAbsoluteAngle() <= .5;
+      
+      
+      /* 
     } else {
       //armLimitBuffer = false;
       return false;
     }
+    */
   }
-
+  
   public BooleanSupplier getLimitSwitchSupplier() {
     return this::getLimitSwitch;
   }

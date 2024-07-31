@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Candle;
-import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Candle.Color;
 import frc.robot.util.Dashboard;
 import frc.robot.util.Logger;
@@ -46,8 +45,6 @@ public class Robot extends TimedRobot {
     m_robotContainer.configureCandleBindings();
 
     Arm.getInstance().zeroPivotEncoders();
-    DriveTrain.getInstance().zeroDriveEncoders();
-    DriveTrain.getInstance().zeroGyro();
     Camera.getInstance();
     Logger.getInstance();
 
