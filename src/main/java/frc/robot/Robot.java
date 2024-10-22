@@ -109,7 +109,7 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    Candle.getInstance().runFadeAnimation(Color.BLUE);
+    Candle.getInstance().runRainbowAnimation();
   }
 
   @Override

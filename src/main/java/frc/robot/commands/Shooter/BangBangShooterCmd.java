@@ -30,7 +30,7 @@ public class BangBangShooterCmd extends Command {
   @Override
   public void initialize() {
     Shooter.shooterLeftMotor.setNeutralMode(NeutralMode.Coast);
-    //Shooter.shooterRightMotor.setNeutralMode(NeutralMode.Coast);
+    Shooter.shooterRightMotor.setNeutralMode(NeutralMode.Coast);
     time = System.currentTimeMillis();
   }
 
@@ -42,7 +42,7 @@ public class BangBangShooterCmd extends Command {
   }
 
   double calcBB(double setpoint) {
-    // BB calcs 0...1 speed, limiter caps it at 75% for now. Change in Constants if needed.
+    //BB calcs 0...1 speed, limiter caps it at 75% for now. Change in Constants if needed.
     double speed = bbController.calculate(shooter.getShooterRPM(), setpoint);
     return speed;
   }
@@ -53,7 +53,7 @@ public class BangBangShooterCmd extends Command {
     // Stop dem motor !!!
     shooter.setSpeed(0);
     Shooter.shooterLeftMotor.setNeutralMode(NeutralMode.Brake);
-    //Shooter.shooterRightMotor.setNeutralMode(NeutralMode.Brake);
+    Shooter.shooterRightMotor.setNeutralMode(NeutralMode.Brake);
 
   }
 

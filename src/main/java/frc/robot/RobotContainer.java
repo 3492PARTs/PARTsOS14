@@ -137,8 +137,8 @@ public class RobotContainer {
 
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> 
-          drive.withVelocityX(xRateLimiter.calculate(-MathUtil.applyDeadband(driveController.getLeftY(), .1)) * MaxSpeed) // Drive forward with negative Y (forward)
-            .withVelocityY(yRateLimiter.calculate(-MathUtil.applyDeadband(driveController.getLeftX(), .1)) * MaxSpeed) // Drive left with negative X (left)
+          drive.withVelocityX((xRateLimiter.calculate(-MathUtil.applyDeadband(driveController.getLeftY(), .1)) * MaxSpeed)) // Drive forward with negative Y (forward)
+            .withVelocityY((yRateLimiter.calculate(-MathUtil.applyDeadband(driveController.getLeftX(), .1)) * MaxSpeed)) // Drive left with negative X (left)
             .withRotationalRate(rotRateLimiter.calculate(-MathUtil.applyDeadband(driveController.getRightX(), .1)) * MaxAngularRate)// Drive counterclockwise with negative X (left)    
     ));
 
@@ -310,7 +310,7 @@ public class RobotContainer {
     else if (arm.getLimitSwitch())
       candle.setColor(Color.ORANGE);
     else
-      candle.setColor(Color.BLUE);
+      candle.getRainbowAnimation();
   }
 
   public void removeBindings() {
@@ -422,9 +422,8 @@ public class RobotContainer {
       shooterLayout.addDouble("Left Motor Velocity",
           shooter::getLeftVelocity);
 
-      /*shooterLayout.addDouble("Right Motor Velocity",
+      shooterLayout.addDouble("Right Motor Velocity",
           shooter::getRightVelocity);
-*/
      
 
     }

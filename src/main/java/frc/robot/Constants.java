@@ -82,15 +82,15 @@ public final class Constants {
 
   /** Intake Constants */
   public static final class Intake {
-    public static final int INTAKE_MOTOR = 11;
-    public static final double INTAKE_SPEED = -.8;
+    public static final int INTAKE_MOTOR = 30;
+    public static final double INTAKE_SPEED = -.6;
     public static final int PHOTOEYE = 0;
   }
 
   /** Intake Constants */
   public static final class Shooter {
     public static final int LEFT_MOTOR = 10;
-    public static final int RIGHT_MOTOR = 12;
+    public static final int RIGHT_MOTOR = 13;
     public static final double TOLERANCE = 0;
     public static final double LIMITER = 0.25;
     //TODO: check if rpm works with current peak limit
